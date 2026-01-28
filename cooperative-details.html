@@ -4,44 +4,1400 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Détails Coopérative - Bio Aného</title>
-    <link rel="stylesheet" href="../../css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ===== STYLES GÉNÉRAUX ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* ===== NAVIGATION ===== */
+        .main-navbar {
+            background: linear-gradient(135deg, #2e7d32 0%, #4caf50 100%);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 0.8rem 0;
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 1.5rem;
+        }
+        
+        .main-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: white;
+            text-decoration: none;
+            font-size: 1.5rem;
+            font-weight: 700;
+            transition: transform 0.3s ease;
+        }
+        
+        .main-logo:hover {
+            transform: scale(1.05);
+        }
+        
+        .main-logo i {
+            font-size: 2rem;
+            color: #c8e6c9;
+        }
+        
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        
+        .menu-toggle:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .main-nav-links {
+            display: flex;
+            list-style: none;
+            gap: 1.8rem;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .main-nav-links li {
+            position: relative;
+        }
+        
+        .main-nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border-radius: 6px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .main-nav-links a:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+        
+        .main-nav-links a::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: white;
+            transition: width 0.3s ease;
+            border-radius: 3px 3px 0 0;
+        }
+        
+        .main-nav-links a:hover::before {
+            width: 100%;
+        }
+        
+        .main-nav-links a.active {
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn-logout {
+            background: white;
+            color: #2e7d32 !important;
+            padding: 0.6rem 1.2rem !important;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-logout:hover {
+            background: #f8f9fa !important;
+            transform: translateY(-2px);
+        }
+
+        /* ===== CONTENU PRINCIPAL ===== */
+        main {
+            padding: 30px 0;
+        }
+
+        /* Bouton retour */
+        .back-container {
+            margin-bottom: 30px;
+        }
+
+        .btn-back {
+            background: white;
+            color: #2e7d32;
+            border: 2px solid #2e7d32;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-back:hover {
+            background: #2e7d32;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* En-tête coopérative */
+        .cooperative-header {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+            border-left: 10px solid #2e7d32;
+        }
+
+        .cooperative-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 300px;
+            height: 300px;
+            background: linear-gradient(135deg, rgba(46, 125, 50, 0.1) 0%, rgba(76, 175, 80, 0.1) 100%);
+            border-radius: 50%;
+            transform: translate(100px, -100px);
+        }
+
+        .cooperative-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cooperative-title h1 {
+            color: #2e7d32;
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .cooperative-status {
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+
+        .status-active {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-inactive {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .cooperative-description {
+            color: #666;
+            font-size: 1.2rem;
+            line-height: 1.8;
+            margin-bottom: 30px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cooperative-meta {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 30px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .meta-item {
+            background: #f8f9fa;
+            padding: 15px 20px;
+            border-radius: 10px;
+            min-width: 200px;
+            border-left: 4px solid #2e7d32;
+        }
+
+        .meta-label {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .meta-value {
+            color: #2e7d32;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        /* Sections */
+        .section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .section-header h2 {
+            color: #2e7d32;
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-content {
+            margin-top: 20px;
+        }
+
+        /* Grille de détails */
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .detail-card {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 12px;
+            border-left: 5px solid #2e7d32;
+            transition: transform 0.3s ease;
+        }
+
+        .detail-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .detail-label {
+            color: #666;
+            font-size: 0.95rem;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .detail-value {
+            color: #333;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .detail-value.badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        /* Tableau des membres */
+        .members-table-container {
+            overflow-x: auto;
+            border-radius: 10px;
+            border: 1px solid #eee;
+        }
+
+        .members-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 800px;
+        }
+
+        .members-table thead {
+            background: linear-gradient(135deg, #2e7d32 0%, #4caf50 100%);
+            color: white;
+        }
+
+        .members-table th {
+            padding: 18px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .members-table tbody tr {
+            border-bottom: 1px solid #eee;
+            transition: background 0.3s ease;
+        }
+
+        .members-table tbody tr:hover {
+            background: #f8f9fa;
+        }
+
+        .members-table td {
+            padding: 18px;
+            color: #555;
+            vertical-align: middle;
+        }
+
+        /* Avatar membre */
+        .member-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #2e7d32 0%, #4caf50 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-right: 15px;
+        }
+
+        .member-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .member-name {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 3px;
+        }
+
+        .member-phone {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* Badges rôles */
+        .role-badge {
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .role-president {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .role-secretary {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .role-treasurer {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .role-committee {
+            background: #e2e3e5;
+            color: #383d41;
+        }
+
+        .role-member {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        /* Carte produit */
+        .product-card {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #2e7d32 0%, #4caf50 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .product-info h4 {
+            color: #2e7d32;
+            margin-bottom: 5px;
+        }
+
+        .product-info p {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        /* Boutons */
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background: #2e7d32;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #1b5e20;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        /* Message vide */
+        .empty-message {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border: 2px dashed #ddd;
+        }
+
+        .empty-message i {
+            font-size: 4rem;
+            color: #ddd;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .empty-message h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: #888;
+        }
+
+        /* Statut */
+        .status-container {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .status-item {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 60px;
+            color: #666;
+        }
+
+        .loading i {
+            font-size: 3rem;
+            color: #2e7d32;
+            margin-bottom: 20px;
+        }
+
+        .error {
+            text-align: center;
+            padding: 60px;
+            background: #f8d7da;
+            border-radius: 10px;
+            color: #721c24;
+        }
+
+        /* Footer */
+        .main-footer {
+            background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%);
+            color: white;
+            padding: 3rem 0 1rem;
+            margin-top: 60px;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 3rem;
+        }
+        
+        .footer-section h4 {
+            color: white;
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+            position: relative;
+            padding-bottom: 12px;
+            font-weight: 700;
+        }
+        
+        .footer-section h4::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 3px;
+        }
+        
+        .footer-section p {
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.7;
+            margin-bottom: 1.2rem;
+        }
+        
+        .footer-section ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .footer-section ul li {
+            margin-bottom: 0.9rem;
+        }
+        
+        .footer-section a {
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 0.3rem 0;
+        }
+        
+        .footer-section a:hover {
+            color: white;
+            transform: translateX(8px);
+        }
+        
+        .footer-section i {
+            width: 24px;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-container {
+                padding: 0 1rem;
+            }
+            
+            .menu-toggle {
+                display: block;
+            }
+            
+            .main-nav-links {
+                display: none;
+                position: fixed;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background: #2e7d32;
+                flex-direction: column;
+                gap: 0;
+                padding: 1rem 0;
+                box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+                z-index: 1000;
+                border-top: 2px solid rgba(255,255,255,0.1);
+                border-radius: 0 0 16px 16px;
+            }
+            
+            .main-nav-links.show {
+                display: flex;
+            }
+            
+            .main-nav-links li {
+                width: 100%;
+            }
+            
+            .main-nav-links a {
+                padding: 1.2rem;
+                border-bottom: 1px solid rgba(255,255,255,0.1);
+                gap: 12px;
+                justify-content: center;
+            }
+            
+            .main-nav-links a:last-child {
+                border-bottom: none;
+            }
+            
+            .main-nav-links a.active {
+                background: rgba(255,255,255,0.2);
+                margin: 0 1rem;
+                border-radius: 10px;
+            }
+            
+            .btn-logout {
+                justify-content: center;
+                margin: 0.5rem 1rem;
+            }
+            
+            .cooperative-title {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+            
+            .cooperative-title h1 {
+                font-size: 2.2rem;
+            }
+            
+            .cooperative-header {
+                padding: 25px;
+            }
+            
+            .details-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .meta-item {
+                min-width: 100%;
+            }
+            
+            .section {
+                padding: 20px;
+            }
+            
+            .section-header {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .cooperative-title h1 {
+                font-size: 1.8rem;
+            }
+            
+            .cooperative-meta {
+                flex-direction: column;
+            }
+        }
+
+        /* Animation pour le menu */
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .main-nav-links.show {
+            animation: slideDown 0.3s ease-out;
+        }
+    </style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="container">
-            <a href="../public/index.html" class="logo">
+    <!-- Navigation principale -->
+    <nav class="main-navbar">
+        <div class="nav-container">
+            <a href="index.html" class="main-logo">
                 <i class="fas fa-leaf"></i>
                 <span>Bio Aného</span>
             </a>
-            <button class="menu-toggle">
+            
+            <!-- Menu hamburger pour mobile -->
+            <button class="menu-toggle" id="menuToggle">
                 <i class="fas fa-bars"></i>
             </button>
-            <ul class="nav-links">
-                <li><a href="index.html">Accueil</a></li>
-                <li><a href="cooperatives.html" class="active">Coopératives</a></li>
-                <li><a href="products.html">Produits</a></li>
-                <li><a href="sales.html">Points de Vente</a></li>
-                <li><a href="news.html">Actualités</a></li>
-                <li><a href="contact.html">Contact</a></li>
-                <li><a href="login.html" class="btn-login">Connexion</a></li>
+            
+            <!-- Navigation -->
+            <ul class="main-nav-links" id="navLinks">
+                <li><a href="index.html">
+                    <i class="fas fa-home"></i>
+                    <span>Accueil</span>
+                </a></li>
+                <li><a href="dashboard.html">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </a></li>
+                <li><a href="cooperatives.html">
+                    <i class="fas fa-tractor"></i>
+                    <span>Coopératives</span>
+                </a></li>
+                <li><a href="members.html">
+                    <i class="fas fa-users"></i>
+                    <span>Membres</span>
+                </a></li>
+                <li><a href="products.html">
+                    <i class="fas fa-seedling"></i>
+                    <span>Produits</span>
+                </a></li>
+                <li><a href="login.html" class="btn-logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Déconnexion</span>
+                </a></li>
             </ul>
         </div>
     </nav>
 
     <!-- Contenu principal -->
-    <main class="container">
-        <div id="cooperativeDetails">
-            <!-- Les détails seront chargés ici par JavaScript -->
+    <main>
+        <div class="container">
+            <!-- Bouton retour -->
+            <div class="back-container">
+                <a href="cooperatives.html" class="btn-back">
+                    <i class="fas fa-arrow-left"></i>
+                    Retour à la liste des coopératives
+                </a>
+            </div>
+
+            <!-- Conteneur pour les détails -->
+            <div id="cooperativeDetailsContent">
+                <div class="loading">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <h3>Chargement des détails...</h3>
+                </div>
+            </div>
         </div>
     </main>
 
     <!-- Footer -->
-    <footer class="footer">
-        <!-- Copier le même footer que index.html -->
+    <footer class="main-footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Bio Aného</h4>
+                <p>Développement durable par l'agriculture biologique à Aného, Togo.</p>
+                <p>Engagés pour une agriculture responsable et respectueuse de l'environnement.</p>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Liens rapides</h4>
+                <ul>
+                    <li><a href="index.html">
+                        <i class="fas fa-home"></i>
+                        Accueil
+                    </a></li>
+                    <li><a href="dashboard.html">
+                        <i class="fas fa-tachometer-alt"></i>
+                        Dashboard
+                    </a></li>
+                    <li><a href="cooperatives.html">
+                        <i class="fas fa-tractor"></i>
+                        Coopératives
+                    </a></li>
+                    <li><a href="products.html">
+                        <i class="fas fa-seedling"></i>
+                        Produits bio
+                    </a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Coordonnées</h4>
+                <p><i class="fas fa-map-marker-alt"></i> Aného, Région Maritime, Togo</p>
+                <p><i class="fas fa-phone"></i> +228 96 85 70 42</p>
+                <p><i class="fas fa-envelope"></i> joelamzy91@gmail.com</p>
+                <p><i class="fas fa-clock"></i> Lundi - Vendredi: 8h-18h</p>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2026 Maraîchage Bio à Aného. Développé par HOUNKPATI Yaovi Joël</p>
+            <p style="margin-top: 0.5rem; font-size: 0.85rem;">Tous droits réservés.</p>
+        </div>
     </footer>
 
-    <script src="../../js/main.js"></script>
+    <script>
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', function() {
+            initMenu();
+            loadCooperativeDetails();
+        });
+
+        // Gestion du menu
+        function initMenu() {
+            const menuToggle = document.getElementById('menuToggle');
+            const navLinks = document.getElementById('navLinks');
+
+            if (menuToggle && navLinks) {
+                menuToggle.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    navLinks.classList.toggle('show');
+                    const icon = menuToggle.querySelector('i');
+                    
+                    if (navLinks.classList.contains('show')) {
+                        icon.classList.remove('fa-bars');
+                        icon.classList.add('fa-times');
+                        document.body.style.overflow = 'hidden';
+                    } else {
+                        icon.classList.remove('fa-times');
+                        icon.classList.add('fa-bars');
+                        document.body.style.overflow = 'auto';
+                    }
+                });
+                
+                navLinks.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', function() {
+                        navLinks.classList.remove('show');
+                        menuToggle.querySelector('i').classList.remove('fa-times');
+                        menuToggle.querySelector('i').classList.add('fa-bars');
+                        document.body.style.overflow = 'auto';
+                    });
+                });
+                
+                document.addEventListener('click', function(e) {
+                    if (!menuToggle.contains(e.target) && !navLinks.contains(e.target)) {
+                        navLinks.classList.remove('show');
+                        menuToggle.querySelector('i').classList.remove('fa-times');
+                        menuToggle.querySelector('i').classList.add('fa-bars');
+                        document.body.style.overflow = 'auto';
+                    }
+                });
+            }
+        }
+
+        // Charger les détails de la coopérative
+        function loadCooperativeDetails() {
+            // Récupérer l'ID de la coopérative depuis l'URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const cooperativeId = urlParams.get('id');
+            
+            if (!cooperativeId) {
+                showError("Aucune coopérative sélectionnée");
+                return;
+            }
+            
+            // Charger les données de localStorage
+            const cooperatives = JSON.parse(localStorage.getItem('cooperatives')) || [];
+            const members = JSON.parse(localStorage.getItem('members')) || [];
+            
+            // Trouver la coopérative
+            const cooperative = cooperatives.find(c => c.id == cooperativeId);
+            
+            if (!cooperative) {
+                showError("Coopérative non trouvée");
+                return;
+            }
+            
+            // Filtrer les membres de cette coopérative
+            const cooperativeMembers = members.filter(member => 
+                member.cooperativeId == cooperativeId || 
+                member.cooperative === cooperative.name
+            );
+            
+            // Afficher les détails
+            displayCooperativeDetails(cooperative, cooperativeMembers);
+        }
+
+        // Afficher les détails de la coopérative
+        function displayCooperativeDetails(coop, members) {
+            const container = document.getElementById('cooperativeDetailsContent');
+            
+            // Formater la date
+            const foundationDate = formatDate(coop.foundation);
+            
+            // Statut
+            let statusClass, statusText;
+            switch(coop.status) {
+                case 'active':
+                    statusClass = 'status-active';
+                    statusText = 'Active';
+                    break;
+                case 'inactive':
+                    statusClass = 'status-inactive';
+                    statusText = 'Inactive';
+                    break;
+                case 'pending':
+                    statusClass = 'status-pending';
+                    statusText = 'En attente';
+                    break;
+                default:
+                    statusClass = 'status-pending';
+                    statusText = 'Non défini';
+            }
+            
+            // Rôle CSS pour les membres
+            function getRoleClass(role) {
+                switch(role) {
+                    case 'Président': return 'role-president';
+                    case 'Secrétaire': return 'role-secretary';
+                    case 'Trésorier': return 'role-treasurer';
+                    case 'Président du comité de suivi': 
+                    case 'Président du comité de gestion': return 'role-committee';
+                    default: return 'role-member';
+                }
+            }
+            
+            container.innerHTML = `
+                <!-- En-tête de la coopérative -->
+                <div class="cooperative-header">
+                    <div class="cooperative-title">
+                        <div>
+                            <h1>
+                                <i class="fas fa-tractor"></i>
+                                ${coop.name}
+                            </h1>
+                        </div>
+                        <div class="cooperative-status ${statusClass}">
+                            ${statusText}
+                        </div>
+                    </div>
+                    
+                    <div class="cooperative-description">
+                        ${coop.description || 'Cette coopérative ne dispose pas encore de description.'}
+                    </div>
+                    
+                    <div class="cooperative-meta">
+                        <div class="meta-item">
+                            <div class="meta-label">
+                                <i class="fas fa-user"></i>
+                                Président
+                            </div>
+                            <div class="meta-value">${coop.president}</div>
+                        </div>
+                        
+                        <div class="meta-item">
+                            <div class="meta-label">
+                                <i class="fas fa-users"></i>
+                                Nombre de membres
+                            </div>
+                            <div class="meta-value">${coop.members || 'N/A'}</div>
+                        </div>
+                        
+                        <div class="meta-item">
+                            <div class="meta-label">
+                                <i class="fas fa-calendar-alt"></i>
+                                Date de création
+                            </div>
+                            <div class="meta-value">${foundationDate}</div>
+                        </div>
+                        
+                        <div class="meta-item">
+                            <div class="meta-label">
+                                <i class="fas fa-map-marker-alt"></i>
+                                Localisation
+                            </div>
+                            <div class="meta-value">${coop.location}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section Informations détaillées -->
+                <div class="section">
+                    <div class="section-header">
+                        <h2><i class="fas fa-info-circle"></i> Informations détaillées</h2>
+                    </div>
+                    
+                    <div class="details-grid">
+                        <div class="detail-card">
+                            <div class="detail-label">
+                                <i class="fas fa-certificate"></i>
+                                Certification
+                            </div>
+                            <div class="detail-value">${coop.certification || 'Non certifié'}</div>
+                        </div>
+                        
+                        <div class="detail-card">
+                            <div class="detail-label">
+                                <i class="fas fa-ruler-combined"></i>
+                                Superficie cultivée
+                            </div>
+                            <div class="detail-value">${coop.area || 'Non spécifiée'}</div>
+                        </div>
+                        
+                        <div class="detail-card">
+                            <div class="detail-label">
+                                <i class="fas fa-chart-line"></i>
+                                Production mensuelle
+                            </div>
+                            <div class="detail-value">${coop.production || 'Non spécifiée'}</div>
+                        </div>
+                        
+                        <div class="detail-card">
+                            <div class="detail-label">
+                                <i class="fas fa-envelope"></i>
+                                Email
+                            </div>
+                            <div class="detail-value">${coop.email || 'Non disponible'}</div>
+                        </div>
+                        
+                        <div class="detail-card">
+                            <div class="detail-label">
+                                <i class="fas fa-phone"></i>
+                                Téléphone
+                            </div>
+                            <div class="detail-value">${coop.phone || 'Non disponible'}</div>
+                        </div>
+                        
+                        <div class="detail-card">
+                            <div class="detail-label">
+                                <i class="fas fa-map-pin"></i>
+                                Adresse
+                            </div>
+                            <div class="detail-value">${coop.address || 'Non disponible'}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section Produits cultivés -->
+                <div class="section">
+                    <div class="section-header">
+                        <h2><i class="fas fa-seedling"></i> Produits cultivés</h2>
+                    </div>
+                    
+                    <div class="section-content">
+                        ${coop.products ? `
+                            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px;">
+                                ${coop.products.split(',').map(product => `
+                                    <div class="product-card">
+                                        <div class="product-icon">
+                                            <i class="fas fa-leaf"></i>
+                                        </div>
+                                        <div class="product-info">
+                                            <h4>${product.trim()}</h4>
+                                            <p>Produit cultivé par la coopérative</p>
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        ` : `
+                            <div class="empty-message">
+                                <i class="fas fa-seedling"></i>
+                                <h3>Aucun produit renseigné</h3>
+                                <p>Cette coopérative n'a pas encore renseigné ses produits cultivés.</p>
+                            </div>
+                        `}
+                    </div>
+                </div>
+
+                <!-- Section Membres -->
+                <div class="section">
+                    <div class="section-header">
+                        <h2><i class="fas fa-users"></i> Membres de la coopérative</h2>
+                        <span class="meta-value">${members.length} membre(s)</span>
+                    </div>
+                    
+                    <div class="section-content">
+                        ${members.length > 0 ? `
+                            <div class="members-table-container">
+                                <table class="members-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Membre</th>
+                                            <th>Rôle</th>
+                                            <th>Contact</th>
+                                            <th>Date d'adhésion</th>
+                                            <th>Statut</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        ${members.map(member => {
+                                            const initials = (member.firstName?.[0] || '') + (member.lastName?.[0] || '') || '??';
+                                            const joinDate = formatDate(member.joinDate);
+                                            const statusText = member.status === 'active' ? 'Actif' : 
+                                                               member.status === 'inactive' ? 'Inactif' : 'Suspendu';
+                                            const statusClass = member.status === 'active' ? 'status-active' : 
+                                                                member.status === 'inactive' ? 'status-inactive' : 'status-pending';
+                                            
+                                            return `
+                                                <tr>
+                                                    <td>
+                                                        <div class="member-info">
+                                                            <div class="member-avatar">${initials}</div>
+                                                            <div>
+                                                                <div class="member-name">${member.fullName || member.firstName + ' ' + member.lastName}</div>
+                                                                <div class="member-phone">${member.email || 'Pas d\'email'}</div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <span class="role-badge ${getRoleClass(member.role)}">
+                                                            ${member.role}
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <div>${member.phone || 'Non renseigné'}</div>
+                                                        ${member.email ? `<small>${member.email}</small>` : ''}
+                                                    </td>
+                                                    <td>${joinDate}</td>
+                                                    <td>
+                                                        <span class="detail-value badge ${statusClass}">
+                                                            ${statusText}
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            `;
+                                        }).join('')}
+                                    </tbody>
+                                </table>
+                            </div>
+                        ` : `
+                            <div class="empty-message">
+                                <i class="fas fa-users"></i>
+                                <h3>Aucun membre trouvé</h3>
+                                <p>Cette coopérative n'a pas encore de membres enregistrés.</p>
+                            </div>
+                        `}
+                    </div>
+                </div>
+
+                <!-- Section Statistiques -->
+                <div class="section">
+                    <div class="section-header">
+                        <h2><i class="fas fa-chart-bar"></i> Statistiques</h2>
+                    </div>
+                    
+                    <div class="status-container">
+                        <div class="status-item">
+                            <div class="meta-item">
+                                <div class="meta-label">
+                                    <i class="fas fa-user-check"></i>
+                                    Membres actifs
+                                </div>
+                                <div class="meta-value">
+                                    ${members.filter(m => m.status === 'active').length}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="status-item">
+                            <div class="meta-item">
+                                <div class="meta-label">
+                                    <i class="fas fa-user-times"></i>
+                                    Membres inactifs
+                                </div>
+                                <div class="meta-value">
+                                    ${members.filter(m => m.status === 'inactive').length}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="status-item">
+                            <div class="meta-item">
+                                <div class="meta-label">
+                                    <i class="fas fa-user-tie"></i>
+                                    Présidents
+                                </div>
+                                <div class="meta-value">
+                                    ${members.filter(m => m.role === 'Président').length}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="status-item">
+                            <div class="meta-item">
+                                <div class="meta-label">
+                                    <i class="fas fa-user-clock"></i>
+                                    Membre depuis le plus longtemps
+                                </div>
+                                <div class="meta-value">
+                                    ${members.length > 0 ? 
+                                        formatDate(Math.min(...members.map(m => new Date(m.joinDate || new Date()).getTime()))) 
+                                        : 'N/A'}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section Actions -->
+                <div class="section">
+                    <div class="section-header">
+                        <h2><i class="fas fa-cogs"></i> Actions</h2>
+                    </div>
+                    
+                    <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                        <a href="members.html?cooperative=${coop.id}" class="btn btn-primary">
+                            <i class="fas fa-user-plus"></i>
+                            Ajouter un membre
+                        </a>
+                        
+                        <button class="btn btn-secondary" onclick="editCooperative(${coop.id})">
+                            <i class="fas fa-edit"></i>
+                            Modifier la coopérative
+                        </button>
+                        
+                        <button class="btn btn-secondary" onclick="exportCooperativeData(${coop.id})">
+                            <i class="fas fa-download"></i>
+                            Exporter les données
+                        </button>
+                        
+                        <button class="btn btn-secondary" onclick="printPage()">
+                            <i class="fas fa-print"></i>
+                            Imprimer
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Formater la date
+        function formatDate(dateString) {
+            if (!dateString) return 'N/A';
+            try {
+                const date = new Date(dateString);
+                return date.toLocaleDateString('fr-FR', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric'
+                });
+            } catch (e) {
+                return 'Date invalide';
+            }
+        }
+
+        // Afficher une erreur
+        function showError(message) {
+            const container = document.getElementById('cooperativeDetailsContent');
+            container.innerHTML = `
+                <div class="error">
+                    <i class="fas fa-exclamation-triangle" style="font-size: 3rem; margin-bottom: 20px;"></i>
+                    <h3>${message}</h3>
+                    <p>Veuillez retourner à la liste des coopératives et sélectionner une coopérative valide.</p>
+                    <a href="cooperatives.html" class="btn btn-primary" style="margin-top: 20px;">
+                        <i class="fas fa-arrow-left"></i>
+                        Retour à la liste
+                    </a>
+                </div>
+            `;
+        }
+
+        // Fonctions d'actions
+        function editCooperative(id) {
+            alert(`Modification de la coopérative #${id} - Cette fonctionnalité sera implémentée prochainement.`);
+        }
+
+        function exportCooperativeData(id) {
+            const cooperatives = JSON.parse(localStorage.getItem('cooperatives')) || [];
+            const members = JSON.parse(localStorage.getItem('members')) || [];
+            
+            const cooperative = cooperatives.find(c => c.id == id);
+            const cooperativeMembers = members.filter(member => 
+                member.cooperativeId == id || 
+                member.cooperative === cooperative.name
+            );
+            
+            const data = {
+                cooperative: cooperative,
+                members: cooperativeMembers,
+                exportDate: new Date().toISOString(),
+                totalMembers: cooperativeMembers.length
+            };
+            
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `cooperative-${cooperative.name.replace(/\s+/g, '-').toLowerCase()}-${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            
+            alert('Données exportées avec succès !');
+        }
+
+        function printPage() {
+            window.print();
+        }
+    </script>
 </body>
 </html>

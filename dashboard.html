@@ -24,7 +24,7 @@
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             padding: 0 20px;
         }
@@ -253,6 +253,57 @@
             color: #dc3545;
         }
 
+        /* Onglets */
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            background: white;
+            padding: 10px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .tab-btn {
+            padding: 15px 30px;
+            border: none;
+            background: #f8f9fa;
+            color: #666;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .tab-btn:hover {
+            background: #e9ecef;
+        }
+
+        .tab-btn.active {
+            background: #2e7d32;
+            color: white;
+            box-shadow: 0 4px 12px rgba(46, 125, 50, 0.3);
+        }
+
+        /* Contenu des onglets */
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         /* Grille principale */
         .main-grid {
             display: grid;
@@ -273,6 +324,7 @@
             border-radius: 15px;
             padding: 25px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
         }
 
         .card-header {
@@ -290,6 +342,133 @@
             display: flex;
             align-items: center;
             gap: 10px;
+        }
+
+        /* Tableaux */
+        .table-container {
+            overflow-x: auto;
+            border-radius: 10px;
+            border: 1px solid #eee;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 800px;
+        }
+
+        thead {
+            background: linear-gradient(135deg, #2e7d32 0%, #4caf50 100%);
+            color: white;
+        }
+
+        th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid #eee;
+            transition: background 0.3s ease;
+        }
+
+        tbody tr:hover {
+            background: #f8f9fa;
+        }
+
+        td {
+            padding: 15px;
+            color: #555;
+        }
+
+        /* Badges */
+        .badge {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .badge-active {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .badge-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .badge-completed {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .badge-cancelled {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .badge-inactive {
+            background: #e9ecef;
+            color: #495057;
+        }
+
+        /* Boutons d'action */
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-action {
+            width: 36px;
+            height: 36px;
+            border: none;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .btn-edit {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .btn-edit:hover {
+            background: #bbdefb;
+        }
+
+        .btn-delete {
+            background: #ffebee;
+            color: #d32f2f;
+        }
+
+        .btn-delete:hover {
+            background: #ffcdd2;
+        }
+
+        .btn-view {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .btn-view:hover {
+            background: #c8e6c9;
+        }
+
+        .btn-members {
+            background: #fff3e0;
+            color: #f57c00;
+        }
+
+        .btn-members:hover {
+            background: #ffe0b2;
         }
 
         /* Liste coopératives */
@@ -489,6 +668,112 @@
             margin-top: 20px;
         }
 
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-header {
+            padding: 20px 30px;
+            border-bottom: 2px solid #f0f0f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h3 {
+            color: #2e7d32;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .modal-body {
+            padding: 30px;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+            transition: color 0.3s ease;
+        }
+
+        .close-modal:hover {
+            color: #d32f2f;
+        }
+
+        /* Formulaires */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+            font-size: 1.1rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #2e7d32;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
         /* ===== FOOTER ===== */
         .main-footer {
             background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%);
@@ -640,12 +925,25 @@
                 grid-template-columns: repeat(2, 1fr);
             }
             
+            .tabs {
+                flex-direction: column;
+            }
+            
+            .tab-btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
             .quick-stats {
                 grid-template-columns: 1fr;
             }
             
             .quick-actions {
                 grid-template-columns: 1fr;
+            }
+            
+            .action-buttons {
+                flex-wrap: wrap;
             }
             
             .footer-content {
@@ -690,6 +988,40 @@
         .main-nav-links.show {
             animation: slideDown 0.3s ease-out;
         }
+
+        /* Toast notifications */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+            z-index: 3000;
+            animation: slideUp 0.3s ease;
+            border-left: 4px solid;
+        }
+
+        .toast-success {
+            background: #d4edda;
+            color: #155724;
+            border-color: #28a745;
+        }
+
+        .toast-error {
+            background: #f8d7da;
+            color: #721c24;
+            border-color: #dc3545;
+        }
+
+        .toast-info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border-color: #17a2b8;
+        }
     </style>
 </head>
 <body>
@@ -707,7 +1039,7 @@
             </button>
             
             <!-- Navigation -->
-              <ul class="main-nav-links" id="navLinks">
+            <ul class="main-nav-links" id="navLinks">
                 <li><a href="index.html" class="active">
                     <i class="fas fa-home"></i>
                     <span>Accueil</span>
@@ -716,15 +1048,14 @@
                     <i class="fas fa-tractor"></i>
                     <span>Coopératives</span>
                 </a></li>
-  <li><a href="members.html">
-                    <i class="fas fa-tractor"></i>
+                <li><a href="members.html">
+                    <i class="fas fa-users"></i>
                     <span>Membres</span>
                 </a></li>
                 <li><a href="products.html">
                     <i class="fas fa-seedling"></i>
                     <span>Produits</span>
                 </a></li>
-              
                 <li><a href="sales.html">
                     <i class="fas fa-store"></i>
                     <span>Points de Vente</span>
@@ -737,14 +1068,11 @@
                     <i class="fas fa-envelope"></i>
                     <span>Contact</span>
                 </a></li>
-<li>
-                  <a href="dashboard.html">Admin</a>
-                </li>
-                <li><a href="login.html" class="btn-login">
+                <li><a href="dashboard.html">Admin</a></li>
+                <li><a href="login.html" class="btn-logout">
                     <i class="fas fa-sign-in-alt"></i>
                     <span>Connexion</span>
                 </a></li>
-            
             </ul>
         </div>
     </nav>
@@ -819,84 +1147,341 @@
                 </div>
             </div>
 
-            <!-- Grille principale -->
-            <div class="main-grid">
-                <!-- Coopératives récentes -->
+            <!-- Onglets pour basculer entre coopératives et commandes -->
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="cooperatives-tab">
+                    <i class="fas fa-tractor"></i>
+                    Gestion Coopératives
+                </button>
+                <button class="tab-btn" data-tab="orders-tab">
+                    <i class="fas fa-shopping-cart"></i>
+                    Gestion Commandes
+                </button>
+            </div>
+
+            <!-- Onglet Coopératives -->
+            <div id="cooperatives-tab" class="tab-content active">
+                <!-- Coopératives récentes avec CRUD -->
                 <div class="card">
                     <div class="card-header">
-                        <h2><i class="fas fa-tractor"></i> Coopératives Récentes</h2>
-                        <a href="cooperatives.html" class="btn btn-primary btn-sm">
-                            <i class="fas fa-eye"></i>
-                            Voir toutes
-                        </a>
+                        <h2><i class="fas fa-tractor"></i> Liste des Coopératives</h2>
+                        <button class="btn btn-primary btn-sm" onclick="openCooperativeModal()">
+                            <i class="fas fa-plus"></i>
+                            Nouvelle Coopérative
+                        </button>
                     </div>
                     
-                    <div class="cooperatives-list" id="cooperativesList">
-                        <!-- Les coopératives seront chargées ici -->
+                    <!-- Tableau des coopératives avec actions -->
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nom</th>
+                                    <th>Localisation</th>
+                                    <th>Président</th>
+                                    <th>Membres</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="cooperativesTable">
+                                <!-- Les coopératives seront chargées ici -->
+                            </tbody>
+                        </table>
                     </div>
                 </div>
 
                 <!-- Activités récentes -->
-                <div class="card">
-                    <div class="card-header">
-                        <h2><i class="fas fa-history"></i> Activités Récentes</h2>
+                <div class="main-grid">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2><i class="fas fa-history"></i> Activités Récentes</h2>
+                        </div>
+                        
+                        <div class="activities-list" id="activitiesList">
+                            <!-- Les activités seront chargées ici -->
+                        </div>
                     </div>
-                    
-                    <div class="activities-list" id="activitiesList">
-                        <!-- Les activités seront chargées ici -->
+
+                    <!-- Actions rapides -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2><i class="fas fa-bolt"></i> Actions Rapides</h2>
+                        </div>
+                        
+                        <div class="quick-actions">
+                            <button class="btn btn-primary" onclick="openCooperativeModal()">
+                                <i class="fas fa-plus-circle"></i>
+                                Nouvelle Coopérative
+                            </button>
+                            
+                            <button class="btn btn-primary" onclick="window.location.href='members.html?new=true'">
+                                <i class="fas fa-user-plus"></i>
+                                Nouveau Membre
+                            </button>
+                            
+                            <button class="btn btn-primary" onclick="openOrderModal()">
+                                <i class="fas fa-shopping-cart"></i>
+                                Nouvelle Commande
+                            </button>
+                            
+                            <button class="btn btn-primary" onclick="generateReport()">
+                                <i class="fas fa-file-pdf"></i>
+                                Générer Rapport
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Deuxième ligne -->
-            <div class="main-grid">
-                <!-- Statistiques -->
+            <!-- Onglet Commandes -->
+            <div id="orders-tab" class="tab-content">
+                <!-- Liste des commandes avec CRUD -->
                 <div class="card">
                     <div class="card-header">
-                        <h2><i class="fas fa-chart-line"></i> Statistiques Rapides</h2>
+                        <h2><i class="fas fa-shopping-cart"></i> Liste des Commandes</h2>
+                        <button class="btn btn-primary btn-sm" onclick="openOrderModal()">
+                            <i class="fas fa-plus"></i>
+                            Nouvelle Commande
+                        </button>
                     </div>
                     
-                    <div class="chart-container">
-                        <i class="fas fa-chart-bar fa-2x"></i>
-                        <span style="margin-left: 10px;">Graphique des performances</span>
-                    </div>
-                    
-                    <div class="quick-stats" id="quickStats">
-                        <!-- Les stats seront chargées ici -->
+                    <!-- Tableau des commandes -->
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>N° Commande</th>
+                                    <th>Coopérative</th>
+                                    <th>Produit</th>
+                                    <th>Quantité</th>
+                                    <th>Prix Total</th>
+                                    <th>Date</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="ordersTable">
+                                <!-- Les commandes seront chargées ici -->
+                            </tbody>
+                        </table>
                     </div>
                 </div>
 
-                <!-- Actions rapides -->
-                <div class="card">
-                    <div class="card-header">
-                        <h2><i class="fas fa-bolt"></i> Actions Rapides</h2>
+                <!-- Statistiques et graphiques -->
+                <div class="main-grid">
+                    <!-- Statistiques rapides -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2><i class="fas fa-chart-line"></i> Statistiques Commandes</h2>
+                        </div>
+                        
+                        <div class="chart-container">
+                            <i class="fas fa-chart-bar fa-2x"></i>
+                            <span style="margin-left: 10px;">Graphique des commandes</span>
+                        </div>
+                        
+                        <div class="quick-stats" id="quickStats">
+                            <!-- Les stats seront chargées ici -->
+                        </div>
                     </div>
-                    
-                    <div class="quick-actions">
-                        <button class="btn btn-primary" onclick="window.location.href='cooperatives.html?new=true'">
-                            <i class="fas fa-plus-circle"></i>
-                            Nouvelle Coopérative
-                        </button>
+
+                    <!-- Coopératives récentes -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2><i class="fas fa-tractor"></i> Coopératives Actives</h2>
+                            <a href="cooperatives.html" class="btn btn-primary btn-sm">
+                                <i class="fas fa-eye"></i>
+                                Voir toutes
+                            </a>
+                        </div>
                         
-                        <button class="btn btn-primary" onclick="window.location.href='members.html?new=true'">
-                            <i class="fas fa-user-plus"></i>
-                            Nouveau Membre
-                        </button>
-                        
-                        <button class="btn btn-primary" onclick="window.location.href='products.html?new=true'">
-                            <i class="fas fa-seedling"></i>
-                            Nouveau Produit
-                        </button>
-                        
-                        <button class="btn btn-primary" onclick="generateReport()">
-                            <i class="fas fa-file-pdf"></i>
-                            Générer Rapport
-                        </button>
+                        <div class="cooperatives-list" id="recentCooperatives">
+                            <!-- Les coopératives récentes seront chargées ici -->
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </main>
+
+    <!-- Modal Coopérative -->
+    <div class="modal" id="cooperativeModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-tractor"></i> <span id="modalCooperativeTitle">Nouvelle Coopérative</span></h3>
+                <button class="close-modal" onclick="closeCooperativeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="cooperativeForm">
+                    <input type="hidden" id="cooperativeId" value="">
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="cooperativeName">Nom de la coopérative *</label>
+                            <input type="text" id="cooperativeName" class="form-control" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="cooperativePresident">Président *</label>
+                            <input type="text" id="cooperativePresident" class="form-control" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="cooperativeLocation">Localisation *</label>
+                            <input type="text" id="cooperativeLocation" class="form-control" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="cooperativePhone">Téléphone</label>
+                            <input type="tel" id="cooperativePhone" class="form-control">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="cooperativeEmail">Email</label>
+                            <input type="email" id="cooperativeEmail" class="form-control">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="cooperativeStatus">Status</label>
+                            <select id="cooperativeStatus" class="form-control">
+                                <option value="active">Active</option>
+                                <option value="inactive">Inactive</option>
+                                <option value="pending">En attente</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="cooperativeDescription">Description</label>
+                        <textarea id="cooperativeDescription" class="form-control" rows="3"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="cooperativeProducts">Produits cultivés</label>
+                        <input type="text" id="cooperativeProducts" class="form-control" 
+                               placeholder="Ex: Tomates, Laitue, Oignons, etc.">
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="cooperativeMembers">Nombre de membres</label>
+                            <input type="number" id="cooperativeMembers" class="form-control" min="1" value="1">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="cooperativeFoundation">Date de création</label>
+                            <input type="date" id="cooperativeFoundation" class="form-control">
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; gap: 15px; margin-top: 30px;">
+                        <button type="submit" class="btn btn-primary" style="flex: 1;">
+                            <i class="fas fa-save"></i>
+                            Enregistrer
+                        </button>
+                        <button type="button" class="btn btn-secondary" onclick="closeCooperativeModal()" style="flex: 1;">
+                            <i class="fas fa-times"></i>
+                            Annuler
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Commande -->
+    <div class="modal" id="orderModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-shopping-cart"></i> <span id="modalOrderTitle">Nouvelle Commande</span></h3>
+                <button class="close-modal" onclick="closeOrderModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="orderForm">
+                    <input type="hidden" id="orderId" value="">
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="orderCooperative">Coopérative *</label>
+                            <select id="orderCooperative" class="form-control" required>
+                                <option value="">Sélectionner une coopérative</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="orderProduct">Produit *</label>
+                            <select id="orderProduct" class="form-control" required>
+                                <option value="">Sélectionner un produit</option>
+                                <option value="tomates">Tomates bio</option>
+                                <option value="laitue">Laitue bio</option>
+                                <option value="oignons">Oignons bio</option>
+                                <option value="carottes">Carottes bio</option>
+                                <option value="piments">Piments bio</option>
+                                <option value="aubergines">Aubergines bio</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="orderQuantity">Quantité (kg) *</label>
+                            <input type="number" id="orderQuantity" class="form-control" min="1" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="orderPrice">Prix unitaire (FCFA) *</label>
+                            <input type="number" id="orderPrice" class="form-control" min="0" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="orderDate">Date de commande *</label>
+                            <input type="date" id="orderDate" class="form-control" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="orderStatus">Status</label>
+                            <select id="orderStatus" class="form-control">
+                                <option value="pending">En attente</option>
+                                <option value="confirmed">Confirmée</option>
+                                <option value="processing">En traitement</option>
+                                <option value="completed">Livrée</option>
+                                <option value="cancelled">Annulée</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="orderClient">Client / Acheteur</label>
+                        <input type="text" id="orderClient" class="form-control">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="orderNotes">Notes additionnelles</label>
+                        <textarea id="orderNotes" class="form-control" rows="3"></textarea>
+                    </div>
+                    
+                    <div style="display: flex; gap: 15px; margin-top: 30px;">
+                        <button type="submit" class="btn btn-primary" style="flex: 1;">
+                            <i class="fas fa-save"></i>
+                            Enregistrer
+                        </button>
+                        <button type="button" class="btn btn-secondary" onclick="closeOrderModal()" style="flex: 1;">
+                            <i class="fas fa-times"></i>
+                            Annuler
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
     <!-- Footer -->
     <footer class="main-footer">
@@ -947,8 +1532,10 @@
     <script>
         // Variables globales
         let cooperatives = [];
-        let members = [];
+        let orders = [];
         let activities = [];
+        let members = [];
+        let currentTab = 'cooperatives-tab';
 
         // Initialisation
         document.addEventListener('DOMContentLoaded', function() {
@@ -956,6 +1543,8 @@
             loadAllData();
             updateCurrentDate();
             updateWelcomeMessage();
+            setupTabs();
+            setupForms();
         });
 
         // Gestion du menu
@@ -1012,12 +1601,18 @@
         // Charger les données
         function loadAllData() {
             cooperatives = JSON.parse(localStorage.getItem('cooperatives')) || [];
+            orders = JSON.parse(localStorage.getItem('orders')) || [];
             members = JSON.parse(localStorage.getItem('members')) || [];
             activities = JSON.parse(localStorage.getItem('activities')) || [];
             
             if (cooperatives.length === 0) {
                 cooperatives = getDefaultCooperatives();
                 localStorage.setItem('cooperatives', JSON.stringify(cooperatives));
+            }
+            
+            if (orders.length === 0) {
+                orders = getDefaultOrders();
+                localStorage.setItem('orders', JSON.stringify(orders));
             }
             
             if (members.length === 0) {
@@ -1042,7 +1637,12 @@
                     location: "Aného-Ville",
                     president: "Koffi Agbéyomé",
                     status: "active",
-                    memberCount: 25
+                    members: 25,
+                    phone: "+228 90 12 34 56",
+                    email: "terre.promise@bioaneho.tg",
+                    foundation: "2023-01-15",
+                    description: "Spécialisée dans la culture de tomates et légumes feuilles",
+                    products: "Tomates, Laitue, Épinards"
                 },
                 {
                     id: 2,
@@ -1050,7 +1650,12 @@
                     location: "Aného-Camp",
                     president: "Awo Kossiwa",
                     status: "active",
-                    memberCount: 18
+                    members: 18,
+                    phone: "+228 91 23 45 67",
+                    email: "jardins.aneho@bioaneho.tg",
+                    foundation: "2023-03-20",
+                    description: "Production diversifiée de légumes biologiques",
+                    products: "Oignons, Carottes, Piments, Aubergines"
                 },
                 {
                     id: 3,
@@ -1058,16 +1663,65 @@
                     location: "Glidji",
                     president: "Yaovi Mensah",
                     status: "active",
-                    memberCount: 32
+                    members: 32,
+                    phone: "+228 92 34 56 78",
+                    email: "bio.glidji@bioaneho.tg",
+                    foundation: "2022-11-05",
+                    description: "Coopérative pionnière dans l'agriculture biologique à Glidji",
+                    products: "Tomates, Oignons, Piments, Haricots"
+                }
+            ];
+        }
+
+        function getDefaultOrders() {
+            return [
+                {
+                    id: 1,
+                    orderNumber: "CMD-2024-001",
+                    cooperativeId: 1,
+                    product: "tomates",
+                    quantity: 50,
+                    price: 500,
+                    date: "2024-01-15",
+                    status: "completed",
+                    client: "Marché Central Aného",
+                    notes: "Livraison matinale"
+                },
+                {
+                    id: 2,
+                    orderNumber: "CMD-2024-002",
+                    cooperativeId: 2,
+                    product: "oignons",
+                    quantity: 30,
+                    price: 800,
+                    date: "2024-01-18",
+                    status: "processing",
+                    client: "Super Marché Bio",
+                    notes: "À livrer avant 10h"
+                },
+                {
+                    id: 3,
+                    orderNumber: "CMD-2024-003",
+                    cooperativeId: 3,
+                    product: "piments",
+                    quantity: 20,
+                    price: 1200,
+                    date: "2024-01-20",
+                    status: "pending",
+                    client: "Restaurant Le Délice",
+                    notes: "Commande urgente"
                 }
             ];
         }
 
         function getDefaultMembers() {
             return [
-                { id: 1, fullName: "Koffi Agbéyomé", cooperativeId: 1 },
-                { id: 2, fullName: "Awo Kossiwa", cooperativeId: 2 },
-                { id: 3, fullName: "Yaovi Mensah", cooperativeId: 3 }
+                { id: 1, name: "Koffi Agbéyomé", cooperativeId: 1, phone: "+228 90 12 34 56", role: "Président" },
+                { id: 2, name: "Awo Kossiwa", cooperativeId: 2, phone: "+228 91 23 45 67", role: "Présidente" },
+                { id: 3, name: "Yaovi Mensah", cooperativeId: 3, phone: "+228 92 34 56 78", role: "Président" },
+                { id: 4, name: "Komlan Sédé", cooperativeId: 1, phone: "+228 93 45 67 89", role: "Membre" },
+                { id: 5, name: "Afïwa Amédon", cooperativeId: 2, phone: "+228 94 56 78 90", role: "Secrétaire" },
+                { id: 6, name: "Togbé Assi", cooperativeId: 3, phone: "+228 95 67 89 01", role: "Trésorier" }
             ];
         }
 
@@ -1094,6 +1748,13 @@
                     title: 'Coopérative créée',
                     description: 'Les Jardins d\'Aného créée',
                     timestamp: new Date(now.getTime() - 86400000).toISOString()
+                },
+                {
+                    id: 4,
+                    icon: 'fas fa-shopping-cart',
+                    title: 'Nouvelle commande',
+                    description: 'Commande de 50kg de tomates',
+                    timestamp: new Date(now.getTime() - 172800000).toISOString()
                 }
             ];
         }
@@ -1101,36 +1762,82 @@
         // Mettre à jour le dashboard
         function updateDashboard() {
             updateStatistics();
+            displayCooperatives();
             displayRecentCooperatives();
+            displayOrders();
             displayRecentActivities();
             displayQuickStats();
+            updateOrderCooperativeSelect();
         }
 
         // Mettre à jour les statistiques
         function updateStatistics() {
-            // Compter les membres par coopérative
-            const memberCounts = {};
-            members.forEach(member => {
-                const coopId = member.cooperativeId;
-                if (coopId) {
-                    memberCounts[coopId] = (memberCounts[coopId] || 0) + 1;
-                }
-            });
-            
-            // Mettre à jour les coopératives avec les comptes de membres
-            cooperatives.forEach(coop => {
-                coop.memberCount = memberCounts[coop.id] || 0;
-            });
+            const totalMembers = cooperatives.reduce((sum, coop) => sum + (coop.members || 0), 0);
+            const totalRevenue = orders.reduce((sum, order) => sum + (order.quantity * order.price), 0);
             
             document.getElementById('totalCooperatives').textContent = cooperatives.length;
-            document.getElementById('totalMembers').textContent = members.length;
+            document.getElementById('totalMembers').textContent = totalMembers;
             document.getElementById('totalProducts').textContent = '12';
-            document.getElementById('totalRevenue').textContent = '125,000 FCFA';
+            document.getElementById('totalRevenue').textContent = totalRevenue.toLocaleString() + ' FCFA';
+        }
+
+        // Afficher les coopératives avec CRUD
+        function displayCooperatives() {
+            const container = document.getElementById('cooperativesTable');
+            
+            if (cooperatives.length === 0) {
+                container.innerHTML = `
+                    <tr>
+                        <td colspan="7" style="text-align: center; padding: 40px; color: #666;">
+                            <i class="fas fa-info-circle" style="font-size: 2rem; margin-bottom: 10px; display: block;"></i>
+                            Aucune coopérative enregistrée
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            container.innerHTML = cooperatives.map(coop => `
+                <tr>
+                    <td><strong>${coop.id}</strong></td>
+                    <td><strong>${coop.name}</strong></td>
+                    <td>${coop.location}</td>
+                    <td>${coop.president}</td>
+                    <td>${coop.members || 0}</td>
+                    <td>
+                        <span class="badge ${coop.status === 'active' ? 'badge-active' : 
+                                          coop.status === 'inactive' ? 'badge-inactive' : 'badge-pending'}">
+                            ${coop.status === 'active' ? 'Active' : 
+                             coop.status === 'inactive' ? 'Inactive' : 'En attente'}
+                        </span>
+                    </td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn-action btn-members" onclick="viewCooperativeMembers(${coop.id})" 
+                                    title="Voir les membres">
+                                <i class="fas fa-users"></i>
+                            </button>
+                            <button class="btn-action btn-view" onclick="viewCooperative(${coop.id})" 
+                                    title="Voir détails">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="btn-action btn-edit" onclick="editCooperative(${coop.id})" 
+                                    title="Modifier">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn-action btn-delete" onclick="deleteCooperative(${coop.id})" 
+                                    title="Supprimer">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
         }
 
         // Afficher les coopératives récentes
         function displayRecentCooperatives() {
-            const container = document.getElementById('cooperativesList');
+            const container = document.getElementById('recentCooperatives');
             
             const recentCoops = cooperatives.slice(0, 5);
             
@@ -1149,11 +1856,84 @@
                         <p>${coop.location}</p>
                     </div>
                     <div class="coop-stats">
-                        <div class="coop-stat-number">${coop.memberCount || 0}</div>
+                        <div class="coop-stat-number">${coop.members || 0}</div>
                         <div class="coop-stat-label">membres</div>
                     </div>
                 </div>
             `).join('');
+        }
+
+        // Afficher les commandes
+        function displayOrders() {
+            const container = document.getElementById('ordersTable');
+            
+            if (orders.length === 0) {
+                container.innerHTML = `
+                    <tr>
+                        <td colspan="8" style="text-align: center; padding: 40px; color: #666;">
+                            <i class="fas fa-info-circle" style="font-size: 2rem; margin-bottom: 10px; display: block;"></i>
+                            Aucune commande enregistrée
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            container.innerHTML = orders.map(order => {
+                const cooperative = cooperatives.find(c => c.id === order.cooperativeId);
+                const totalPrice = order.quantity * order.price;
+                
+                return `
+                    <tr>
+                        <td><strong>${order.orderNumber}</strong></td>
+                        <td>${cooperative ? cooperative.name : 'Coopérative inconnue'}</td>
+                        <td>${getProductName(order.product)}</td>
+                        <td>${order.quantity} kg</td>
+                        <td>${totalPrice.toLocaleString()} FCFA</td>
+                        <td>${formatDate(order.date)}</td>
+                        <td>
+                            <span class="badge ${order.status === 'completed' ? 'badge-completed' : 
+                                              order.status === 'processing' ? 'badge-active' : 
+                                              order.status === 'confirmed' ? 'badge-active' : 
+                                              order.status === 'cancelled' ? 'badge-cancelled' : 'badge-pending'}">
+                                ${order.status === 'completed' ? 'Livrée' : 
+                                 order.status === 'processing' ? 'En traitement' : 
+                                 order.status === 'confirmed' ? 'Confirmée' : 
+                                 order.status === 'cancelled' ? 'Annulée' : 'En attente'}
+                            </span>
+                        </td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="btn-action btn-view" onclick="viewOrder(${order.id})" 
+                                        title="Voir détails">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="btn-action btn-edit" onclick="editOrder(${order.id})" 
+                                        title="Modifier">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn-action btn-delete" onclick="deleteOrder(${order.id})" 
+                                        title="Supprimer">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // Obtenir le nom du produit
+        function getProductName(productKey) {
+            const products = {
+                'tomates': 'Tomates bio',
+                'laitue': 'Laitue bio',
+                'oignons': 'Oignons bio',
+                'carottes': 'Carottes bio',
+                'piments': 'Piments bio',
+                'aubergines': 'Aubergines bio'
+            };
+            return products[productKey] || productKey;
         }
 
         // Afficher les activités récentes
@@ -1185,19 +1965,29 @@
         function displayQuickStats() {
             const container = document.getElementById('quickStats');
             
-            const stats = [
-                { number: '85%', label: 'Activité' },
-                { number: '95%', label: 'Satisfaction' },
-                { number: '12', label: 'Produits actifs' },
-                { number: '3', label: 'Nouvelles semaines' }
-            ];
+            const totalOrders = orders.length;
+            const totalRevenue = orders.reduce((sum, order) => sum + (order.quantity * order.price), 0);
+            const pendingOrders = orders.filter(order => order.status === 'pending').length;
+            const completedOrders = orders.filter(order => order.status === 'completed').length;
             
-            container.innerHTML = stats.map(stat => `
+            container.innerHTML = `
                 <div class="quick-stat">
-                    <div class="quick-stat-number">${stat.number}</div>
-                    <div class="quick-stat-label">${stat.label}</div>
+                    <div class="quick-stat-number">${totalOrders}</div>
+                    <div class="quick-stat-label">Commandes totales</div>
                 </div>
-            `).join('');
+                <div class="quick-stat">
+                    <div class="quick-stat-number">${totalRevenue.toLocaleString()}</div>
+                    <div class="quick-stat-label">FCFA revenus</div>
+                </div>
+                <div class="quick-stat">
+                    <div class="quick-stat-number">${pendingOrders}</div>
+                    <div class="quick-stat-label">En attente</div>
+                </div>
+                <div class="quick-stat">
+                    <div class="quick-stat-number">${completedOrders}</div>
+                    <div class="quick-stat-label">Livrées</div>
+                </div>
+            `;
         }
 
         // Formater le temps écoulé
@@ -1214,6 +2004,377 @@
             if (diffHours < 24) return `Il y a ${diffHours} h`;
             if (diffDays < 7) return `Il y a ${diffDays} j`;
             return `Le ${date.toLocaleDateString('fr-FR')}`;
+        }
+
+        // Formater la date
+        function formatDate(dateString) {
+            if (!dateString) return 'N/A';
+            const date = new Date(dateString);
+            return date.toLocaleDateString('fr-FR', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric'
+            });
+        }
+
+        // Gestion des onglets
+        function setupTabs() {
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const tabId = btn.getAttribute('data-tab');
+                    
+                    // Mettre à jour les boutons
+                    tabBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    
+                    // Mettre à jour les contenus
+                    tabContents.forEach(content => content.classList.remove('active'));
+                    document.getElementById(tabId).classList.add('active');
+                    
+                    currentTab = tabId;
+                });
+            });
+        }
+
+        // Gestion des formulaires
+        function setupForms() {
+            // Formulaire coopérative
+            const coopForm = document.getElementById('cooperativeForm');
+            if (coopForm) {
+                coopForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    saveCooperative();
+                });
+            }
+            
+            // Formulaire commande
+            const orderForm = document.getElementById('orderForm');
+            if (orderForm) {
+                orderForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    saveOrder();
+                });
+            }
+        }
+
+        // Gestion coopératives (CRUD COMPLET)
+        function openCooperativeModal(cooperative = null) {
+            const modal = document.getElementById('cooperativeModal');
+            const title = document.getElementById('modalCooperativeTitle');
+            const form = document.getElementById('cooperativeForm');
+            
+            if (cooperative) {
+                // Mode édition
+                title.innerHTML = '<i class="fas fa-edit"></i> Modifier la Coopérative';
+                document.getElementById('cooperativeId').value = cooperative.id;
+                document.getElementById('cooperativeName').value = cooperative.name;
+                document.getElementById('cooperativePresident').value = cooperative.president;
+                document.getElementById('cooperativeLocation').value = cooperative.location;
+                document.getElementById('cooperativePhone').value = cooperative.phone || '';
+                document.getElementById('cooperativeEmail').value = cooperative.email || '';
+                document.getElementById('cooperativeStatus').value = cooperative.status;
+                document.getElementById('cooperativeDescription').value = cooperative.description || '';
+                document.getElementById('cooperativeProducts').value = cooperative.products || '';
+                document.getElementById('cooperativeMembers').value = cooperative.members || 1;
+                document.getElementById('cooperativeFoundation').value = cooperative.foundation || '';
+            } else {
+                // Mode création
+                title.innerHTML = '<i class="fas fa-plus"></i> Nouvelle Coopérative';
+                form.reset();
+                document.getElementById('cooperativeId').value = '';
+                document.getElementById('cooperativeFoundation').value = new Date().toISOString().split('T')[0];
+            }
+            
+            modal.classList.add('active');
+        }
+
+        function closeCooperativeModal() {
+            document.getElementById('cooperativeModal').classList.remove('active');
+        }
+
+        function saveCooperative() {
+            const id = document.getElementById('cooperativeId').value;
+            const cooperative = {
+                name: document.getElementById('cooperativeName').value.trim(),
+                president: document.getElementById('cooperativePresident').value.trim(),
+                location: document.getElementById('cooperativeLocation').value.trim(),
+                phone: document.getElementById('cooperativePhone').value.trim(),
+                email: document.getElementById('cooperativeEmail').value.trim(),
+                status: document.getElementById('cooperativeStatus').value,
+                description: document.getElementById('cooperativeDescription').value.trim(),
+                products: document.getElementById('cooperativeProducts').value.trim(),
+                members: parseInt(document.getElementById('cooperativeMembers').value) || 1,
+                foundation: document.getElementById('cooperativeFoundation').value
+            };
+            
+            if (!cooperative.name || !cooperative.president || !cooperative.location) {
+                showToast('Veuillez remplir tous les champs obligatoires', 'error');
+                return;
+            }
+            
+            if (id) {
+                // Édition
+                const index = cooperatives.findIndex(c => c.id == id);
+                if (index !== -1) {
+                    cooperative.id = parseInt(id);
+                    cooperatives[index] = cooperative;
+                    
+                    // Ajouter une activité
+                    addActivity('Coopérative modifiée', `${cooperative.name} a été modifiée`, 'fas fa-edit');
+                    
+                    showToast('Coopérative modifiée avec succès', 'success');
+                }
+            } else {
+                // Création
+                const newId = cooperatives.length > 0 ? Math.max(...cooperatives.map(c => c.id)) + 1 : 1;
+                cooperative.id = newId;
+                cooperatives.push(cooperative);
+                
+                // Ajouter une activité
+                addActivity('Nouvelle coopérative', `${cooperative.name} a été créée`, 'fas fa-tractor');
+                
+                showToast('Coopérative créée avec succès', 'success');
+            }
+            
+            localStorage.setItem('cooperatives', JSON.stringify(cooperatives));
+            updateDashboard();
+            closeCooperativeModal();
+        }
+
+        function editCooperative(id) {
+            const cooperative = cooperatives.find(c => c.id === id);
+            if (cooperative) {
+                openCooperativeModal(cooperative);
+            }
+        }
+
+        function viewCooperative(id) {
+            const cooperative = cooperatives.find(c => c.id === id);
+            if (cooperative) {
+                alert(`Détails de la coopérative:\n\n` +
+                      `Nom: ${cooperative.name}\n` +
+                      `Président: ${cooperative.president}\n` +
+                      `Localisation: ${cooperative.location}\n` +
+                      `Téléphone: ${cooperative.phone || 'Non renseigné'}\n` +
+                      `Email: ${cooperative.email || 'Non renseigné'}\n` +
+                      `Membres: ${cooperative.members}\n` +
+                      `Status: ${cooperative.status}\n` +
+                      `Date création: ${formatDate(cooperative.foundation)}\n` +
+                      `Description: ${cooperative.description || 'Aucune'}\n` +
+                      `Produits: ${cooperative.products || 'Aucun'}`);
+            }
+        }
+
+        function viewCooperativeMembers(id) {
+            const cooperative = cooperatives.find(c => c.id === id);
+            const coopMembers = members.filter(m => m.cooperativeId === id);
+            
+            if (cooperative) {
+                let membersList = 'Liste des membres:\n\n';
+                if (coopMembers.length === 0) {
+                    membersList += 'Aucun membre enregistré pour cette coopérative';
+                } else {
+                    coopMembers.forEach((member, index) => {
+                        membersList += `${index + 1}. ${member.name} (${member.role || 'Membre'})\n`;
+                        if (member.phone) membersList += `   📞 ${member.phone}\n`;
+                    });
+                }
+                
+                alert(`Membres de ${cooperative.name}\n\n${membersList}`);
+            }
+        }
+
+        function deleteCooperative(id) {
+            if (confirm('Êtes-vous sûr de vouloir supprimer cette coopérative ? Toutes les données associées seront également supprimées.')) {
+                const index = cooperatives.findIndex(c => c.id === id);
+                if (index !== -1) {
+                    const coopName = cooperatives[index].name;
+                    
+                    // Supprimer la coopérative
+                    cooperatives.splice(index, 1);
+                    
+                    // Supprimer les membres associés
+                    members = members.filter(m => m.cooperativeId !== id);
+                    
+                    // Supprimer les commandes associées
+                    orders = orders.filter(o => o.cooperativeId !== id);
+                    
+                    // Ajouter une activité
+                    addActivity('Coopérative supprimée', `${coopName} a été supprimée`, 'fas fa-trash');
+                    
+                    // Mettre à jour le localStorage
+                    localStorage.setItem('cooperatives', JSON.stringify(cooperatives));
+                    localStorage.setItem('members', JSON.stringify(members));
+                    localStorage.setItem('orders', JSON.stringify(orders));
+                    
+                    updateDashboard();
+                    showToast('Coopérative et données associées supprimées avec succès', 'success');
+                }
+            }
+        }
+
+        // Gestion commandes (CRUD COMPLET)
+        function openOrderModal(order = null) {
+            const modal = document.getElementById('orderModal');
+            const title = document.getElementById('modalOrderTitle');
+            
+            if (order) {
+                // Mode édition
+                title.innerHTML = '<i class="fas fa-edit"></i> Modifier la Commande';
+                document.getElementById('orderId').value = order.id;
+                document.getElementById('orderCooperative').value = order.cooperativeId;
+                document.getElementById('orderProduct').value = order.product;
+                document.getElementById('orderQuantity').value = order.quantity;
+                document.getElementById('orderPrice').value = order.price;
+                document.getElementById('orderDate').value = order.date;
+                document.getElementById('orderStatus').value = order.status;
+                document.getElementById('orderClient').value = order.client || '';
+                document.getElementById('orderNotes').value = order.notes || '';
+            } else {
+                // Mode création
+                title.innerHTML = '<i class="fas fa-plus"></i> Nouvelle Commande';
+                document.getElementById('orderForm').reset();
+                document.getElementById('orderId').value = '';
+                document.getElementById('orderDate').value = new Date().toISOString().split('T')[0];
+            }
+            
+            modal.classList.add('active');
+        }
+
+        function closeOrderModal() {
+            document.getElementById('orderModal').classList.remove('active');
+        }
+
+        function updateOrderCooperativeSelect() {
+            const select = document.getElementById('orderCooperative');
+            select.innerHTML = '<option value="">Sélectionner une coopérative</option>' +
+                cooperatives.map(coop => 
+                    `<option value="${coop.id}">${coop.name} (${coop.location})</option>`
+                ).join('');
+        }
+
+        function saveOrder() {
+            const id = document.getElementById('orderId').value;
+            const order = {
+                cooperativeId: parseInt(document.getElementById('orderCooperative').value),
+                product: document.getElementById('orderProduct').value,
+                quantity: parseInt(document.getElementById('orderQuantity').value),
+                price: parseInt(document.getElementById('orderPrice').value),
+                date: document.getElementById('orderDate').value,
+                status: document.getElementById('orderStatus').value,
+                client: document.getElementById('orderClient').value.trim(),
+                notes: document.getElementById('orderNotes').value.trim()
+            };
+            
+            if (!order.cooperativeId || !order.product || !order.quantity || !order.price || !order.date) {
+                showToast('Veuillez remplir tous les champs obligatoires', 'error');
+                return;
+            }
+            
+            if (id) {
+                // Édition
+                const index = orders.findIndex(o => o.id == id);
+                if (index !== -1) {
+                    order.id = parseInt(id);
+                    order.orderNumber = orders[index].orderNumber;
+                    orders[index] = order;
+                    
+                    // Ajouter une activité
+                    addActivity('Commande modifiée', `Commande ${order.orderNumber} modifiée`, 'fas fa-edit');
+                    
+                    showToast('Commande modifiée avec succès', 'success');
+                }
+            } else {
+                // Création
+                const newId = orders.length > 0 ? Math.max(...orders.map(o => o.id)) + 1 : 1;
+                order.id = newId;
+                
+                // Générer un numéro de commande
+                const today = new Date();
+                const year = today.getFullYear();
+                const month = String(today.getMonth() + 1).padStart(2, '0');
+                const orderCount = orders.filter(o => {
+                    const orderDate = new Date(o.date);
+                    return orderDate.getFullYear() === year && 
+                           (orderDate.getMonth() + 1) === today.getMonth() + 1;
+                }).length + 1;
+                
+                order.orderNumber = `CMD-${year}${month}-${String(orderCount).padStart(3, '0')}`;
+                orders.push(order);
+                
+                // Ajouter une activité
+                const cooperative = cooperatives.find(c => c.id === order.cooperativeId);
+                const coopName = cooperative ? cooperative.name : 'Coopérative inconnue';
+                addActivity('Nouvelle commande', `${order.orderNumber} pour ${coopName}`, 'fas fa-shopping-cart');
+                
+                showToast('Commande créée avec succès', 'success');
+            }
+            
+            localStorage.setItem('orders', JSON.stringify(orders));
+            updateDashboard();
+            closeOrderModal();
+        }
+
+        function editOrder(id) {
+            const order = orders.find(o => o.id === id);
+            if (order) {
+                openOrderModal(order);
+            }
+        }
+
+        function viewOrder(id) {
+            const order = orders.find(o => o.id === id);
+            const cooperative = cooperatives.find(c => c.id === order.cooperativeId);
+            const total = order.quantity * order.price;
+            
+            if (order) {
+                alert(`Détails de la commande:\n\n` +
+                      `N° Commande: ${order.orderNumber}\n` +
+                      `Coopérative: ${cooperative ? cooperative.name : 'Inconnue'}\n` +
+                      `Produit: ${getProductName(order.product)}\n` +
+                      `Quantité: ${order.quantity} kg\n` +
+                      `Prix unitaire: ${order.price.toLocaleString()} FCFA\n` +
+                      `Total: ${total.toLocaleString()} FCFA\n` +
+                      `Date: ${formatDate(order.date)}\n` +
+                      `Status: ${order.status}\n` +
+                      `Client: ${order.client || 'Non spécifié'}\n` +
+                      `Notes: ${order.notes || 'Aucune'}`);
+            }
+        }
+
+        function deleteOrder(id) {
+            if (confirm('Êtes-vous sûr de vouloir supprimer cette commande ? Cette action est irréversible.')) {
+                const index = orders.findIndex(o => o.id === id);
+                if (index !== -1) {
+                    const orderNumber = orders[index].orderNumber;
+                    orders.splice(index, 1);
+                    
+                    // Ajouter une activité
+                    addActivity('Commande supprimée', `Commande ${orderNumber} supprimée`, 'fas fa-trash');
+                    
+                    localStorage.setItem('orders', JSON.stringify(orders));
+                    updateDashboard();
+                    showToast('Commande supprimée avec succès', 'success');
+                }
+            }
+        }
+
+        // Ajouter une activité
+        function addActivity(title, description, icon) {
+            const newActivity = {
+                id: activities.length > 0 ? Math.max(...activities.map(a => a.id)) + 1 : 1,
+                title: title,
+                description: description,
+                icon: icon,
+                timestamp: new Date().toISOString()
+            };
+            
+            activities.push(newActivity);
+            localStorage.setItem('activities', JSON.stringify(activities));
+            displayRecentActivities();
         }
 
         // Mettre à jour la date
@@ -1251,6 +2412,7 @@
         function exportData() {
             const data = {
                 cooperatives: cooperatives,
+                orders: orders,
                 members: members,
                 exportDate: new Date().toISOString()
             };
@@ -1271,37 +2433,18 @@
             showToast('Rapport généré avec succès !', 'success');
         }
 
-        // Voir une coopérative
-        function viewCooperative(id) {
-            window.location.href = `cooperatives.html?id=${id}`;
-        }
-
         // Toast notifications
         function showToast(message, type = 'success') {
+            // Supprimer les toasts existants
+            document.querySelectorAll('.toast').forEach(toast => toast.remove());
+            
             // Créer le toast
             const toast = document.createElement('div');
             toast.className = `toast toast-${type}`;
             toast.innerHTML = `
-                <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
+                <i class="fas fa-${type === 'success' ? 'check-circle' : 
+                                   type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
                 <span>${message}</span>
-            `;
-            
-            // Styles du toast
-            toast.style.cssText = `
-                position: fixed;
-                bottom: 20px;
-                right: 20px;
-                background: ${type === 'success' ? '#d4edda' : type === 'info' ? '#d1ecf1' : '#f8d7da'};
-                color: ${type === 'success' ? '#155724' : type === 'info' ? '#0c5460' : '#721c24'};
-                padding: 15px 25px;
-                border-radius: 10px;
-                display: flex;
-                align-items: center;
-                gap: 12px;
-                box-shadow: 0 6px 20px rgba(0,0,0,0.15);
-                z-index: 3000;
-                animation: slideUp 0.3s ease;
-                border-left: 4px solid ${type === 'success' ? '#28a745' : type === 'info' ? '#17a2b8' : '#dc3545'};
             `;
             
             document.body.appendChild(toast);
@@ -1310,45 +2453,40 @@
             setTimeout(() => {
                 toast.style.animation = 'slideDown 0.3s ease';
                 setTimeout(() => {
-                    document.body.removeChild(toast);
+                    if (toast.parentNode) {
+                        document.body.removeChild(toast);
+                    }
                 }, 300);
             }, 4000);
-            
-            // Ajouter les animations CSS
-            if (!document.querySelector('#toast-styles')) {
-                const style = document.createElement('style');
-                style.id = 'toast-styles';
-                style.textContent = `
-                    @keyframes slideUp {
-                        from {
-                            transform: translateY(100%);
-                            opacity: 0;
-                        }
-                        to {
-                            transform: translateY(0);
-                            opacity: 1;
-                        }
-                    }
-                    @keyframes slideDown {
-                        from {
-                            transform: translateY(0);
-                            opacity: 1;
-                        }
-                        to {
-                            transform: translateY(100%);
-                            opacity: 0;
-                        }
-                    }
-                `;
-                document.head.appendChild(style);
-            }
         }
 
-        // Déconnexion
-        function logout() {
-            if (confirm('Êtes-vous sûr de vouloir vous déconnecter ?')) {
-                window.location.href = '../../public/login.html';
-            }
+        // Ajouter les animations CSS pour les toasts
+        if (!document.querySelector('#toast-styles')) {
+            const style = document.createElement('style');
+            style.id = 'toast-styles';
+            style.textContent = `
+                @keyframes slideUp {
+                    from {
+                        transform: translateY(100%);
+                        opacity: 0;
+                    }
+                    to {
+                        transform: translateY(0);
+                        opacity: 1;
+                    }
+                }
+                @keyframes slideDown {
+                    from {
+                        transform: translateY(0);
+                        opacity: 1;
+                    }
+                    to {
+                        transform: translateY(100%);
+                        opacity: 0;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
         }
     </script>
 </body>

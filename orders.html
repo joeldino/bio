@@ -72,7 +72,7 @@
         .nav-links {
             display: flex;
             list-style: none;
-            gap: 2rem;
+            gap: 1rem;
             align-items: center;
         }
 
@@ -93,6 +93,43 @@
 
         .nav-links a.active {
             background: rgba(255,255,255,0.2);
+        }
+
+        /* ===== BOUTON PANIER ===== */
+        .cart-btn {
+            position: relative;
+            background: white;
+            color: var(--primary);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .cart-btn:hover {
+            background: var(--primary-light);
+            color: white;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: var(--danger);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: bold;
         }
 
         /* ===== CONTENU PRINCIPAL ===== */
@@ -320,7 +357,7 @@
             background: white;
             border-radius: var(--radius);
             width: 100%;
-            max-width: 600px;
+            max-width: 800px;
             max-height: 90vh;
             overflow-y: auto;
         }
@@ -594,6 +631,169 @@
                 justify-content: center;
             }
         }
+
+        /* ===== MODAL PANIER ===== */
+        #cartModal .modal-content {
+            max-width: 600px;
+        }
+
+        .cart-items {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .cart-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            border-bottom: 1px solid var(--gray);
+        }
+
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+
+        .cart-item-image {
+            width: 80px;
+            height: 80px;
+            border-radius: var(--radius);
+            object-fit: cover;
+        }
+
+        .cart-item-info {
+            flex: 1;
+        }
+
+        .cart-item-info h4 {
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+
+        .cart-item-price {
+            color: var(--primary);
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .cart-item-quantity {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .quantity-btn {
+            background: var(--gray);
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .cart-total {
+            background: var(--secondary);
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            margin: 1rem 0;
+            text-align: right;
+        }
+
+        .cart-total h3 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        /* ===== SECTION PRODUITS ===== */
+        .products-section {
+            background: white;
+            border-radius: var(--radius);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+        }
+
+        .products-section h2 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .product-card {
+            background: var(--secondary);
+            border-radius: var(--radius);
+            padding: 1rem;
+            transition: transform 0.3s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: var(--radius);
+            margin-bottom: 1rem;
+        }
+
+        .product-info h4 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .product-price {
+            color: var(--success);
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .add-to-cart {
+            width: 100%;
+            padding: 0.5rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .add-to-cart:hover {
+            background: var(--primary-dark);
+        }
+
+        /* ===== LIGNE DE COMMANDE ===== */
+        .order-item-image {
+            width: 40px;
+            height: 40px;
+            border-radius: 4px;
+            object-fit: cover;
+            margin-right: 10px;
+        }
+
+        .order-products {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        .order-product {
+            background: var(--secondary);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
     </style>
 </head>
 <body>
@@ -618,7 +818,10 @@
                     <i class="fas fa-tractor"></i>
                     <span>Coopératives</span>
                 </a></li>
-                <a href="members.html">Membres</a>
+                <li><a href="members.html">
+                    <i class="fas fa-users"></i>
+                    <span>Membres</span>
+                </a></li>
                 <li><a href="products.html">
                     <i class="fas fa-seedling"></i>
                     <span>Produits</span>
@@ -631,6 +834,13 @@
                     <i class="fas fa-envelope"></i>
                     <span>Contact</span>
                 </a></li>
+                <li>
+                    <button class="cart-btn" id="cartBtn">
+                        <i class="fas fa-shopping-cart"></i>
+                        Panier
+                        <span class="cart-count" id="cartCount">0</span>
+                    </button>
+                </li>
                 <li><a href="#" id="logoutBtn" class="btn btn-primary btn-sm">
                     <i class="fas fa-sign-out-alt"></i>
                     <span>Déconnexion</span>
@@ -643,7 +853,7 @@
     <div class="container">
         <div class="header">
             <h1>Gestion des Commandes</h1>
-            <p>Suivez et gérez toutes les commandes de produits bio</p>
+            <p>Commandez des produits bio frais auprès de nos coopératives</p>
         </div>
 
         <!-- Statistiques -->
@@ -667,6 +877,14 @@
                 <i class="fas fa-calendar-alt"></i>
                 <h3 id="monthRevenue">0</h3>
                 <p>Ce mois</p>
+            </div>
+        </div>
+
+        <!-- Section Produits -->
+        <div class="products-section">
+            <h2>Nos Produits Bio</h2>
+            <div class="products-grid" id="productsGrid">
+                <!-- Produits chargés dynamiquement -->
             </div>
         </div>
 
@@ -766,6 +984,33 @@
         </div>
     </footer>
 
+    <!-- Modal Panier -->
+    <div class="modal" id="cartModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Mon Panier</h3>
+                <button class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="cart-items" id="cartItems">
+                    <!-- Articles du panier -->
+                </div>
+                <div class="cart-total">
+                    <h3>Total: <span id="cartTotalAmount">0</span> FCFA</h3>
+                </div>
+                <div id="emptyCart" class="empty-state" style="display: none;">
+                    <i class="fas fa-shopping-cart"></i>
+                    <h3>Votre panier est vide</h3>
+                    <p>Ajoutez des produits pour commencer vos achats</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('cartModal')">Continuer mes achats</button>
+                <button class="btn btn-success" id="checkoutBtn">Passer la commande</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal Nouvelle Commande -->
     <div class="modal" id="orderModal">
         <div class="modal-content">
@@ -800,22 +1045,20 @@
                         <textarea id="shippingAddress" required></textarea>
                     </div>
                     
-                    <div class="form-row">
-                        <div class="form-col">
-                            <div class="form-group">
-                                <label>Produits *</label>
-                                <input type="text" id="products" placeholder="Tomates, Oignons, Carottes" required>
-                            </div>
-                        </div>
-                        <div class="form-col">
-                            <div class="form-group">
-                                <label>Montant total (FCFA) *</label>
-                                <input type="number" id="totalAmount" required min="0" step="100">
-                            </div>
+                    <div class="form-group">
+                        <label>Articles commandés</label>
+                        <div id="selectedProducts">
+                            <!-- Produits du panier affichés ici -->
                         </div>
                     </div>
                     
                     <div class="form-row">
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label>Montant total (FCFA) *</label>
+                                <input type="number" id="totalAmount" required min="0" step="100" readonly>
+                            </div>
+                        </div>
                         <div class="form-col">
                             <div class="form-group">
                                 <label>Statut</label>
@@ -825,6 +1068,9 @@
                                 </select>
                             </div>
                         </div>
+                    </div>
+                    
+                    <div class="form-row">
                         <div class="form-col">
                             <div class="form-group">
                                 <label>Mode de paiement</label>
@@ -832,6 +1078,14 @@
                                     <option value="cash">Paiement à la livraison</option>
                                     <option value="mobile_money">Mobile Money</option>
                                     <option value="card">Carte bancaire</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label>Coopérative</label>
+                                <select id="cooperative">
+                                    <option value="">Sélectionner une coopérative</option>
                                 </select>
                             </div>
                         </div>
@@ -886,7 +1140,86 @@
     <script>
         // ===== DONNÉES =====
         let orders = JSON.parse(localStorage.getItem('bioaneho_orders')) || [];
+        let cart = JSON.parse(localStorage.getItem('bioaneho_cart')) || [];
+        let products = [];
+        let cooperatives = [];
         let currentOrderId = null;
+
+        // ===== PRODUITS AVEC IMAGES =====
+        const defaultProducts = [
+            {
+                id: 1,
+                name: "Tomates Bio",
+                description: "Tomates fraîches cultivées naturellement",
+                price: 1500,
+                image: "../../assets/images/tomates.jpg",
+                category: "légumes",
+                cooperative: "La Terre Promise"
+            },
+            {
+                id: 2,
+                name: "Oignons Verts",
+                description: "Oignons frais du jardin",
+                price: 800,
+                image: "../../assets/images/oignons.jpg",
+                category: "légumes",
+                cooperative: "Les Jardins d'Aného"
+            },
+            {
+                id: 3,
+                name: "Carottes",
+                description: "Carottes bio croquantes",
+                price: 1200,
+                image: "../../assets/images/carottes.jpg",
+                category: "légumes",
+                cooperative: "Bio-Glidji"
+            },
+            {
+                id: 4,
+                name: "Piments",
+                description: "Piments frais et épicés",
+                price: 600,
+                image: "../../assets/images/piments.jpg",
+                category: "épices",
+                cooperative: "La Fertilité"
+            },
+            {
+                id: 5,
+                name: "Laitue",
+                description: "Laitue fraîche et croquante",
+                price: 500,
+                image: "../../assets/images/laitue.jpg",
+                category: "salades",
+                cooperative: "Femmes en Agriculture"
+            },
+            {
+                id: 6,
+                name: "Épinards",
+                description: "Épinards frais riches en fer",
+                price: 700,
+                image: "../../assets/images/epinards.jpg",
+                category: "légumes feuilles",
+                cooperative: "Excellence Bio"
+            },
+            {
+                id: 7,
+                name: "Concombres",
+                description: "Concombres frais et croquants",
+                price: 900,
+                image: "../../assets/images/concombres.jpg",
+                category: "légumes",
+                cooperative: "Jeunes Agriculteurs"
+            },
+            {
+                id: 8,
+                name: "Aubergines",
+                description: "Aubergines bio et savoureuses",
+                price: 1100,
+                image: "../../assets/images/aubergines.jpg",
+                category: "légumes",
+                cooperative: "Les Producteurs Unis"
+            }
+        ];
 
         // Données initiales si vide
         if (orders.length === 0) {
@@ -896,12 +1229,16 @@
                     customerName: 'Jean Dupont',
                     customerPhone: '+228 90 12 34 56',
                     customerEmail: 'jean.dupont@email.com',
-                    products: ['Tomates Bio (2kg)', 'Oignons Verts (1 botte)', 'Carottes (1kg)'],
-                    totalAmount: 7500,
+                    products: [
+                        { id: 1, name: 'Tomates Bio', quantity: 2, price: 1500 },
+                        { id: 2, name: 'Oignons Verts', quantity: 1, price: 800 }
+                    ],
+                    totalAmount: 3800,
                     status: 'delivered',
                     orderDate: '2026-01-15',
                     shippingAddress: '123 Rue du Commerce, Lomé',
                     paymentMethod: 'mobile_money',
+                    cooperative: 'La Terre Promise',
                     notes: 'Livrer après 17h'
                 },
                 {
@@ -909,29 +1246,43 @@
                     customerName: 'Marie Martin',
                     customerPhone: '+228 91 23 45 67',
                     customerEmail: 'marie.martin@email.com',
-                    products: ['Piments (1kg)', 'Laitue (2 pièces)'],
-                    totalAmount: 4500,
+                    products: [
+                        { id: 3, name: 'Carottes', quantity: 2, price: 1200 },
+                        { id: 5, name: 'Laitue', quantity: 3, price: 500 }
+                    ],
+                    totalAmount: 3900,
                     status: 'processing',
                     orderDate: '2026-01-16',
                     shippingAddress: '45 Avenue de la Paix, Aného',
                     paymentMethod: 'cash',
+                    cooperative: 'Bio-Glidji',
                     notes: ''
-                },
-                {
-                    id: 'CMD-2026-003',
-                    customerName: 'Pierre Durand',
-                    customerPhone: '+228 92 34 56 78',
-                    customerEmail: 'pierre.durand@email.com',
-                    products: ['Tomates Bio (3kg)', 'Carottes (2kg)', 'Oignons Verts (2 bottes)'],
-                    totalAmount: 12000,
-                    status: 'pending',
-                    orderDate: '2026-01-17',
-                    shippingAddress: '78 Boulevard des Jardins, Lomé',
-                    paymentMethod: 'transfer',
-                    notes: 'Appeler avant livraison'
                 }
             ];
             localStorage.setItem('bioaneho_orders', JSON.stringify(orders));
+        }
+
+        // Charger les coopératives
+        function loadCooperatives() {
+            try {
+                cooperatives = JSON.parse(localStorage.getItem('cooperatives')) || [];
+                if (cooperatives.length === 0) {
+                    // Créer des coopératives par défaut
+                    cooperatives = [
+                        { id: 1, name: "La Terre Promise", location: "Aného-Ville" },
+                        { id: 2, name: "Les Jardins d'Aného", location: "Aného-Camp" },
+                        { id: 3, name: "Bio-Glidji", location: "Glidji" },
+                        { id: 4, name: "La Fertilité", location: "Aného-Ville" },
+                        { id: 5, name: "Femmes en Agriculture", location: "Sévagan" },
+                        { id: 6, name: "Excellence Bio", location: "Glidji" },
+                        { id: 7, name: "Jeunes Agriculteurs", location: "Aného-Camp" }
+                    ];
+                    localStorage.setItem('cooperatives', JSON.stringify(cooperatives));
+                }
+            } catch (e) {
+                console.error('Erreur lors du chargement des coopératives:', e);
+                cooperatives = [];
+            }
         }
 
         // ===== FONCTIONS UTILITAIRES =====
@@ -968,6 +1319,13 @@
 
         function saveOrders() {
             localStorage.setItem('bioaneho_orders', JSON.stringify(orders));
+            // Mettre à jour le dashboard
+            updateDashboardData();
+        }
+
+        function saveCart() {
+            localStorage.setItem('bioaneho_cart', JSON.stringify(cart));
+            updateCartCount();
         }
 
         function generateOrderId() {
@@ -983,6 +1341,133 @@
             return `CMD-${year}-${nextNumber.toString().padStart(3, '0')}`;
         }
 
+        // ===== PANIER =====
+        function updateCartCount() {
+            const count = cart.reduce((total, item) => total + item.quantity, 0);
+            document.getElementById('cartCount').textContent = count;
+        }
+
+        function addToCart(product) {
+            const existingItem = cart.find(item => item.id === product.id);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    ...product,
+                    quantity: 1
+                });
+            }
+            
+            saveCart();
+            showNotification(`${product.name} ajouté au panier`, 'success');
+        }
+
+        function removeFromCart(productId) {
+            cart = cart.filter(item => item.id !== productId);
+            saveCart();
+            showNotification('Produit retiré du panier', 'info');
+        }
+
+        function updateQuantity(productId, quantity) {
+            const item = cart.find(item => item.id === productId);
+            if (item) {
+                if (quantity > 0) {
+                    item.quantity = quantity;
+                } else {
+                    removeFromCart(productId);
+                }
+                saveCart();
+                updateCartModal();
+            }
+        }
+
+        function updateCartModal() {
+            const cartItems = document.getElementById('cartItems');
+            const emptyCart = document.getElementById('emptyCart');
+            const cartTotalAmount = document.getElementById('cartTotalAmount');
+            
+            if (cart.length === 0) {
+                cartItems.innerHTML = '';
+                emptyCart.style.display = 'block';
+                cartTotalAmount.textContent = '0';
+                return;
+            }
+            
+            emptyCart.style.display = 'none';
+            
+            let total = 0;
+            cartItems.innerHTML = cart.map(item => {
+                const itemTotal = item.price * item.quantity;
+                total += itemTotal;
+                
+                return `
+                    <div class="cart-item">
+                        <img src="${item.image}" alt="${item.name}" class="cart-item-image" 
+                             onerror="this.src='https://via.placeholder.com/80x80?text=${item.name.replace(' ', '+')}'">
+                        <div class="cart-item-info">
+                            <h4>${item.name}</h4>
+                            <div class="cart-item-price">${formatCurrency(item.price)} / unité</div>
+                            <div class="cart-item-quantity">
+                                <button class="quantity-btn" onclick="updateQuantity(${item.id}, ${item.quantity - 1})">-</button>
+                                <span>${item.quantity}</span>
+                                <button class="quantity-btn" onclick="updateQuantity(${item.id}, ${item.quantity + 1})">+</button>
+                            </div>
+                        </div>
+                        <button class="btn btn-danger btn-sm" onclick="removeFromCart(${item.id})">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                `;
+            }).join('');
+            
+            cartTotalAmount.textContent = formatCurrency(total);
+        }
+
+        function showCartModal() {
+            updateCartModal();
+            document.getElementById('cartModal').classList.add('active');
+        }
+
+        function checkout() {
+            if (cart.length === 0) {
+                showNotification('Votre panier est vide', 'warning');
+                return;
+            }
+            
+            closeModal('cartModal');
+            showOrderModal();
+        }
+
+        // ===== AFFICHAGE DES PRODUITS =====
+        function displayProducts() {
+            const grid = document.getElementById('productsGrid');
+            
+            if (products.length === 0) {
+                products = defaultProducts;
+            }
+            
+            grid.innerHTML = products.map(product => `
+                <div class="product-card">
+                    <img src="${product.image}" alt="${product.name}" class="product-image"
+                         onerror="this.src='https://via.placeholder.com/200x150?text=${product.name.replace(' ', '+')}'">
+                    <div class="product-info">
+                        <h4>${product.name}</h4>
+                        <p style="color: var(--text-light); font-size: 0.9rem; margin-bottom: 0.5rem;">
+                            ${product.description}
+                        </p>
+                        <div class="product-price">${formatCurrency(product.price)}</div>
+                        <p style="color: var(--primary); font-size: 0.8rem; margin-bottom: 1rem;">
+                            <i class="fas fa-tractor"></i> ${product.cooperative}
+                        </p>
+                        <button class="add-to-cart" onclick="addToCart(${JSON.stringify(product).replace(/"/g, '&quot;')})">
+                            <i class="fas fa-cart-plus"></i> Ajouter au panier
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
         // ===== AFFICHAGE DES COMMANDES =====
         function displayOrders(filteredOrders = orders) {
             const tbody = document.getElementById('ordersTable');
@@ -994,9 +1479,6 @@
                             <i class="fas fa-shopping-cart"></i>
                             <h3>Aucune commande trouvée</h3>
                             <p>Créez votre première commande pour commencer</p>
-                            <button class="btn btn-primary" onclick="showOrderModal()">
-                                <i class="fas fa-plus"></i> Créer une commande
-                            </button>
                         </td>
                     </tr>
                 `;
@@ -1006,8 +1488,17 @@
             tbody.innerHTML = filteredOrders.map(order => `
                 <tr>
                     <td><strong>${order.id}</strong></td>
-                    <td>${order.customerName}</td>
-                    <td>${order.products.length} article(s)</td>
+                    <td>
+                        <div>${order.customerName}</div>
+                        <small>${order.customerPhone}</small>
+                    </td>
+                    <td>
+                        <div class="order-products">
+                            ${order.products.map(product => `
+                                <span class="order-product">${product.name} (${product.quantity})</span>
+                            `).join('')}
+                        </div>
+                    </td>
                     <td>${formatCurrency(order.totalAmount)}</td>
                     <td><span class="status ${order.status}">${getStatusText(order.status)}</span></td>
                     <td>${formatDate(order.orderDate)}</td>
@@ -1053,6 +1544,62 @@
             document.getElementById('monthRevenue').textContent = formatCurrency(monthRevenue);
         }
 
+        // ===== MISE À JOUR DU DASHBOARD =====
+        function updateDashboardData() {
+            try {
+                // Récupérer les données du dashboard
+                let dashboardData = JSON.parse(localStorage.getItem('dashboard_data')) || {
+                    totalSales: 0,
+                    monthlySales: 0,
+                    pendingOrders: 0,
+                    recentOrders: []
+                };
+                
+                // Mettre à jour avec les nouvelles données
+                dashboardData.totalSales = orders.reduce((sum, order) => sum + order.totalAmount, 0);
+                dashboardData.pendingOrders = orders.filter(o => o.status === 'pending').length;
+                
+                // Commandes récentes (7 derniers jours)
+                const weekAgo = new Date();
+                weekAgo.setDate(weekAgo.getDate() - 7);
+                
+                dashboardData.recentOrders = orders
+                    .filter(order => new Date(order.orderDate) >= weekAgo)
+                    .slice(0, 10)
+                    .map(order => ({
+                        id: order.id,
+                        customer: order.customerName,
+                        amount: order.totalAmount,
+                        status: order.status,
+                        date: order.orderDate
+                    }));
+                
+                // Recalculer les ventes du mois
+                const now = new Date();
+                const currentMonth = now.getMonth() + 1;
+                const currentYear = now.getFullYear();
+                
+                dashboardData.monthlySales = orders
+                    .filter(order => {
+                        const orderDate = new Date(order.orderDate);
+                        return orderDate.getMonth() + 1 === currentMonth && 
+                               orderDate.getFullYear() === currentYear;
+                    })
+                    .reduce((sum, order) => sum + order.totalAmount, 0);
+                
+                // Sauvegarder les données mises à jour
+                localStorage.setItem('dashboard_data', JSON.stringify(dashboardData));
+                
+                // Notifier le dashboard (si ouvert)
+                if (typeof window.dashboardUpdate === 'function') {
+                    window.dashboardUpdate();
+                }
+                
+            } catch (e) {
+                console.error('Erreur lors de la mise à jour du dashboard:', e);
+            }
+        }
+
         // ===== FILTRAGE =====
         function applyFilters() {
             const status = document.getElementById('statusFilter').value;
@@ -1088,6 +1635,13 @@
             const modal = document.getElementById('orderModal');
             const form = document.getElementById('orderForm');
             
+            // Remplir la liste des coopératives
+            const coopSelect = document.getElementById('cooperative');
+            coopSelect.innerHTML = '<option value="">Sélectionner une coopérative</option>' +
+                cooperatives.map(coop => 
+                    `<option value="${coop.name}">${coop.name} (${coop.location})</option>`
+                ).join('');
+            
             if (order) {
                 // Mode édition
                 modal.querySelector('h3').textContent = 'Modifier la commande';
@@ -1095,17 +1649,50 @@
                 document.getElementById('customerPhone').value = order.customerPhone;
                 document.getElementById('customerEmail').value = order.customerEmail || '';
                 document.getElementById('shippingAddress').value = order.shippingAddress;
-                document.getElementById('products').value = order.products.join(', ');
                 document.getElementById('totalAmount').value = order.totalAmount;
                 document.getElementById('orderStatus').value = order.status;
                 document.getElementById('paymentMethod').value = order.paymentMethod;
+                document.getElementById('cooperative').value = order.cooperative || '';
                 document.getElementById('orderNotes').value = order.notes || '';
+                
+                // Afficher les produits de la commande
+                const selectedProducts = document.getElementById('selectedProducts');
+                selectedProducts.innerHTML = order.products.map(product => `
+                    <div style="background: var(--secondary); padding: 10px; border-radius: 5px; margin-bottom: 5px;">
+                        ${product.name} - ${product.quantity} x ${formatCurrency(product.price)} = ${formatCurrency(product.price * product.quantity)}
+                    </div>
+                `).join('');
+                
             } else {
-                // Mode création
+                // Mode création depuis le panier
                 modal.querySelector('h3').textContent = 'Nouvelle commande';
                 form.reset();
                 document.getElementById('orderStatus').value = 'pending';
                 document.getElementById('paymentMethod').value = 'cash';
+                
+                // Afficher les produits du panier
+                const selectedProducts = document.getElementById('selectedProducts');
+                if (cart.length > 0) {
+                    let total = 0;
+                    selectedProducts.innerHTML = cart.map(item => {
+                        const itemTotal = item.price * item.quantity;
+                        total += itemTotal;
+                        return `
+                            <div style="background: var(--secondary); padding: 10px; border-radius: 5px; margin-bottom: 5px;">
+                                ${item.name} - ${item.quantity} x ${formatCurrency(item.price)} = ${formatCurrency(itemTotal)}
+                            </div>
+                        `;
+                    }).join('');
+                    
+                    document.getElementById('totalAmount').value = total;
+                    
+                    // Sélectionner automatiquement la coopérative du premier produit
+                    if (cart[0].cooperative) {
+                        document.getElementById('cooperative').value = cart[0].cooperative;
+                    }
+                } else {
+                    selectedProducts.innerHTML = '<p style="color: var(--text-light);">Aucun produit sélectionné</p>';
+                }
             }
             
             modal.classList.add('active');
@@ -1120,17 +1707,33 @@
                 return;
             }
 
+            // Préparer les données de la commande
             const orderData = {
                 customerName: document.getElementById('customerName').value,
                 customerPhone: document.getElementById('customerPhone').value,
                 customerEmail: document.getElementById('customerEmail').value,
                 shippingAddress: document.getElementById('shippingAddress').value,
-                products: document.getElementById('products').value.split(',').map(p => p.trim()),
                 totalAmount: parseInt(document.getElementById('totalAmount').value),
                 status: document.getElementById('orderStatus').value,
                 paymentMethod: document.getElementById('paymentMethod').value,
+                cooperative: document.getElementById('cooperative').value,
                 notes: document.getElementById('orderNotes').value
             };
+
+            // Déterminer les produits
+            if (currentOrderId) {
+                // Mode édition : garder les produits existants
+                const existingOrder = orders.find(o => o.id === currentOrderId);
+                orderData.products = existingOrder.products;
+            } else {
+                // Mode création : utiliser les produits du panier
+                orderData.products = cart.map(item => ({
+                    id: item.id,
+                    name: item.name,
+                    quantity: item.quantity,
+                    price: item.price
+                }));
+            }
 
             if (currentOrderId) {
                 // Mettre à jour la commande existante
@@ -1145,6 +1748,11 @@
                 orderData.orderDate = new Date().toISOString().split('T')[0];
                 orders.push(orderData);
                 showNotification('Commande créée avec succès', 'success');
+                
+                // Vider le panier après la commande
+                cart = [];
+                saveCart();
+                updateCartCount();
             }
 
             saveOrders();
@@ -1158,6 +1766,8 @@
             if (!order) return;
 
             const detailsDiv = document.getElementById('orderDetails');
+            const totalProducts = order.products.reduce((sum, p) => sum + p.quantity, 0);
+            
             detailsDiv.innerHTML = `
                 <div style="margin-bottom: 2rem;">
                     <h4 style="color: var(--primary); margin-bottom: 1rem;">Informations client</h4>
@@ -1169,25 +1779,41 @@
                 
                 <div style="margin-bottom: 2rem;">
                     <h4 style="color: var(--primary); margin-bottom: 1rem;">Informations commande</h4>
+                    <p><strong>N° Commande:</strong> ${order.id}</p>
                     <p><strong>Date:</strong> ${formatDate(order.orderDate)}</p>
                     <p><strong>Statut:</strong> <span class="status ${order.status}">${getStatusText(order.status)}</span></p>
                     <p><strong>Mode de paiement:</strong> ${order.paymentMethod}</p>
+                    <p><strong>Coopérative:</strong> ${order.cooperative || 'Non spécifiée'}</p>
                 </div>
                 
                 <div style="margin-bottom: 2rem;">
-                    <h4 style="color: var(--primary); margin-bottom: 1rem;">Produits commandés</h4>
-                    <ul style="list-style: none; padding: 0;">
-                        ${order.products.map(product => `<li>• ${product}</li>`).join('')}
-                    </ul>
-                    <p style="margin-top: 1rem; font-size: 1.2rem; color: var(--primary);">
-                        <strong>Total:</strong> ${formatCurrency(order.totalAmount)}
-                    </p>
+                    <h4 style="color: var(--primary); margin-bottom: 1rem;">Produits commandés (${totalProducts} article${totalProducts > 1 ? 's' : ''})</h4>
+                    <div style="background: var(--secondary); padding: 1.5rem; border-radius: var(--radius);">
+                        ${order.products.map(product => `
+                            <div style="display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid var(--gray);">
+                                <div>
+                                    <strong>${product.name}</strong><br>
+                                    <small>Quantité: ${product.quantity}</small>
+                                </div>
+                                <div style="text-align: right;">
+                                    ${formatCurrency(product.price)}<br>
+                                    <strong>${formatCurrency(product.price * product.quantity)}</strong>
+                                </div>
+                            </div>
+                        `).join('')}
+                        <div style="display: flex; justify-content: space-between; padding: 1rem 0; font-size: 1.2rem; font-weight: bold; color: var(--primary);">
+                            <div>Total:</div>
+                            <div>${formatCurrency(order.totalAmount)}</div>
+                        </div>
+                    </div>
                 </div>
                 
                 ${order.notes ? `
                 <div>
                     <h4 style="color: var(--primary); margin-bottom: 1rem;">Notes</h4>
-                    <p>${order.notes}</p>
+                    <div style="background: var(--secondary); padding: 1rem; border-radius: var(--radius);">
+                        ${order.notes}
+                    </div>
                 </div>
                 ` : ''}
             `;
@@ -1231,7 +1857,7 @@
             }
 
             // Convertir en CSV
-            const headers = ['ID', 'Client', 'Téléphone', 'Email', 'Produits', 'Montant', 'Statut', 'Date', 'Adresse', 'Paiement', 'Notes'];
+            const headers = ['ID', 'Client', 'Téléphone', 'Email', 'Produits', 'Montant', 'Statut', 'Date', 'Adresse', 'Paiement', 'Coopérative', 'Notes'];
             const csvRows = [
                 headers.join(','),
                 ...orders.map(order => [
@@ -1239,12 +1865,13 @@
                     `"${order.customerName}"`,
                     order.customerPhone,
                     order.customerEmail || '',
-                    `"${order.products.join('; ')}"`,
+                    `"${order.products.map(p => `${p.name} (${p.quantity})`).join('; ')}"`,
                     order.totalAmount,
                     getStatusText(order.status),
                     order.orderDate,
                     `"${order.shippingAddress}"`,
                     order.paymentMethod,
+                    order.cooperative || '',
                     `"${order.notes || ''}"`
                 ].join(','))
             ];
@@ -1271,9 +1898,14 @@
 
         // ===== INITIALISATION =====
         function init() {
-            // Afficher les commandes
+            // Charger les données
+            loadCooperatives();
+            
+            // Afficher les éléments
+            displayProducts();
             displayOrders();
             updateStats();
+            updateCartCount();
             
             // Définir les dates par défaut
             const today = new Date().toISOString().split('T')[0];
@@ -1311,6 +1943,10 @@
                 window.location.href = '../../index.html';
             });
             
+            // Événements panier
+            document.getElementById('cartBtn').addEventListener('click', showCartModal);
+            document.getElementById('checkoutBtn').addEventListener('click', checkout);
+            
             // Événements des filtres
             document.getElementById('statusFilter').addEventListener('change', applyFilters);
             document.getElementById('startDate').addEventListener('change', applyFilters);
@@ -1346,6 +1982,9 @@
                     }
                 });
             });
+            
+            // Mettre à jour le dashboard
+            updateDashboardData();
         }
 
         // Démarrer l'application

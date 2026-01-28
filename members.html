@@ -318,7 +318,7 @@
             }
         }
         
-        /* ===== NAVIGATION COMME L'INDEX ===== */
+        /* ===== NAVIGATION TOUT SUR UNE LIGNE ===== */
         .main-navbar {
             background: linear-gradient(135deg, #2e7d32 0%, #4caf50 100%);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -329,14 +329,16 @@
         }
         
         .nav-container {
-            max-width: 1200px;
+            max-width: 1400px; /* Augmenté pour plus d'espace */
             margin: 0 auto;
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 0 1.5rem;
+            gap: 2rem;
         }
         
+        /* Logo au début */
         .main-logo {
             display: flex;
             align-items: center;
@@ -346,6 +348,7 @@
             font-size: 1.5rem;
             font-weight: 700;
             transition: transform 0.3s ease;
+            flex-shrink: 0; /* Empêche le logo de rétrécir */
         }
         
         .main-logo:hover {
@@ -373,17 +376,37 @@
             background: rgba(255, 255, 255, 0.1);
         }
         
+        /* Navigation principale - TOUT SUR UNE LIGNE */
         .main-nav-links {
             display: flex;
             list-style: none;
-            gap: 1.8rem;
-            align-items: center;
             margin: 0;
             padding: 0;
+            align-items: center;
+            gap: 1.2rem; /* Espacement entre les liens */
+            flex-wrap: nowrap; /* Tout reste sur une ligne */
+            overflow-x: auto; /* Permet le défilement horizontal si nécessaire */
+            scrollbar-width: thin; /* Pour Firefox */
+            padding-bottom: 5px; /* Pour le scroll */
+        }
+        
+        /* Style pour la scrollbar */
+        .main-nav-links::-webkit-scrollbar {
+            height: 4px;
+        }
+        
+        .main-nav-links::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .main-nav-links::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 2px;
         }
         
         .main-nav-links li {
             position: relative;
+            flex-shrink: 0; /* Empêche les éléments de rétrécir */
         }
         
         .main-nav-links a {
@@ -398,6 +421,7 @@
             border-radius: 6px;
             position: relative;
             overflow: hidden;
+            white-space: nowrap; /* Empêche le texte de passer à la ligne */
         }
         
         .main-nav-links a:hover {
@@ -439,12 +463,21 @@
             gap: 8px;
             transition: all 0.3s ease;
             box-shadow: 0 4px 6px rgba(220, 53, 69, 0.2);
+            white-space: nowrap;
+            flex-shrink: 0;
         }
         
         .btn-logout:hover {
             background: linear-gradient(135deg, #c82333 0%, #bd2130 100%);
             transform: translateY(-2px);
             box-shadow: 0 6px 12px rgba(220, 53, 69, 0.3);
+        }
+        
+        /* Pour les écrans très larges, augmenter l'espace */
+        @media (min-width: 1400px) {
+            .main-nav-links {
+                gap: 1.5rem;
+            }
         }
         
         /* Boutons */
@@ -586,6 +619,26 @@
         }
         
         /* Responsive pour le menu */
+        @media (max-width: 1024px) {
+            /* Sur les tablettes, on cache quelques textes mais garde les icônes */
+            .main-nav-links a span {
+                display: none; /* Cache le texte sur tablettes */
+            }
+            
+            .main-nav-links a {
+                padding: 0.5rem;
+            }
+            
+            .main-nav-links a i {
+                font-size: 1.2rem;
+                margin: 0;
+            }
+            
+            .btn-logout span {
+                display: inline; /* On garde le texte pour le bouton déconnexion */
+            }
+        }
+        
         @media (max-width: 768px) {
             .nav-container {
                 padding: 0 1rem;
@@ -611,6 +664,7 @@
                 overflow-y: auto;
                 border-radius: 0 0 16px 16px;
                 margin-top: 10px;
+                overflow-x: hidden;
             }
             
             .main-nav-links.show {
@@ -625,7 +679,11 @@
                 padding: 1.2rem;
                 border-bottom: 1px solid rgba(255,255,255,0.1);
                 gap: 12px;
-                justify-content: center;
+                justify-content: flex-start;
+            }
+            
+            .main-nav-links a span {
+                display: inline; /* Réaffiche le texte sur mobile */
             }
             
             .main-nav-links a:last-child {
@@ -641,6 +699,7 @@
             .btn-logout {
                 justify-content: center;
                 margin: 0.5rem 1rem;
+                width: calc(100% - 2rem);
             }
             
             .footer-content {
@@ -661,9 +720,10 @@
     </style>
 </head>
 <body>
-    <!-- Navigation comme l'index -->
+    <!-- Navigation TOUT SUR UNE LIGNE -->
     <nav class="main-navbar">
         <div class="nav-container">
+            <!-- Logo au début -->
             <a href="../../index.html" class="main-logo">
                 <i class="fas fa-leaf"></i>
                 <span>Bio Aného</span>
@@ -674,9 +734,9 @@
                 <i class="fas fa-bars"></i>
             </button>
             
-            <!-- Navigation -->
-              <ul class="main-nav-links" id="navLinks">
-                <li><a href="index.html" class="active">
+            <!-- Navigation - TOUT SUR UNE LIGNE -->
+            <ul class="main-nav-links" id="navLinks">
+                <li><a href="index.html">
                     <i class="fas fa-home"></i>
                     <span>Accueil</span>
                 </a></li>
@@ -684,18 +744,21 @@
                     <i class="fas fa-tractor"></i>
                     <span>Coopératives</span>
                 </a></li>
-  <li><a href="members.html">
-                    <i class="fas fa-tractor"></i>
-                    <span>Gestion des Membres</span>
+                <li><a href="members.html" class="active">
+                    <i class="fas fa-users"></i>
+                    <span>Membres</span>
                 </a></li>
                 <li><a href="products.html">
                     <i class="fas fa-seedling"></i>
                     <span>Produits</span>
                 </a></li>
-              <a href="orders.html">Commandes</a>
+                <li><a href="orders.html">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Commandes</span>
+                </a></li>
                 <li><a href="sales.html">
                     <i class="fas fa-store"></i>
-                    <span>Points de Vente</span>
+                    <span>Ventes</span>
                 </a></li>
                 <li><a href="news.html">
                     <i class="fas fa-newspaper"></i>
@@ -705,15 +768,10 @@
                     <i class="fas fa-envelope"></i>
                     <span>Contact</span>
                 </a></li>
-<li>
-                  <a href="dashboard.html">Admin</a>
-                </li>
-                <li><a href="login.html" class="btn-login">
-                    <i class="fas fa-sign-in-alt"></i>
-                    <span>Connexion</span>
+                <li><a href="dashboard.html">
+                    <i class="fas fa-cog"></i>
+                    <span>Admin</span>
                 </a></li>
-            
-            </ul>
                 <li>
                     <button class="btn-logout" onclick="logout()">
                         <i class="fas fa-sign-out-alt"></i>

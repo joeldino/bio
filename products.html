@@ -1225,13 +1225,56 @@
             color: #666;
             margin-bottom: 1rem;
         }
+        
+        /* ===== NOTIFICATION ===== */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            border-radius: 8px;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 9999;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            animation: slideIn 0.3s ease;
+            max-width: 400px;
+        }
+        
+        .notification.success {
+            background: #2e7d32;
+        }
+        
+        .notification.error {
+            background: #dc3545;
+        }
+        
+        .notification.warning {
+            background: #ff9800;
+        }
+        
+        .notification.info {
+            background: #1976d2;
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        @keyframes slideOut {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+        }
     </style>
 </head>
 <body>
     <!-- Navigation principale -->
     <nav class="main-navbar">
         <div class="nav-container">
-            <a href="index.html" class="main-logo">
+            <a href="../../index.html" class="main-logo">
                 <i class="fas fa-leaf"></i>
                 <span>Bio Aného</span>
             </a>
@@ -1636,6 +1679,33 @@
     </footer>
 
     <script>
+        // ========== CONFIGURATION ==========
+        // Chemin de base pour vos images
+        const baseImagePath = 'assets/images/';
+        
+        // Images locales
+        const localImages = {
+            'tomate': baseImagePath + 'tomates.jpg',
+            'piment': baseImagePath + 'peppers.jpg',
+            'gombo': baseImagePath + 'okra.jpg',
+            'aubergine': baseImagePath + 'aubergine1.jpg',
+            'carotte': baseImagePath + 'carrots.jpg',
+            'oignon': baseImagePath + 'green-onions.jpg',
+            'laitue': baseImagePath + 'lettuce.jpg',
+            'poivron': baseImagePath + 'poivron.png'
+        };
+        
+        // Images de secours (Unsplash)
+        const fallbackImages = {
+            'légume': 'https://images.unsplash.com/photo-1518791841217-8f162f1e1131?w=400&h=300&fit=crop',
+            'fruit': 'https://images.unsplash.com/photo-1568702846914-96b305d2aaeb?w=400&h=300&fit=crop',
+            'tubercule': 'https://images.unsplash.com/photo-1566385101042-1a0f0c126e96?w=400&h=300&fit=crop',
+            'aromate': 'https://images.unsplash.com/photo-1597362925123-77861d3fbac7?w=400&h=300&fit=crop',
+            'céréale': 'https://images.unsplash.com/photo-1484406566174-9da000fda645?w=400&h=300&fit=crop',
+            'légumineuse': 'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=400&h=300&fit=crop',
+            'default': 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&h=300&fit=crop'
+        };
+
         // Variables globales
         let products = [];
         let currentProductId = null;
@@ -1643,16 +1713,7 @@
         let cart = [];
         let selectedImageData = null;
 
-        // Images de secours
-        const fallbackImages = {
-            'default': 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-            'légume': 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-            'fruit': 'https://images.unsplash.com/photo-1568702846914-96b305d2aaeb?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-            'aromate': 'https://images.unsplash.com/photo-1560790671-b76ca4de55ef?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-            'tubercule': 'https://images.unsplash.com/photo-1598170845058-78131a90f4f6?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'
-        };
-
-        // Initialisation
+        // ========== INITIALISATION ==========
         document.addEventListener('DOMContentLoaded', function() {
             console.log("=== DÉMARRAGE DE LA PAGE PRODUITS ===");
             
@@ -1662,69 +1723,62 @@
             // Initialiser le drag & drop pour les images
             initImageUpload();
             
-            // Mettre à jour le bouton d'authentification
+            // Mettre à jour l'état d'authentification
             updateAuthButton();
-            
-            // Vérifier le statut de l'utilisateur
             checkUserStatus();
             
             // Charger les produits
             loadProducts();
             
-            // Vérifier les paramètres d'URL
-            const urlParams = new URLSearchParams(window.location.search);
-            const productId = urlParams.get('id');
-            if (productId) {
-                showProductDetail(parseInt(productId));
-            }
-            
-            // Recherche en temps réel
-            const searchInput = document.getElementById('searchProduct');
-            searchInput.addEventListener('input', filterProducts);
-            
             // Charger le panier
             loadCart();
             updateCartDisplay();
             
-            // Écouter les événements de stockage pour synchroniser l'état de connexion
-            window.addEventListener('storage', function(event) {
-                if (event.key === 'currentUser' || event.key === 'isLoggedIn') {
-                    console.log('Événement de stockage détecté:', event.key);
-                    updateAuthButton();
-                    checkUserStatus();
-                }
-            });
+            // Configurer la recherche en temps réel
+            const searchInput = document.getElementById('searchProduct');
+            if (searchInput) {
+                searchInput.addEventListener('input', filterProducts);
+            }
             
-            // Vérifier périodiquement l'état de connexion
-            setInterval(function() {
+            // Configurer les filtres
+            document.getElementById('filterCategory')?.addEventListener('change', filterProducts);
+            document.getElementById('filterCooperative')?.addEventListener('change', filterProducts);
+            document.getElementById('filterSeason')?.addEventListener('change', filterProducts);
+            
+            // Vérifier les paramètres d'URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const productId = urlParams.get('id');
+            if (productId) {
+                setTimeout(() => showProductDetail(parseInt(productId)), 500);
+            }
+            
+            // Vérifier l'authentification toutes les secondes
+            setInterval(() => {
                 updateAuthButton();
                 checkUserStatus();
             }, 1000);
         });
 
-        // ========== GESTION D'AUTHENTIFICATION GLOBALE ==========
-
-        // Mettre à jour le bouton de connexion/déconnexion
+        // ========== GESTION D'AUTHENTIFICATION ==========
         function updateAuthButton() {
             const container = document.getElementById('authContainer');
-            if (!container) {
-                console.log('Conteneur d\'authentification non trouvé');
-                return;
-            }
+            if (!container) return;
             
             try {
-                // Vérifier d'abord isLoggedIn, puis currentUser
+                // Vérifier si l'utilisateur est connecté
                 const isLoggedIn = localStorage.getItem('isLoggedIn');
                 const userData = localStorage.getItem('currentUser');
                 
-                console.log('isLoggedIn:', isLoggedIn);
-                console.log('userData:', userData);
+                console.log('État connexion:', isLoggedIn);
                 
                 if (isLoggedIn === 'true' && userData) {
                     const user = JSON.parse(userData);
-                    console.log('Utilisateur trouvé:', user);
+                    console.log('Utilisateur connecté:', user);
                     
-                    // Utilisateur connecté
+                    // Mettre à jour currentUser global
+                    currentUser = user;
+                    
+                    // Afficher les informations utilisateur
                     container.innerHTML = `
                         <div class="auth-container">
                             <div class="user-info">
@@ -1738,27 +1792,24 @@
                         </div>
                     `;
                     
-                    // Ajouter l'événement click pour le bouton de déconnexion
-                    const logoutBtn = container.querySelector('.btn-logout');
-                    if (logoutBtn) {
-                        logoutBtn.onclick = logout;
-                    }
-                    
                 } else {
-                    console.log('Utilisateur non connecté');
-                    // Utilisateur non connecté
+                    console.log('Aucun utilisateur connecté');
+                    currentUser = null;
+                    
+                    // Afficher le bouton de connexion avec le bon chemin
+                    // Si login.html est à la racine du projet
                     container.innerHTML = `
-                        <a href="../public/login.html" class="btn-login">
+                        <a href="login.html" class="btn-login">
                             <i class="fas fa-sign-in-alt"></i>
                             <span>Connexion</span>
                         </a>
                     `;
                 }
             } catch (error) {
-                console.error('Erreur lors de la mise à jour du bouton d\'authentification:', error);
+                console.error('Erreur auth:', error);
                 // En cas d'erreur, afficher le bouton de connexion
                 container.innerHTML = `
-                    <a href="../public/login.html" class="btn-login">
+                    <a href="login.html" class="btn-login">
                         <i class="fas fa-sign-in-alt"></i>
                         <span>Connexion</span>
                     </a>
@@ -1766,7 +1817,6 @@
             }
         }
 
-        // Vérifier le statut de l'utilisateur pour admin
         function checkUserStatus() {
             try {
                 const isLoggedIn = localStorage.getItem('isLoggedIn');
@@ -1774,91 +1824,46 @@
                 
                 if (isLoggedIn === 'true' && userData) {
                     const user = JSON.parse(userData);
-                    
-                    if (user && user.role === 'admin') {
-                        console.log('Utilisateur admin détecté');
+                    if (user && (user.role === 'admin' || user.isAdmin === true)) {
+                        console.log('Mode admin activé');
                         document.getElementById('adminBar').style.display = 'block';
                         currentUser = user;
                     } else {
-                        console.log('Utilisateur non-admin ou pas de rôle admin');
                         document.getElementById('adminBar').style.display = 'none';
                         currentUser = null;
                     }
                 } else {
-                    console.log('Utilisateur non connecté');
                     document.getElementById('adminBar').style.display = 'none';
                     currentUser = null;
                 }
             } catch (e) {
-                console.error('Erreur lors de la vérification du statut utilisateur:', e);
+                console.error('Erreur checkUserStatus:', e);
                 document.getElementById('adminBar').style.display = 'none';
                 currentUser = null;
             }
         }
 
-        // Fonction de déconnexion globale
+        // Fonction de déconnexion
         function logout() {
-            // Demander confirmation
             if (confirm('Voulez-vous vraiment vous déconnecter ?')) {
-                console.log('Déconnexion en cours...');
-                
-                // Supprimer les données de session
+                // Supprimer les données de connexion
                 localStorage.removeItem('currentUser');
                 localStorage.removeItem('isLoggedIn');
                 
-                // Forcer la mise à jour immédiate
-                setTimeout(function() {
-                    // Mettre à jour l'interface
-                    updateAuthButton();
-                    checkUserStatus();
-                    
-                    // Afficher une notification
-                    showNotification('Déconnexion réussie !');
-                    
-                    // Rediriger vers la page d'accueil après 1 seconde
-                    setTimeout(function() {
-                        window.location.href = '../public/index.html';
-                    }, 1000);
-                }, 100);
+                // Mettre à jour l'interface
+                updateAuthButton();
+                checkUserStatus();
+                
+                showNotification('Déconnexion réussie !', 'success');
+                
+                // Rediriger vers l'accueil
+                setTimeout(() => {
+                    window.location.href = '../../index.html';
+                }, 1000);
             }
         }
 
-        // ========== FONCTIONS EXISTANTES ==========
-
-        // Initialiser le drag & drop pour les images
-        function initImageUpload() {
-            const container = document.getElementById('fileUploadContainer');
-            const fileInput = document.getElementById('fileInput');
-            
-            if (!container || !fileInput) return;
-            
-            // Gestion du drag & drop
-            container.addEventListener('dragover', (e) => {
-                e.preventDefault();
-                container.classList.add('dragover');
-            });
-            
-            container.addEventListener('dragleave', () => {
-                container.classList.remove('dragover');
-            });
-            
-            container.addEventListener('drop', (e) => {
-                e.preventDefault();
-                container.classList.remove('dragover');
-                
-                if (e.dataTransfer.files.length) {
-                    fileInput.files = e.dataTransfer.files;
-                    handleImageSelect({ target: fileInput });
-                }
-            });
-            
-            // Gestion du clic
-            container.addEventListener('click', () => {
-                fileInput.click();
-            });
-        }
-
-        // Gestion du menu hamburger
+        // ========== GESTION DU MENU ==========
         function initMenu() {
             const menuToggle = document.getElementById('menuToggle');
             const navLinks = document.getElementById('navLinks');
@@ -1878,7 +1883,7 @@
                 }
             });
             
-            // Fermer le menu quand on clique sur un lien
+            // Fermer le menu en cliquant sur un lien
             navLinks.querySelectorAll('a').forEach(link => {
                 link.addEventListener('click', function() {
                     navLinks.classList.remove('show');
@@ -1887,7 +1892,7 @@
                 });
             });
             
-            // Fermer le menu quand on clique en dehors
+            // Fermer le menu en cliquant à l'extérieur
             document.addEventListener('click', function(e) {
                 if (!menuToggle.contains(e.target) && !navLinks.contains(e.target)) {
                     navLinks.classList.remove('show');
@@ -1896,7 +1901,7 @@
                 }
             });
             
-            // Gestion du redimensionnement
+            // Fermer le menu au redimensionnement
             window.addEventListener('resize', function() {
                 if (window.innerWidth > 768) {
                     navLinks.classList.remove('show');
@@ -1906,23 +1911,93 @@
             });
         }
 
-        // Gestion des produits
+        // ========== GESTION DES IMAGES ==========
+        function initImageUpload() {
+            const container = document.getElementById('fileUploadContainer');
+            const fileInput = document.getElementById('fileInput');
+            
+            if (!container || !fileInput) return;
+            
+            // Drag & drop
+            container.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                container.classList.add('dragover');
+            });
+            
+            container.addEventListener('dragleave', () => {
+                container.classList.remove('dragover');
+            });
+            
+            container.addEventListener('drop', (e) => {
+                e.preventDefault();
+                container.classList.remove('dragover');
+                
+                if (e.dataTransfer.files.length) {
+                    fileInput.files = e.dataTransfer.files;
+                    handleImageSelect({ target: fileInput });
+                }
+            });
+            
+            // Clic
+            container.addEventListener('click', () => {
+                fileInput.click();
+            });
+        }
+
+        function handleImageSelect(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            // Validation
+            if (file.size > 2 * 1024 * 1024) {
+                showNotification('Le fichier est trop volumineux (max 2MB)', 'error');
+                return;
+            }
+            
+            if (!file.type.match('image.*')) {
+                showNotification('Veuillez sélectionner une image', 'error');
+                return;
+            }
+            
+            // Lecture et conversion
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                selectedImageData = e.target.result;
+                
+                // Aperçu
+                const preview = document.getElementById('previewImage');
+                const previewContainer = document.getElementById('imagePreview');
+                if (preview && previewContainer) {
+                    preview.src = selectedImageData;
+                    previewContainer.style.display = 'block';
+                }
+                
+                // Texte
+                const uploadText = document.querySelector('.file-upload-text');
+                if (uploadText) {
+                    uploadText.textContent = 'Image sélectionnée: ' + file.name;
+                    uploadText.style.color = '#2e7d32';
+                    uploadText.style.fontWeight = '600';
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // ========== GESTION DES PRODUITS ==========
         function loadProducts() {
-            // Afficher le loader
             const loader = document.getElementById('productsLoader');
             if (loader) loader.style.display = 'block';
             
             const container = document.getElementById('productsContainer');
             if (container) container.innerHTML = '';
             
-            // Simuler un chargement
-            setTimeout(function() {
+            setTimeout(() => {
                 const saved = localStorage.getItem('products');
                 products = saved ? JSON.parse(saved) : getDefaultProducts();
                 displayProducts(products);
                 populateCooperativeFilter();
                 if (loader) loader.style.display = 'none';
-            }, 500);
+            }, 800);
         }
 
         function getDefaultProducts() {
@@ -1940,7 +2015,7 @@
                     sales: 120,
                     rating: 4.5,
                     description: "Tomates rouges juteuses cultivées sans pesticides ni engrais chimiques.",
-                    image: "../assets/images/tomatoes.jpg",
+                    image: localImages.tomate || fallbackImages['légume'],
                     createdAt: "2026-01-15"
                 },
                 {
@@ -1956,7 +2031,7 @@
                     sales: 85,
                     rating: 4.2,
                     description: "Piments forts et aromatiques, parfaits pour relever vos plats.",
-                    image: "../assets/images/peppers.jpg",
+                    image: localImages.piment || fallbackImages['aromate'],
                     createdAt: "2026-02-10"
                 },
                 {
@@ -1972,7 +2047,7 @@
                     sales: 65,
                     rating: 4.3,
                     description: "Gombo tendre et savoureux, excellent en sauce ou sauté.",
-                    image: "../assets/images/okra.jpg",
+                    image: localImages.gombo || fallbackImages['légume'],
                     createdAt: "2026-03-05"
                 },
                 {
@@ -1988,7 +2063,7 @@
                     sales: 45,
                     rating: 4.4,
                     description: "Aubergines violettes charnues, idéales pour les ragoûts et grillades.",
-                    image: "../assets/images/aubergine1.jpg",
+                    image: localImages.aubergine || fallbackImages['légume'],
                     createdAt: "2026-03-15"
                 },
                 {
@@ -2004,7 +2079,7 @@
                     sales: 75,
                     rating: 4.6,
                     description: "Carottes sucrées et croquantes, riches en vitamines.",
-                    image: "../assets/images/carrots.jpg",
+                    image: localImages.carotte || fallbackImages['légume'],
                     createdAt: "2026-03-20"
                 },
                 {
@@ -2020,7 +2095,7 @@
                     sales: 95,
                     rating: 4.3,
                     description: "Oignons frais récoltés le matin même, parfaits pour les sauces.",
-                    image: "../assets/images/green-onions.jpg",
+                    image: localImages.oignon || fallbackImages['aromate'],
                     createdAt: "2026-03-25"
                 },
                 {
@@ -2036,7 +2111,7 @@
                     sales: 60,
                     rating: 4.4,
                     description: "Laitue croquante et fraîche, idéale pour les salades.",
-                    image: "../assets/images/lettuce.jpg",
+                    image: localImages.laitue || fallbackImages['légume'],
                     createdAt: "2026-04-01"
                 },
                 {
@@ -2052,7 +2127,7 @@
                     sales: 45,
                     rating: 4.2,
                     description: "Poivrons doux et charnus, parfaits pour les grillades et farcis.",
-                    image: "../assets/images/poivron.jpg",
+                    image: localImages.poivron || fallbackImages['légume'],
                     createdAt: "2026-04-05"
                 }
             ];
@@ -2068,7 +2143,7 @@
             
             if (!container || !emptyState) return;
             
-            const isAdmin = currentUser && currentUser.role === 'admin';
+            const isAdmin = currentUser && (currentUser.role === 'admin' || currentUser.isAdmin === true);
             
             if (productList.length === 0) {
                 container.innerHTML = '';
@@ -2078,11 +2153,16 @@
             
             emptyState.style.display = 'none';
             
-            // Préparer le HTML des produits
             let productsHTML = '';
             
-            for (const product of productList) {
-                const imageUrl = product.image;
+            productList.forEach(product => {
+                // Utiliser l'image du produit ou une image de secours
+                let imageUrl = product.image;
+                
+                // Vérifier si l'image existe, sinon utiliser une image de secours
+                if (!imageUrl || imageUrl.includes('undefined')) {
+                    imageUrl = fallbackImages[product.category] || fallbackImages['default'];
+                }
                 
                 productsHTML += `
                     <div class="product-card" data-id="${product.id}">
@@ -2101,7 +2181,7 @@
                             <img src="${imageUrl}" 
                                  alt="${product.name}" 
                                  loading="lazy"
-                                 onerror="handleImageError(this, '${product.category}')">
+                                 onerror="this.src='${fallbackImages['default']}'">
                         </div>
                         
                         <div class="product-content">
@@ -2110,7 +2190,7 @@
                             <p class="product-coop">
                                 <i class="fas fa-tractor"></i> ${product.cooperative}
                             </p>
-                            <div class="product-price">${product.price} FCFA/${product.unit}</div>
+                            <div class="product-price">${product.price.toLocaleString()} FCFA/${product.unit}</div>
                             <p class="product-description">${product.description}</p>
                             <div class="product-actions">
                                 <button class="btn btn-outline" onclick="showProductDetail(${product.id})">
@@ -2123,17 +2203,9 @@
                         </div>
                     </div>
                 `;
-            }
+            });
             
             container.innerHTML = productsHTML;
-        }
-
-        // Fonction pour gérer les erreurs d'image
-        function handleImageError(imgElement, category) {
-            console.log(`Image non trouvée: ${imgElement.src}, utilisation de l'image de secours`);
-            
-            imgElement.src = fallbackImages[category] || fallbackImages['default'];
-            imgElement.onerror = null; // Empêcher les boucles infinies
         }
 
         function populateCooperativeFilter() {
@@ -2145,7 +2217,7 @@
                 { id: 5, name: "Coopérative Les Producteurs Réunis" }
             ];
             
-            // Sauvegarder les coopératives par défaut si elles n'existent pas
+            // Sauvegarder les coopératives si elles n'existent pas
             if (!localStorage.getItem('cooperatives')) {
                 localStorage.setItem('cooperatives', JSON.stringify(cooperatives));
             }
@@ -2203,55 +2275,13 @@
             displayProducts(products);
         }
 
-        // Gestion de la sélection d'image
-        function handleImageSelect(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-            
-            // Vérifier la taille du fichier (max 2MB)
-            if (file.size > 2 * 1024 * 1024) {
-                alert('Le fichier est trop volumineux. Taille maximale: 2MB');
-                return;
-            }
-            
-            // Vérifier le type de fichier
-            if (!file.type.match('image.*')) {
-                alert('Veuillez sélectionner une image (JPG, PNG, GIF)');
-                return;
-            }
-            
-            // Lire le fichier et le convertir en Data URL
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                selectedImageData = e.target.result;
-                
-                // Afficher l'aperçu
-                const preview = document.getElementById('previewImage');
-                const previewContainer = document.getElementById('imagePreview');
-                if (preview && previewContainer) {
-                    preview.src = selectedImageData;
-                    previewContainer.style.display = 'block';
-                }
-                
-                // Mettre à jour le texte du conteneur
-                const uploadText = document.querySelector('.file-upload-text');
-                if (uploadText) {
-                    uploadText.textContent = 'Image sélectionnée: ' + file.name;
-                    uploadText.style.color = '#2e7d32';
-                    uploadText.style.fontWeight = '600';
-                }
-            };
-            reader.readAsDataURL(file);
-        }
-
-        // Vue détail produit
+        // ========== VUE DÉTAIL PRODUIT ==========
         function showProductDetail(productId) {
             const product = products.find(p => p.id === productId);
             if (!product) return;
             
             currentProductId = productId;
             
-            // Afficher la vue détail
             document.getElementById('productsListView').style.display = 'none';
             document.getElementById('productDetailView').style.display = 'block';
             
@@ -2260,12 +2290,15 @@
             url.searchParams.set('id', productId);
             window.history.pushState({}, '', url);
             
-            // Utiliser directement l'URL de l'image
-            const imageUrl = product.image;
+            // Utiliser l'image du produit ou une image de secours
+            let imageUrl = product.image;
+            if (!imageUrl || imageUrl.includes('undefined')) {
+                imageUrl = fallbackImages[product.category] || fallbackImages['default'];
+            }
             
             // Remplir les informations
             document.getElementById('productDetailName').textContent = product.name;
-            document.getElementById('productDetailPrice').textContent = `${product.price} FCFA/${product.unit}`;
+            document.getElementById('productDetailPrice').textContent = `${product.price.toLocaleString()} FCFA/${product.unit}`;
             document.getElementById('productDetailCoop').textContent = product.cooperative;
             document.getElementById('productDetailSeason').textContent = product.season;
             document.getElementById('productDetailUnit').textContent = product.unit;
@@ -2278,7 +2311,7 @@
                 imageElement.innerHTML = `<img src="${imageUrl}" 
                                            alt="${product.name}"
                                            style="width: 100%; height: 100%; object-fit: cover;"
-                                           onerror="handleImageError(this, '${product.category}')">`;
+                                           onerror="this.src='${fallbackImages['default']}'">`;
             }
             
             // Statistiques
@@ -2286,14 +2319,16 @@
             document.getElementById('statSales').textContent = product.sales || 0;
             document.getElementById('statRating').textContent = product.rating || '0.0';
             
-            // Formulaire de commande
+            // Commande
             document.getElementById('orderUnit').textContent = product.unit;
+            document.getElementById('orderQuantity').value = 1;
             updateOrderTotal();
             
-            // Afficher les actions admin si nécessaire
+            // Actions admin
             const adminActions = document.getElementById('adminProductActions');
-            if (adminActions && currentUser && currentUser.role === 'admin') {
-                adminActions.style.display = 'flex';
+            const isAdmin = currentUser && (currentUser.role === 'admin' || currentUser.isAdmin === true);
+            if (adminActions) {
+                adminActions.style.display = isAdmin ? 'flex' : 'none';
             }
         }
 
@@ -2302,13 +2337,12 @@
             document.getElementById('productDetailView').style.display = 'none';
             currentProductId = null;
             
-            // Nettoyer l'URL
             const url = new URL(window.location);
             url.searchParams.delete('id');
             window.history.pushState({}, '', url);
         }
 
-        // Gestion du formulaire de commande
+        // ========== GESTION DE LA COMMANDE ==========
         function increaseQuantity() {
             const input = document.getElementById('orderQuantity');
             if (input) input.value = parseInt(input.value) + 1;
@@ -2335,7 +2369,7 @@
             if (orderTotal) orderTotal.textContent = total.toLocaleString();
         }
 
-        // Gestion du panier
+        // ========== GESTION DU PANIER ==========
         function loadCart() {
             const saved = localStorage.getItem('cart');
             cart = saved ? JSON.parse(saved) : [];
@@ -2348,7 +2382,6 @@
         function updateCartDisplay() {
             const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
             
-            // Afficher/masquer le bouton panier
             const cartButtonContainer = document.getElementById('cartButtonContainer');
             const cartButton = document.getElementById('cartButton');
             const cartBadgeButton = document.getElementById('cartBadgeButton');
@@ -2378,14 +2411,16 @@
                 cart.push({
                     productId: productId,
                     quantity: 1,
+                    name: product.name,
+                    price: product.price,
+                    unit: product.unit,
                     addedAt: new Date().toISOString()
                 });
             }
             
             saveCart();
             updateCartDisplay();
-            
-            showNotification(`${product.name} ajouté au panier !`);
+            showNotification(`${product.name} ajouté au panier !`, 'success');
         }
 
         function addToCartFromDetail() {
@@ -2403,105 +2438,129 @@
                 cart.push({
                     productId: currentProductId,
                     quantity: quantity,
+                    name: product.name,
+                    price: product.price,
+                    unit: product.unit,
                     addedAt: new Date().toISOString()
                 });
             }
             
             saveCart();
             updateCartDisplay();
-            
-            showNotification(`${quantity} ${product.unit} de ${product.name} ajouté(s) au panier !`);
-        }
-
-        function showNotification(message) {
-            // Créer une notification temporaire
-            const notification = document.createElement('div');
-            notification.style.cssText = `
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                background: #2e7d32;
-                color: white;
-                padding: 15px 25px;
-                border-radius: 8px;
-                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-                z-index: 10000;
-                display: flex;
-                align-items: center;
-                gap: 10px;
-                animation: slideIn 0.3s ease;
-            `;
-            
-            notification.innerHTML = `
-                <i class="fas fa-check-circle"></i>
-                <span>${message}</span>
-            `;
-            
-            document.body.appendChild(notification);
-            
-            // Ajouter l'animation slideIn
-            const style = document.createElement('style');
-            style.innerHTML = `
-                @keyframes slideIn {
-                    from { transform: translateX(100%); opacity: 0; }
-                    to { transform: translateX(0); opacity: 1; }
-                }
-                @keyframes slideOut {
-                    from { transform: translateX(0); opacity: 1; }
-                    to { transform: translateX(100%); opacity: 0; }
-                }
-            `;
-            document.head.appendChild(style);
-            
-            // Supprimer après 3 secondes
-            setTimeout(() => {
-                notification.style.animation = 'slideOut 0.3s ease';
-                setTimeout(() => {
-                    notification.remove();
-                    style.remove();
-                }, 300);
-            }, 3000);
+            showNotification(`${quantity} ${product.unit} de ${product.name} ajouté(s) au panier !`, 'success');
         }
 
         function viewCart() {
             if (cart.length === 0) {
-                alert('Votre panier est vide');
+                showNotification('Votre panier est vide', 'info');
                 return;
             }
             
-            let cartContent = '<h3>Votre Panier</h3><ul style="text-align: left;">';
+            let cartContent = '<h3 style="color: #2e7d32; margin-bottom: 1rem;">Votre Panier</h3><ul style="list-style: none; padding: 0; text-align: left; max-height: 300px; overflow-y: auto;">';
             let total = 0;
             
-            cart.forEach(item => {
+            cart.forEach((item, index) => {
                 const product = products.find(p => p.id === item.productId);
                 if (product) {
                     const itemTotal = product.price * item.quantity;
                     total += itemTotal;
                     cartContent += `
-                        <li style="margin-bottom: 10px;">${item.quantity} ${product.unit} de ${product.name} - ${itemTotal.toLocaleString()} FCFA</li>
+                        <li style="margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid #eee;">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div>
+                                    <strong>${item.quantity} ${product.unit} de ${product.name}</strong><br>
+                                    <small>${product.price.toLocaleString()} FCFA/${product.unit}</small>
+                                </div>
+                                <div>
+                                    <strong>${itemTotal.toLocaleString()} FCFA</strong><br>
+                                    <button onclick="removeFromCart(${index})" style="background: #dc3545; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 0.8rem; margin-top: 5px;">Retirer</button>
+                                </div>
+                            </div>
+                        </li>
                     `;
                 }
             });
             
-            cartContent += `</ul><hr><strong style="font-size: 1.2rem;">Total: ${total.toLocaleString()} FCFA</strong>`;
+            cartContent += `</ul><hr style="margin: 1rem 0;"><div style="text-align: right;"><strong style="font-size: 1.3rem; color: #2e7d32;">Total: ${total.toLocaleString()} FCFA</strong></div>`;
             
-            if (confirm(`${cartContent}\n\nVoulez-vous passer commande ?`)) {
-                // Simuler une commande
-                showNotification('Commande passée avec succès !');
-                cart = [];
+            // Afficher dans un modal
+            const modal = document.createElement('div');
+            modal.className = 'modal';
+            modal.style.display = 'flex';
+            modal.innerHTML = `
+                <div class="modal-content" style="max-width: 500px;">
+                    <span class="close-modal" onclick="this.parentElement.parentElement.remove()">&times;</span>
+                    <h2 style="color: #2e7d32; margin-bottom: 1.5rem;">Votre Panier</h2>
+                    <div>${cartContent}</div>
+                    <div class="form-actions" style="margin-top: 1.5rem;">
+                        <button class="btn btn-outline" onclick="this.parentElement.parentElement.parentElement.remove()">Continuer mes achats</button>
+                        <button class="btn btn-primary" onclick="checkout()">Passer commande</button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            
+            // Fermer en cliquant à l'extérieur
+            modal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    this.remove();
+                }
+            });
+        }
+
+        function removeFromCart(index) {
+            if (index >= 0 && index < cart.length) {
+                cart.splice(index, 1);
                 saveCart();
                 updateCartDisplay();
+                
+                // Rafraîchir l'affichage du panier
+                const modal = document.querySelector('.modal');
+                if (modal) {
+                    modal.remove();
+                    viewCart();
+                }
             }
+        }
+
+        function checkout() {
+            if (cart.length === 0) {
+                showNotification('Votre panier est vide', 'error');
+                return;
+            }
+            
+            // Calculer le total
+            const total = cart.reduce((sum, item) => {
+                const product = products.find(p => p.id === item.productId);
+                return sum + (product ? product.price * item.quantity : 0);
+            }, 0);
+            
+            // Simuler une commande
+            showNotification(`Commande de ${total.toLocaleString()} FCFA passée avec succès !`, 'success');
+            
+            // Vider le panier
+            cart = [];
+            saveCart();
+            updateCartDisplay();
+            
+            // Fermer le modal
+            const modal = document.querySelector('.modal');
+            if (modal) modal.remove();
         }
 
         function buyNow() {
             addToCartFromDetail();
-            viewCart();
+            setTimeout(() => {
+                if (cart.length > 0) {
+                    checkout();
+                }
+            }, 100);
         }
 
-        // Gestion du modal produit (CRUD)
+        // ========== GESTION CRUD PRODUITS ==========
         function openProductModal(productId = null) {
-            // Réinitialiser la sélection d'image
+            // Réinitialiser l'image
             selectedImageData = null;
             const previewContainer = document.getElementById('imagePreview');
             const uploadText = document.querySelector('.file-upload-text');
@@ -2529,7 +2588,7 @@
                 document.getElementById('productStock').value = product.stock || 0;
                 document.getElementById('productDescription').value = product.description || '';
                 
-                // Pour l'édition, on préremplit avec l'image existante
+                // Image existante
                 if (product.image && product.image.startsWith('data:')) {
                     selectedImageData = product.image;
                     const preview = document.getElementById('previewImage');
@@ -2581,61 +2640,45 @@
             
             // Validation
             if (!productData.name || !productData.price || !productData.unit || !productData.cooperativeId) {
-                alert('Veuillez remplir tous les champs obligatoires (*)');
+                showNotification('Veuillez remplir tous les champs obligatoires (*)', 'error');
                 return;
             }
             
-            // Validation de l'image (obligatoire pour la création)
             if (!id && !selectedImageData) {
-                alert('Veuillez sélectionner une image pour le produit');
+                showNotification('Veuillez sélectionner une image pour le produit', 'error');
                 return;
             }
             
-            // Utiliser l'image sélectionnée ou l'image existante
+            // Gestion de l'image
             if (selectedImageData) {
                 productData.image = selectedImageData;
             } else if (id) {
-                // En mode édition, garder l'image existante si aucune nouvelle n'est sélectionnée
                 const existingProduct = products.find(p => p.id === parseInt(id));
                 if (existingProduct) {
                     productData.image = existingProduct.image;
                 } else {
-                    // Fallback si pas d'image
                     productData.image = fallbackImages[productData.category] || fallbackImages['default'];
                 }
             }
             
-            // Trouver le nom de la coopérative
+            // Nom de la coopérative
             const cooperatives = JSON.parse(localStorage.getItem('cooperatives')) || [];
             const cooperative = cooperatives.find(c => c.id == productData.cooperativeId);
             productData.cooperative = cooperative ? cooperative.name : 'Non spécifié';
             
             if (id) {
-                // Mise à jour
                 updateProduct(parseInt(id), productData);
-                showNotification('Produit modifié avec succès !');
+                showNotification('Produit modifié avec succès !', 'success');
             } else {
-                // Création
                 createProduct(productData);
-                showNotification('Produit créé avec succès !');
+                showNotification('Produit créé avec succès !', 'success');
             }
             
             closeProductModal();
             loadProducts();
             
-            // Si on est en vue détail, actualiser
             if (currentProductId) {
                 showProductDetail(currentProductId);
-            }
-        }
-
-        function editProduct(productId) {
-            openProductModal(productId);
-        }
-
-        function editCurrentProduct() {
-            if (currentProductId) {
-                editProduct(currentProductId);
             }
         }
 
@@ -2646,7 +2689,7 @@
                 id: newId,
                 ...productData,
                 sales: 0,
-                rating: 4.0,
+                rating: 4.0 + (Math.random() * 0.5),
                 createdAt: new Date().toISOString().split('T')[0]
             };
             
@@ -2660,7 +2703,6 @@
             const index = products.findIndex(p => p.id === id);
             if (index === -1) return null;
             
-            // Garder les valeurs existantes pour les champs non modifiés
             const existingProduct = products[index];
             
             products[index] = {
@@ -2674,6 +2716,16 @@
             
             saveProducts();
             return products[index];
+        }
+
+        function editProduct(productId) {
+            openProductModal(productId);
+        }
+
+        function editCurrentProduct() {
+            if (currentProductId) {
+                editProduct(currentProductId);
+            }
         }
 
         function deleteProductPrompt(productId, productName) {
@@ -2712,16 +2764,36 @@
             closeDeleteModal();
             loadProducts();
             
-            // Si on est en vue détail, revenir à la liste
             const detailView = document.getElementById('productDetailView');
             if (detailView && detailView.style.display === 'block') {
                 showProductsList();
             }
             
-            showNotification('Produit supprimé avec succès !');
+            showNotification('Produit supprimé avec succès !', 'success');
         }
 
-        // Fonctions d'export
+        // ========== FONCTIONS UTILITAIRES ==========
+        function showNotification(message, type = 'success') {
+            // Supprimer les anciennes notifications
+            document.querySelectorAll('.notification').forEach(n => n.remove());
+            
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.innerHTML = `
+                <i class="fas ${type === 'error' ? 'fa-exclamation-circle' : 
+                                type === 'warning' ? 'fa-exclamation-triangle' : 
+                                type === 'info' ? 'fa-info-circle' : 'fa-check-circle'}"></i>
+                <span>${message}</span>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+
         function exportProducts() {
             const dataStr = JSON.stringify(products, null, 2);
             const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
@@ -2732,16 +2804,18 @@
             linkElement.setAttribute('href', dataUri);
             linkElement.setAttribute('download', exportFileDefaultName);
             linkElement.click();
+            
+            showNotification('Export des produits réussi !', 'success');
         }
 
-        // Gestion des événements
+        // ========== GESTION DES ÉVÉNEMENTS ==========
         const orderQuantity = document.getElementById('orderQuantity');
         if (orderQuantity) {
             orderQuantity.addEventListener('input', updateOrderTotal);
             orderQuantity.addEventListener('change', updateOrderTotal);
         }
 
-        // Gestion de l'historique du navigateur
+        // Gestion de l'historique
         window.addEventListener('popstate', function() {
             const urlParams = new URLSearchParams(window.location.search);
             const productId = urlParams.get('id');
