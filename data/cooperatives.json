@@ -1,0 +1,36 @@
+[
+    {
+        "id": 1,
+        "name": "Coopérative La Terre Promise",
+        "location": "Aného-Ville",
+        "image": "../../assets/images/coop1.jpg",
+        "shortDescription": "Spécialisée dans les légumes feuilles traditionnels.",
+        "description": "La Coopérative La Terre Promise est une association de 15 agriculteurs bio spécialisés dans la culture des légumes feuilles traditionnels togolais. Nous pratiquons l'agroécologie depuis 2018.",
+        "members": 15,
+        "founded": 2018,
+        "hectares": 5.2,
+        "products": ["Épinard local", "Adémè", "Gboma", "Piment", "Tomate"],
+        "contact": {
+            "leader": "Kossi Adjo",
+            "phone": "+228 90 12 34 56",
+            "email": "laterrepromise@bioaneho.tg"
+        }
+    },
+    {
+        "id": 2,
+        "name": "Coopérative Les Jardins d'Aného",
+        "location": "Aného-Glidji",
+        "image": "../../assets/images/coop2.jpg",
+        "shortDescription": "Producteurs de légumes fruits biologiques.",
+        "description": "Les Jardins d'Aného regroupent 12 familles d'agriculteurs engagés dans la production biologique de légumes fruits. Notre mission est de préserver la biodiversité locale.",
+        "members": 12,
+        "founded": 2020,
+        "hectares": 3.8,
+        "products": ["Tomate", "Aubergine", "Poivron", "Concombre", "Courgette"],
+        "contact": {
+            "leader": "Afi Sossou",
+            "phone": "+228 91 23 45 67",
+            "email": "jardinsaneho@bioaneho.tg"
+        }
+    }
+]

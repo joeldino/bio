@@ -1,0 +1,1223 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact - Bio Aného</title>
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ===== STYLES SPÉCIFIQUES PAGE CONTACT ===== */
+        .contact-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .contact-info {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .contact-info h3 {
+            color: #2e7d32;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .contact-details {
+            margin: 1rem 0;
+        }
+        
+        .contact-details p {
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+        
+        .contact-details i {
+            color: #2e7d32;
+            margin-top: 3px;
+        }
+        
+        .contact-form {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        
+        .form-group textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        .map-container {
+            background: #e0f2e9;
+            height: 300px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #2e7d32;
+            margin: 2rem 0;
+        }
+        
+        .team-member {
+            text-align: center;
+            padding: 1.5rem;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .team-member img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 1rem;
+            background: #e0f2e9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #2e7d32;
+            font-size: 2rem;
+        }
+        
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .social-contact {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+            justify-content: center;
+        }
+        
+        .social-contact a {
+            width: 40px;
+            height: 40px;
+            background: #f5f5f5;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #2e7d32;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .social-contact a:hover {
+            background: #2e7d32;
+            color: white;
+        }
+        
+        .whatsapp-contact {
+            background: #25D366 !important;
+            color: white !important;
+            font-weight: bold;
+            margin-top: 1rem;
+        }
+        
+        .whatsapp-contact:hover {
+            background: #128C7E !important;
+        }
+        
+        /* ===== STYLES GÉNÉRAUX ET NAVIGATION ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Navigation principale */
+        .navbar {
+            background: linear-gradient(135deg, #2e7d32 0%, #4caf50 100%);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 0.8rem 0;
+        }
+        
+        .navbar .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 1.5rem;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: white;
+            text-decoration: none;
+            font-size: 1.5rem;
+            font-weight: 700;
+            transition: transform 0.3s ease;
+        }
+        
+        .logo:hover {
+            transform: scale(1.05);
+        }
+        
+        .logo i {
+            font-size: 2rem;
+            color: #c8e6c9;
+        }
+        
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        
+        .menu-toggle:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 1.8rem;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .nav-links li {
+            position: relative;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border-radius: 6px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .nav-links a:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+        
+        .nav-links a.active {
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* Bouton Connexion/Déconnexion */
+        .btn-auth {
+            background: white;
+            color: #2e7d32 !important;
+            padding: 0.6rem 1.2rem !important;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .btn-auth:hover {
+            background: #f8f9fa !important;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Style spécifique pour Déconnexion */
+        .btn-logout {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%) !important;
+            color: white !important;
+        }
+        
+        .btn-logout:hover {
+            background: linear-gradient(135deg, #c82333 0%, #bd2130 100%) !important;
+            box-shadow: 0 4px 8px rgba(220, 53, 69, 0.2);
+        }
+        
+        /* Page header */
+        .page-header {
+            background: white;
+            border-radius: 16px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            border: 1px solid #e8f5e9;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+        
+        .page-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, #2e7d32, #4caf50);
+        }
+        
+        .page-header h1 {
+            color: #2e7d32;
+            margin-bottom: 0.8rem;
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+        
+        .page-header p {
+            color: #666;
+            font-size: 1.1rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        /* Section title */
+        .section-title {
+            color: #2e7d32;
+            margin-bottom: 2rem;
+            font-size: 1.8rem;
+            text-align: center;
+            font-weight: 700;
+        }
+        
+        /* Boutons */
+        .btn {
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            display: inline-block;
+            text-align: center;
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 1rem;
+        }
+        
+        .btn-primary {
+            background: #2e7d32;
+            color: white;
+            border: 2px solid #2e7d32;
+        }
+        
+        .btn-primary:hover {
+            background: #1b5e20;
+            border-color: #1b5e20;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(27, 94, 32, 0.3);
+        }
+        
+        /* Footer */
+        .footer {
+            background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%);
+            color: white;
+            padding: 3rem 0 1rem;
+            margin-top: 4rem;
+        }
+        
+        .footer .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 3rem;
+        }
+        
+        .footer-section h4 {
+            color: white;
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+            position: relative;
+            padding-bottom: 12px;
+            font-weight: 700;
+        }
+        
+        .footer-section h4::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 3px;
+        }
+        
+        .footer-section p {
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.7;
+            margin-bottom: 1.2rem;
+        }
+        
+        .footer-section ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .footer-section ul li {
+            margin-bottom: 0.9rem;
+        }
+        
+        .footer-section a {
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 0.3rem 0;
+        }
+        
+        .footer-section a:hover {
+            color: white;
+            transform: translateX(8px);
+        }
+        
+        .footer-section i {
+            width: 24px;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        /* ===== MODAL DE CONNEXION ===== */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            width: 90%;
+            max-width: 450px;
+            position: relative;
+            animation: modalFadeIn 0.3s ease-out;
+        }
+        
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #666;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        
+        .close-modal:hover {
+            color: #2e7d32;
+        }
+        
+        .modal-title {
+            text-align: center;
+            color: #2e7d32;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .navbar .container {
+                padding: 0 1rem;
+            }
+            
+            .menu-toggle {
+                display: block;
+            }
+            
+            .nav-links {
+                display: none;
+                position: fixed;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background: #2e7d32;
+                flex-direction: column;
+                gap: 0;
+                padding: 1rem 0;
+                box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+                z-index: 1000;
+                border-top: 2px solid rgba(255,255,255,0.1);
+                border-radius: 0 0 16px 16px;
+                max-height: calc(100vh - 70px);
+                overflow-y: auto;
+            }
+            
+            .nav-links.show {
+                display: flex;
+            }
+            
+            .nav-links li {
+                width: 100%;
+            }
+            
+            .nav-links a {
+                padding: 1.2rem;
+                border-bottom: 1px solid rgba(255,255,255,0.1);
+                gap: 12px;
+                justify-content: center;
+            }
+            
+            .nav-links a:last-child {
+                border-bottom: none;
+            }
+            
+            .nav-links a.active {
+                background: rgba(255,255,255,0.2);
+                margin: 0 1rem;
+                border-radius: 10px;
+            }
+            
+            .btn-auth {
+                justify-content: center;
+                margin: 0.5rem 1rem;
+                display: flex;
+            }
+            
+            .page-header h1 {
+                font-size: 2rem;
+            }
+            
+            .page-header {
+                padding: 1.8rem;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer .container {
+                grid-template-columns: 1fr;
+                gap: 2.5rem;
+                text-align: center;
+            }
+            
+            .footer-section h4::after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+            
+            .footer-section a {
+                justify-content: center;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .page-header h1 {
+                font-size: 1.7rem;
+            }
+            
+            .team-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .contact-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation principale avec système d'authentification -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-leaf"></i>
+                <span>Bio Aného</span>
+            </a>
+            
+            <!-- Menu hamburger pour mobile -->
+            <button class="menu-toggle" id="menuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <!-- Navigation -->
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html">
+                    <i class="fas fa-home"></i>
+                    <span>Accueil</span>
+                </a></li>
+                <li><a href="../private/cooperatives.html">
+                    <i class="fas fa-tractor"></i>
+                    <span>Coopératives</span>
+                </a></li>
+                <li><a href="../private/members.html">
+                    <i class="fas fa-users"></i>
+                    <span>Membres</span>
+                </a></li>
+                <li><a href="../private/products.html">
+                    <i class="fas fa-seedling"></i>
+                    <span>Produits</span>
+                </a></li>
+                <li><a href="../private/sales.html">
+                    <i class="fas fa-store"></i>
+                    <span>Points de Vente</span>
+                </a></li>
+                <li><a href="news.html">
+                    <i class="fas fa-newspaper"></i>
+                    <span>Actualités</span>
+                </a></li>
+                <li><a href="contact.html" class="active">
+                    <i class="fas fa-envelope"></i>
+                    <span>Contact</span>
+                </a></li>
+                <li id="authNavItem">
+                    <!-- Le bouton connexion/déconnexion sera injecté ici par JavaScript -->
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Modal de connexion -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <button class="close-modal" id="closeModal">&times;</button>
+            <h2 class="modal-title">
+                <i class="fas fa-sign-in-alt"></i> Connexion
+            </h2>
+            
+            <div id="loginError" class="error-message">
+                Identifiants incorrects. Veuillez réessayer.
+            </div>
+            
+            <div id="loginSuccess" class="success-message">
+                Connexion réussie !
+            </div>
+            
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username">Nom d'utilisateur</label>
+                    <input type="text" id="username" name="username" placeholder="Entrez votre nom d'utilisateur" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Mot de passe</label>
+                    <input type="password" id="password" name="password" placeholder="Entrez votre mot de passe" required>
+                </div>
+                
+                <button type="submit" class="btn btn-primary" style="width: 100%;">
+                    <i class="fas fa-sign-in-alt"></i> Se connecter
+                </button>
+            </form>
+            
+            <p style="text-align: center; margin-top: 1.5rem; color: #666;">
+                <small>Pour un accès démo : utilisez <strong>admin</strong> / <strong>password</strong></small>
+            </p>
+        </div>
+    </div>
+
+    <main class="container" style="padding: 2rem 0;">
+        <div class="page-header">
+            <h1>Contactez-nous</h1>
+            <p>Nous sommes à votre écoute pour toute question ou collaboration</p>
+        </div>
+
+        <div class="contact-container">
+            <!-- Informations de contact -->
+            <div class="contact-info">
+                <h3><i class="fas fa-info-circle"></i> Informations de contact</h3>
+                <div class="contact-details">
+                    <p>
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>
+                            <strong>Adresse:</strong><br>
+                            Maraîchage Bio Aného<br>
+                            Quartier Vodougbe<br>
+                            Aného, Région Maritime<br>
+                            Togo
+                        </span>
+                    </p>
+                    <p>
+                        <i class="fas fa-phone"></i>
+                        <span>
+                            <strong>Téléphone:</strong><br>
+                            +228 96 85 70 42<br>
+                            +228 91 13 14 12
+                        </span>
+                    </p>
+                    <p>
+                        <i class="fas fa-envelope"></i>
+                        <span>
+                            <strong>Email:</strong>
+                            joelamzy91@gmail.com
+                        </span>
+                    </p>
+                    <p>
+                        <i class="fas fa-clock"></i>
+                        <span>
+                            <strong>Heures de Réunion:</strong><br>
+                            Dernier Jeudi de chaque mois à partir de 15h à 17h
+                        </span>
+                    </p>
+                </div>
+                
+                <a href="https://wa.me/22896857042" class="btn whatsapp-contact" style="width:100%; margin-top:1rem;">
+                    <i class="fab fa-whatsapp"></i> Contact WhatsApp
+                </a>
+            </div>
+
+            <!-- Formulaire de contact -->
+            <div class="contact-form">
+                <h3><i class="fas fa-paper-plane"></i> Envoyez-nous un message</h3>
+                <form id="contactForm" onsubmit="submitContactForm(event)">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="name">Nom complet *</label>
+                            <input type="text" id="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Téléphone *</label>
+                            <input type="tel" id="phone" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="subject">Sujet *</label>
+                        <select id="subject" required>
+                            <option value="">Sélectionnez un sujet</option>
+                            <option value="commande">Commande de produits</option>
+                            <option value="adhesion">Adhésion à une coopérative</option>
+                            <option value="partenariat">Proposition de partenariat</option>
+                            <option value="visite">Demande de visite de ferme</option>
+                            <option value="formation">Demande de formation</option>
+                            <option value="autre">Autre</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="message">Message *</label>
+                        <textarea id="message" required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" required>
+                            J'accepte que mes informations soient traitées conformément à la politique de confidentialité
+                        </label>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary" style="width:100%;">
+                        <i class="fas fa-paper-plane"></i> Envoyer le message
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Carte -->
+        <div class="map-container">
+            <div style="text-align: center;">
+                <i class="fas fa-map-marked-alt fa-4x"></i>
+                <p style="margin-top: 1rem; font-weight: bold;">Localisation à Aného</p>
+                <p>Nous sommes situés près du marché central d'Aného</p>
+            </div>
+        </div>
+
+        <!-- Équipe -->
+        <div>
+            <h2 class="section-title">Notre Équipe de Contact</h2>
+            <div class="team-grid">
+                <div class="team-member">
+                    <div style="width:100px; height:100px; background:#e0f2e9; border-radius:50%; margin:0 auto 1rem; display:flex; align-items:center; justify-content:center; color:#2e7d32; font-size:2rem;">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <h4>HOUNKPATI Yaovi Joël</h4>
+                    <p><strong>Coordinateur Technique</strong></p>
+                    <p>Développement web & gestion de projet</p>
+                    <p><i class="fas fa-phone"></i> +228 96 85 70 42</p>
+                    <div class="social-contact">
+                        <a href="https://wa.me/22896857042"><i class="fab fa-whatsapp"></i></a>
+                        <a href="#"><i class="fas fa-envelope"></i></a>
+                    </div>
+                </div>
+                
+                <div class="team-member">
+                    <div style="width:100px; height:100px; background:#e0f2e9; border-radius:50%; margin:0 auto 1rem; display:flex; align-items:center; justify-content:center; color:#2e7d32; font-size:2rem;">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <h4>Kouassi HOUNKPATI</h4>
+                    <p><strong>Responsable du Scoops Novissi</strong></p>
+                    <p>Gestion des coopératives</p>
+                    <p><i class="fas fa-phone"></i> +228 91131412</p>
+                    <div class="social-contact">
+                        <a href="https://wa.me/22891131412"><i class="fab fa-whatsapp"></i></a>
+                        <a href="#"><i class="fas fa-envelope"></i></a>
+                    </div>
+                </div>
+                
+                <div class="team-member">
+                    <div style="width:100px; height:100px; background:#e0f2e9; border-radius:50%; margin:0 auto 1rem; display:flex; align-items:center; justify-content:center; color:#2e7d32; font-size:2rem;">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <h4>DIABO</h4>
+                    <p><strong>Technicien Agricole</strong></p>
+                    <p>Formation et support aux agriculteurs</p>
+                    <p><i class="fas fa-phone"></i> +228 92 10 34 51</p>
+                    <div class="social-contact">
+                        <a href="https://wa.me/22892103451"><i class="fab fa-whatsapp"></i></a>
+                        <a href="#"><i class="fas fa-envelope"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FAQ -->
+        <div style="margin-top: 3rem; background: #f5f5f5; padding: 2rem; border-radius: 8px;">
+            <h2 class="section-title">Questions Fréquentes</h2>
+            <div style="margin-top: 1.5rem;">
+                <div style="margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid #ddd;">
+                    <h4 style="color: #2e7d32;">Comment devenir membre d'une coopérative?</h4>
+                    <p>Contactez-nous via le formulaire ou par téléphone. Nous organiserons une rencontre pour discuter de votre projet et vous présenter les coopératives disponibles.</p>
+                </div>
+                <div style="margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid #ddd;">
+                    <h4 style="color: #2e7d32;">Puis-je visiter les fermes?</h4>
+                    <p>Oui! Nous organisons des visites guidées chaque samedi matin. Contactez-nous pour réserver votre place.</p>
+                </div>
+                <div style="margin-bottom: 1rem;">
+                    <h4 style="color: #2e7d32;">Comment commander des produits?</h4>
+                    <p>Vous pouvez commander directement sur notre site (page Produits), nous contacter par téléphone, ou venir aux points de vente indiqués.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-section">
+                <h4>Bio Aného</h4>
+                <p>Développement durable par l'agriculture biologique à Aného, Togo.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Liens rapides</h4>
+                <ul>
+                    <li><a href="index.html">Accueil</a></li>
+                    <li><a href="../private/products.html">Produits</a></li>
+                    <li><a href="../private/cooperatives.html">Coopératives</a></li>
+                    <li><a href="../private/sales.html">Points de vente</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Contact</h4>
+                <p><i class="fas fa-map-marker-alt"></i> Aného, Région Maritime, Togo</p>
+                <p><i class="fas fa-phone"></i> +228 96 85 70 42</p>
+                <p><i class="fas fa-envelope"></i> joelamzy91@gmail.com</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Maraîchage Bio à Aného. Développé par HOUNKPATI Yaovi Joël</p>
+        </div>
+    </footer>
+
+    <script>
+        // ===== SYSTÈME D'AUTHENTIFICATION =====
+        
+        // Stockage des utilisateurs (mêmes que sur la page d'accueil)
+        const users = [
+            { username: 'Eldinio', password: 'Eldinio12', name: 'Administrateur', role: 'admin' },
+            { username: 'joel', password: 'bio123', name: 'Joël Hounkpati', role: 'user' },
+            { username: 'cooperative', password: 'coop2024', name: 'Coopérative A', role: 'cooperative' }
+        ];
+        
+        // Vérifier l'état d'authentification
+        function checkAuthStatus() {
+            const authToken = localStorage.getItem('authToken');
+            const userData = localStorage.getItem('userData');
+            
+            return {
+                isLoggedIn: !!authToken,
+                user: userData ? JSON.parse(userData) : null
+            };
+        }
+        
+        // Mettre à jour le bouton de connexion/déconnexion
+        function updateAuthButton() {
+            const authStatus = checkAuthStatus();
+            const authNavItem = document.getElementById('authNavItem');
+            
+            if (!authNavItem) return;
+            
+            if (authStatus.isLoggedIn && authStatus.user) {
+                // Utilisateur connecté - afficher le bouton de déconnexion
+                authNavItem.innerHTML = `
+                    <a href="#" class="btn-auth btn-logout" id="logoutBtn">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Déconnexion (${authStatus.user.name || authStatus.user.username})</span>
+                    </a>
+                `;
+                
+                // Ajouter l'événement de déconnexion
+                document.getElementById('logoutBtn')?.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    logout();
+                });
+            } else {
+                // Utilisateur non connecté - afficher le bouton de connexion
+                authNavItem.innerHTML = `
+                    <a href="#" class="btn-auth" id="loginBtn">
+                        <i class="fas fa-sign-in-alt"></i>
+                        <span>Connexion</span>
+                    </a>
+                `;
+                
+                // Ajouter l'événement d'ouverture du modal
+                document.getElementById('loginBtn')?.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    openLoginModal();
+                });
+            }
+        }
+        
+        // Ouvrir le modal de connexion
+        function openLoginModal() {
+            const modal = document.getElementById('loginModal');
+            if (modal) {
+                modal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            }
+        }
+        
+        // Fermer le modal de connexion
+        function closeLoginModal() {
+            const modal = document.getElementById('loginModal');
+            if (modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+                // Réinitialiser le formulaire
+                document.getElementById('loginForm')?.reset();
+                // Cacher les messages d'erreur/succès
+                const errorMsg = document.getElementById('loginError');
+                const successMsg = document.getElementById('loginSuccess');
+                if (errorMsg) errorMsg.style.display = 'none';
+                if (successMsg) successMsg.style.display = 'none';
+            }
+        }
+        
+        // Fonction de connexion
+        function login(username, password) {
+            // Rechercher l'utilisateur
+            const user = users.find(u => u.username === username && u.password === password);
+            
+            if (user) {
+                // Créer un token d'authentification
+                const authToken = 'bioaneho_' + Date.now() + '_' + Math.random().toString(36).substr(2);
+                
+                // Stocker les données utilisateur (sans le mot de passe)
+                const userData = {
+                    username: user.username,
+                    name: user.name,
+                    role: user.role,
+                    loginTime: new Date().toISOString()
+                };
+                
+                // Sauvegarder dans localStorage
+                localStorage.setItem('authToken', authToken);
+                localStorage.setItem('userData', JSON.stringify(userData));
+                
+                return { success: true, user: userData };
+            }
+            
+            return { success: false, message: 'Identifiants incorrects' };
+        }
+        
+        // Fonction de déconnexion
+        function logout() {
+            if (confirm('Êtes-vous sûr de vouloir vous déconnecter ?')) {
+                // Supprimer les données de session
+                localStorage.removeItem('authToken');
+                localStorage.removeItem('userData');
+                
+                // Mettre à jour l'interface
+                updateAuthButton();
+                
+                // Rediriger vers la page d'accueil si on est sur une page privée
+                const currentPath = window.location.pathname;
+                if (currentPath.includes('private/') && !currentPath.includes('dashboard.html')) {
+                    window.location.href = '../public/index.html';
+                }
+            }
+        }
+        
+        // ===== GESTION DU MENU MOBILE =====
+        function initMenu() {
+            const menuToggle = document.getElementById('menuToggle');
+            const navLinks = document.getElementById('navLinks');
+            
+            if (menuToggle && navLinks) {
+                menuToggle.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    navLinks.classList.toggle('show');
+                    const icon = menuToggle.querySelector('i');
+                    
+                    if (navLinks.classList.contains('show')) {
+                        icon.classList.remove('fa-bars');
+                        icon.classList.add('fa-times');
+                        document.body.style.overflow = 'hidden';
+                    } else {
+                        icon.classList.remove('fa-times');
+                        icon.classList.add('fa-bars');
+                        document.body.style.overflow = 'auto';
+                    }
+                });
+                
+                // Fermer le menu quand on clique sur un lien
+                navLinks.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', function() {
+                        navLinks.classList.remove('show');
+                        menuToggle.querySelector('i').classList.remove('fa-times');
+                        menuToggle.querySelector('i').classList.add('fa-bars');
+                        document.body.style.overflow = 'auto';
+                    });
+                });
+                
+                // Fermer le menu quand on clique en dehors
+                document.addEventListener('click', function(e) {
+                    if (!menuToggle.contains(e.target) && !navLinks.contains(e.target)) {
+                        navLinks.classList.remove('show');
+                        menuToggle.querySelector('i').classList.remove('fa-times');
+                        menuToggle.querySelector('i').classList.add('fa-bars');
+                        document.body.style.overflow = 'auto';
+                    }
+                });
+                
+                // Gestion du redimensionnement
+                window.addEventListener('resize', function() {
+                    if (window.innerWidth > 768) {
+                        navLinks.classList.remove('show');
+                        menuToggle.querySelector('i').classList.remove('fa-times');
+                        menuToggle.querySelector('i').classList.add('fa-bars');
+                        document.body.style.overflow = 'auto';
+                    }
+                });
+            }
+        }
+        
+        // ===== FONCTION POUR LE FORMULAIRE DE CONTACT =====
+        function submitContactForm(event) {
+            event.preventDefault();
+            
+            const name = document.getElementById('name').value;
+            const phone = document.getElementById('phone').value;
+            const subject = document.getElementById('subject').value;
+            const message = document.getElementById('message').value;
+            
+            // Stocker le message
+            const messages = JSON.parse(localStorage.getItem('contactMessages')) || [];
+            messages.push({
+                id: messages.length + 1,
+                name,
+                phone,
+                subject,
+                message,
+                date: new Date().toISOString(),
+                read: false
+            });
+            
+            localStorage.setItem('contactMessages', JSON.stringify(messages));
+            
+            // Réinitialiser le formulaire
+            document.getElementById('contactForm').reset();
+            
+            // Afficher un message de succès
+            alert('Merci pour votre message! Nous vous répondrons dans les plus brefs délais.');
+        }
+        
+        // ===== INITIALISATION DE LA PAGE =====
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialiser l'authentification
+            updateAuthButton();
+            
+            // Initialiser le menu mobile
+            initMenu();
+            
+            // Gestion du modal de connexion
+            const loginModal = document.getElementById('loginModal');
+            const closeModalBtn = document.getElementById('closeModal');
+            const loginForm = document.getElementById('loginForm');
+            
+            // Fermer le modal quand on clique en dehors
+            if (loginModal) {
+                loginModal.addEventListener('click', function(e) {
+                    if (e.target === loginModal) {
+                        closeLoginModal();
+                    }
+                });
+            }
+            
+            // Fermer avec le bouton X
+            if (closeModalBtn) {
+                closeModalBtn.addEventListener('click', closeLoginModal);
+            }
+            
+            // Fermer avec la touche Échap
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && loginModal && loginModal.style.display === 'flex') {
+                    closeLoginModal();
+                }
+            });
+            
+            // Gestion du formulaire de connexion
+            if (loginForm) {
+                loginForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const username = document.getElementById('username').value;
+                    const password = document.getElementById('password').value;
+                    const errorMsg = document.getElementById('loginError');
+                    const successMsg = document.getElementById('loginSuccess');
+                    
+                    // Cacher les messages précédents
+                    if (errorMsg) errorMsg.style.display = 'none';
+                    if (successMsg) successMsg.style.display = 'none';
+                    
+                    // Tentative de connexion
+                    const result = login(username, password);
+                    
+                    if (result.success) {
+                        // Afficher message de succès
+                        if (successMsg) {
+                            successMsg.style.display = 'block';
+                            successMsg.textContent = `Connexion réussie ! Bienvenue ${result.user.name}`;
+                        }
+                        
+                        // Mettre à jour le bouton
+                        updateAuthButton();
+                        
+                        // Fermer le modal après 1.5 secondes
+                        setTimeout(() => {
+                            closeLoginModal();
+                            
+                            // Si l'utilisateur est admin, rediriger vers le dashboard
+                            if (result.user.role === 'admin') {
+                                window.location.href = '../private/dashboard.html';
+                            }
+                        }, 1500);
+                    } else {
+                        // Afficher message d'erreur
+                        if (errorMsg) {
+                            errorMsg.style.display = 'block';
+                            errorMsg.textContent = result.message;
+                        }
+                        if (document.getElementById('password')) {
+                            document.getElementById('password').value = '';
+                        }
+                    }
+                });
+            }
+            
+            // Écouter les changements de localStorage (pour synchroniser les onglets)
+            window.addEventListener('storage', function(e) {
+                if (e.key === 'authToken' || e.key === 'userData') {
+                    updateAuthButton();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

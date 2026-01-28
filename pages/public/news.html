@@ -1,0 +1,1641 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actualités - Bio Aného</title>
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Styles de base */
+        :root {
+            --primary-color: #2e7d32;
+            --primary-dark: #1b5e20;
+            --primary-light: #4caf50;
+            --secondary-color: #ff9800;
+            --light-gray: #f5f5f5;
+            --dark-gray: #333;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Navigation avec système d'authentification */
+        .navbar {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary-color));
+            color: white;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .navbar .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+            text-decoration: none;
+            font-size: 1.5rem;
+            font-weight: bold;
+            z-index: 1001;
+        }
+        
+        .logo i {
+            font-size: 2rem;
+            color: #c8e6c9;
+        }
+        
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 5px;
+            z-index: 1001;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .nav-links a:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .nav-links a.active {
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* Bouton Connexion/Déconnexion */
+        .btn-auth {
+            background: white;
+            color: #2e7d32 !important;
+            padding: 0.6rem 1.2rem !important;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .btn-auth:hover {
+            background: #f8f9fa !important;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Style spécifique pour Déconnexion */
+        .btn-logout {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%) !important;
+            color: white !important;
+        }
+        
+        .btn-logout:hover {
+            background: linear-gradient(135deg, #c82333 0%, #bd2130 100%) !important;
+            box-shadow: 0 4px 8px rgba(220, 53, 69, 0.2);
+        }
+        
+        /* Header de page */
+        .page-header {
+            text-align: center;
+            padding: 3rem 0;
+            background: white;
+            border-radius: 10px;
+            margin: 2rem 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .page-header h1 {
+            color: var(--primary-dark);
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .page-header p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+        
+        /* Conteneur actualités */
+        .news-container {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .news-article {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .news-article:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        
+        @media (min-width: 768px) {
+            .news-article {
+                display: flex;
+            }
+        }
+        
+        .news-image {
+            flex: 1;
+            min-height: 250px;
+            background: linear-gradient(45deg, var(--primary-color), var(--primary-light));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 4rem;
+        }
+        
+        .news-content {
+            flex: 2;
+            padding: 2rem;
+        }
+        
+        .news-meta {
+            display: flex;
+            gap: 1rem;
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+        
+        .news-meta i {
+            margin-right: 5px;
+            color: var(--primary-color);
+        }
+        
+        .news-title {
+            color: var(--primary-dark);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        
+        .news-excerpt {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+        
+        .read-more {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: bold;
+            transition: gap 0.3s ease;
+        }
+        
+        .read-more:hover {
+            gap: 12px;
+        }
+        
+        .categories {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin: 1rem 0;
+        }
+        
+        .category {
+            background: #e8f5e9;
+            color: var(--primary-dark);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        .journal-entry {
+            background: #fff8e1;
+            border-left: 4px solid var(--secondary-color);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .journal-meta {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 0.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .journal-meta strong {
+            color: var(--dark-gray);
+        }
+        
+        .success-story {
+            background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+            border: 2px solid #4caf50;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .success-story::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--primary-color);
+        }
+        
+        .success-story h4 {
+            color: var(--primary-dark);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.3rem;
+        }
+        
+        .success-story h4 i {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+        }
+        
+        .success-story p {
+            margin-bottom: 1rem;
+            color: #2e7d32;
+        }
+        
+        /* Section journal */
+        .journal-section {
+            background: #f8f9fa;
+            padding: 2.5rem;
+            border-radius: 12px;
+            margin-top: 3rem;
+            border: 2px solid #e8f5e9;
+        }
+        
+        .section-title {
+            color: var(--primary-dark);
+            text-align: center;
+            margin-bottom: 1rem;
+            font-size: 2rem;
+        }
+        
+        .journal-entries-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .journal-card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+            border: 1px solid #e0e0e0;
+        }
+        
+        .journal-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+        
+        .journal-card-title {
+            color: var(--primary-dark);
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        
+        .journal-card-date {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .journal-card-author {
+            color: var(--primary-color);
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+        
+        .journal-card-content {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+        
+        .journal-card-details {
+            background: #f5f5f5;
+            padding: 1rem;
+            border-radius: 6px;
+            margin-top: 1rem;
+        }
+        
+        .journal-card-details p {
+            margin-bottom: 0.5rem;
+        }
+        
+        .journal-card-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #eee;
+        }
+        
+        .like-btn {
+            background: none;
+            border: none;
+            color: #666;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: color 0.3s;
+        }
+        
+        .like-btn:hover {
+            color: #e91e63;
+        }
+        
+        .like-btn.liked {
+            color: #e91e63;
+        }
+        
+        /* Boutons */
+        .btn {
+            padding: 12px 24px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary-color));
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(46, 125, 50, 0.3);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+        
+        .btn-outline:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        /* Modal de connexion */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(3px);
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            padding: 2.5rem;
+            width: 90%;
+            max-width: 450px;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: modalFadeIn 0.3s ease-out;
+        }
+        
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 1.2rem;
+            right: 1.2rem;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: #666;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            background: none;
+            border: none;
+        }
+        
+        .close-modal:hover {
+            background: #f5f5f5;
+            color: #333;
+        }
+        
+        /* Formulaires */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.6rem;
+            font-weight: 600;
+            color: #495057;
+            font-size: 0.95rem;
+        }
+        
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.1);
+        }
+        
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 2px solid #dee2e6;
+        }
+        
+        /* Messages d'erreur/succès */
+        .error-message {
+            background: #ffebee;
+            color: #c62828;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            display: none;
+        }
+        
+        .success-message {
+            background: #e8f5e9;
+            color: #2e7d32;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            display: none;
+        }
+        
+        /* Footer */
+        .footer {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary-color));
+            color: white;
+            padding: 3rem 0 1rem;
+            margin-top: 4rem;
+        }
+        
+        .footer .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+        }
+        
+        .footer-section h4 {
+            color: white;
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+            position: relative;
+            padding-bottom: 12px;
+            font-weight: 700;
+        }
+        
+        .footer-section h4::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 3px;
+        }
+        
+        .footer-section p {
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.7;
+            margin-bottom: 1.2rem;
+        }
+        
+        .footer-section ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .footer-section ul li {
+            margin-bottom: 0.9rem;
+        }
+        
+        .footer-section a {
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .footer-section a:hover {
+            color: white;
+            transform: translateX(8px);
+        }
+        
+        .footer-section i {
+            width: 24px;
+            text-align: center;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+            
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: var(--primary-dark);
+                flex-direction: column;
+                gap: 0;
+                padding: 1rem 0;
+                box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+                z-index: 1000;
+                max-height: 80vh;
+                overflow-y: auto;
+                border-radius: 0 0 10px 10px;
+                margin-top: 10px;
+            }
+            
+            .nav-links.show {
+                display: flex;
+            }
+            
+            .nav-links li {
+                width: 100%;
+                text-align: center;
+            }
+            
+            .nav-links a {
+                display: flex;
+                justify-content: center;
+                padding: 1rem 1.2rem;
+                border-bottom: 1px solid rgba(255,255,255,0.1);
+            }
+            
+            .nav-links a:last-child {
+                border-bottom: none;
+            }
+            
+            .nav-links a.active {
+                background: rgba(255,255,255,0.2);
+                margin: 0 1rem;
+                border-radius: 6px;
+            }
+            
+            .btn-auth {
+                justify-content: center;
+                margin: 0.5rem 1rem;
+                width: calc(100% - 2rem);
+            }
+            
+            .news-article {
+                flex-direction: column;
+            }
+            
+            .news-image {
+                min-height: 200px;
+            }
+            
+            .page-header h1 {
+                font-size: 2rem;
+            }
+            
+            .modal-content {
+                padding: 1.8rem;
+                width: 95%;
+            }
+            
+            .footer .container {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 2rem;
+            }
+            
+            .footer-section h4::after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+        }
+        
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .container {
+                padding: 0 30px;
+            }
+            
+            .news-article {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation avec système d'authentification -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-leaf"></i>
+                <span>Bio Aného</span>
+            </a>
+            <button class="menu-toggle" id="menuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html">
+                    <i class="fas fa-home"></i>
+                    <span>Accueil</span>
+                </a></li>
+                <li><a href="../private/cooperatives.html">
+                    <i class="fas fa-tractor"></i>
+                    <span>Coopératives</span>
+                </a></li>
+                <li><a href="../private/members.html">
+                    <i class="fas fa-users"></i>
+                    <span>Membres</span>
+                </a></li>
+                <li><a href="../private/products.html">
+                    <i class="fas fa-seedling"></i>
+                    <span>Produits</span>
+                </a></li>
+                <li><a href="../private/sales.html">
+                    <i class="fas fa-store"></i>
+                    <span>Points de Vente</span>
+                </a></li>
+                <li><a href="news.html" class="active">
+                    <i class="fas fa-newspaper"></i>
+                    <span>Actualités</span>
+                </a></li>
+                <li><a href="contact.html">
+                    <i class="fas fa-envelope"></i>
+                    <span>Contact</span>
+                </a></li>
+                <li id="authNavItem">
+                    <!-- Le bouton connexion/déconnexion sera injecté ici par JavaScript -->
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Modal de connexion -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <button class="close-modal" id="closeModal">&times;</button>
+            <h2 style="text-align: center; color: #2e7d32; margin-bottom: 1.5rem;">
+                <i class="fas fa-sign-in-alt"></i> Connexion
+            </h2>
+            
+            <div id="loginError" class="error-message">
+                Identifiants incorrects. Veuillez réessayer.
+            </div>
+            
+            <div id="loginSuccess" class="success-message">
+                Connexion réussie !
+            </div>
+            
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username">Nom d'utilisateur</label>
+                    <input type="text" id="username" name="username" placeholder="Entrez votre nom d'utilisateur" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Mot de passe</label>
+                    <input type="password" id="password" name="password" placeholder="Entrez votre mot de passe" required>
+                </div>
+                
+                <button type="submit" class="btn btn-primary" style="width: 100%;">
+                    <i class="fas fa-sign-in-alt"></i> Se connecter
+                </button>
+            </form>
+            
+            <p style="text-align: center; margin-top: 1.5rem; color: #666;">
+                <small>Compte admin : utilisez <strong>Eldinio</strong> / <strong>Eldinio12</strong></small>
+            </p>
+        </div>
+    </div>
+
+    <!-- Contenu principal -->
+    <main class="container" style="padding: 2rem 0;">
+        <!-- Header -->
+        <div class="page-header">
+            <h1>Actualités & Journal d'Apprentissage</h1>
+            <p>Suivez nos dernières nouvelles, succès et apprentissages</p>
+        </div>
+
+        <!-- Section succès -->
+        <div class="success-story">
+            <h4><i class="fas fa-trophy"></i> Succès de la semaine</h4>
+            <p><strong>Première récolte de tomates bio!</strong> La coopérative Maraîchers Bio d'Aného a récolté ses premières 200kg de tomates cultivées sans pesticides. Les tests de qualité montrent une excellente teneur en nutriments.</p>
+            <div class="journal-meta">
+                <span><i class="fas fa-calendar"></i> 15 Mars 2025</span>
+                <span><i class="fas fa-user"></i> AMAH Kossi</span>
+                <span><i class="fas fa-map-marker-alt"></i> Parcelle A3</span>
+            </div>
+        </div>
+
+        <!-- Articles d'actualité -->
+        <div class="news-container">
+            <!-- Article 1 -->
+            <div class="news-article">
+                <div class="news-image">
+                    <i class="fas fa-seedling"></i>
+                </div>
+                <div class="news-content">
+                    <div class="news-meta">
+                        <span><i class="fas fa-calendar"></i> 10 Mars 2025</span>
+                        <span><i class="fas fa-user"></i> Équipe Bio Aného</span>
+                    </div>
+                    <h3 class="news-title">Formation sur le compostage local réussi</h3>
+                    <div class="categories">
+                        <span class="category">Formation</span>
+                        <span class="category">Écologie</span>
+                        <span class="category">Coopérative</span>
+                    </div>
+                    <p class="news-excerpt">
+                        16 agriculteurs ont participé à notre atelier sur les techniques de compostage utilisant des matériaux locaux (algues marines, coques de noix de coco, déchets verts). Les participants ont appris à créer un compost riche en 3 mois seulement.
+                    </p>
+                    <a href="#" class="read-more">Lire la suite <i class="fas fa-arrow-right"></i></a>
+                    
+                    <div class="journal-entry">
+                        <div class="journal-meta">
+                            <strong><i class="fas fa-check-circle"></i> Ce qui a marché:</strong> L'utilisation d'algues marines a accéléré la décomposition
+                        </div>
+                        <div class="journal-meta">
+                            <strong><i class="fas fa-lightbulb"></i> Amélioration pour la semaine prochaine:</strong> Tester avec différents ratios de matériaux
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Article 2 -->
+            <div class="news-article">
+                <div class="news-image">
+                    <i class="fas fa-tint"></i>
+                </div>
+                <div class="news-content">
+                    <div class="news-meta">
+                        <span><i class="fas fa-calendar"></i> 5 Mars 2025</span>
+                        <span><i class="fas fa-user"></i> Service Technique</span>
+                    </div>
+                    <h3 class="news-title">Installation du système goutte-à-goutte</h3>
+                    <div class="categories">
+                        <span class="category">Irrigation</span>
+                        <span class="category">Innovation</span>
+                        <span class="category">Économie d'eau</span>
+                    </div>
+                    <p class="news-excerpt">
+                        Notre nouveau système d'irrigation goutte-à-goutte avec récupération d'eau de pluie est maintenant opérationnel sur 2 hectares. Ce système permet d'économiser 60% d'eau par rapport à l'irrigation traditionnelle.
+                    </p>
+                    <a href="#" class="read-more">Lire la suite <i class="fas fa-arrow-right"></i></a>
+                    
+                    <div class="journal-entry">
+                        <div class="journal-meta">
+                            <strong><i class="fas fa-star"></i> Surprise:</strong> Les plantes sont plus saines avec l'irrigation localisée
+                        </div>
+                        <div class="journal-meta">
+                            <strong><i class="fas fa-exclamation-triangle"></i> Défi:</strong> Maintenance régulière nécessaire pour éviter le colmatage
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Article 3 -->
+            <div class="news-article">
+                <div class="news-image">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="news-content">
+                    <div class="news-meta">
+                        <span><i class="fas fa-calendar"></i> 20 juin 2025</span>
+                        <span><i class="fas fa-user"></i> Comité d'Organisation</span>
+                    </div>
+                    <h3 class="news-title">Nouveaux jeunes intéressés par l'agriculture bio</h3>
+                    <div class="categories">
+                        <span class="category">Jeunesse</span>
+                        <span class="category">Recrutement</span>
+                        <span class="category">Communauté</span>
+                    </div>
+                    <p class="news-excerpt">
+                        6 jeunes d'Aného ont participé à notre journée portes ouvertes. 3 d'entre eux se sont inscrits pour suivre une formation pratique en maraîchage bio. Une excellente nouvelle pour le renouvellement des générations d'agriculteurs.
+                    </p>
+                    <a href="#" class="read-more">Lire la suite <i class="fas fa-arrow-right"></i></a>
+                    
+                    <div class="journal-entry">
+                        <div class="journal-meta">
+                            <strong><i class="fas fa-check-circle"></i> Ce qui a marché:</strong> La démonstration pratique sur le terrain
+                        </div>
+                        <div class="journal-meta">
+                            <strong><i class="fas fa-exclamation-triangle"></i> Qu'est-ce qui a échoué:</strong> Manque de matériel pour tous les participants
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Journal d'apprentissage -->
+        <div class="journal-section">
+            <h2 class="section-title">Journal d'Apprentissage Collectif</h2>
+            <p style="text-align: center; margin-bottom: 2rem; color: #666;">
+                <i class="fas fa-users" style="color: var(--primary-color); margin-right: 8px;"></i>
+                Partagez vos expériences, succès et défis avec la communauté des agriculteurs bio d'Aného
+            </p>
+            
+            <div id="journalEntries" class="journal-entries-container">
+                <!-- Les entrées seront chargées par JavaScript -->
+            </div>
+            
+            <div style="text-align: center; margin-top: 3rem;">
+                <button class="btn btn-primary" onclick="openJournalModal()">
+                    <i class="fas fa-plus"></i> Partager votre expérience
+                </button>
+                <p style="margin-top: 1rem; color: #666; font-size: 0.9rem;">
+                    <i class="fas fa-info-circle"></i> Tout le monde peut contribuer ! Agriculteurs, coopératives, techniciens...
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal pour ajouter une entrée au journal -->
+    <div id="journalModal" class="modal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeJournalModal()">&times;</button>
+            <h2><i class="fas fa-edit"></i> Partager votre expérience</h2>
+            <p style="margin-bottom: 1.5rem; color: #666;">
+                Partagez ce que vous avez appris, ce qui a fonctionné, les défis rencontrés...
+            </p>
+            <form id="journalForm" onsubmit="saveJournalEntry(event)">
+                <div class="form-group">
+                    <label for="journalTitle">Titre de votre expérience *</label>
+                    <input type="text" id="journalTitle" required placeholder="Ex: Première récolte de carottes bio">
+                </div>
+                
+                <div class="form-group">
+                    <label for="authorName">Votre nom *</label>
+                    <input type="text" id="authorName" required placeholder="Ex: Kossi AGBOH">
+                </div>
+                
+                <div class="form-group">
+                    <label for="journalContent">Décrivez votre expérience *</label>
+                    <textarea id="journalContent" rows="5" required placeholder="Racontez ce que vous avez fait, observé, appris..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="journalCooperative">Coopérative (facultatif)</label>
+                    <select id="journalCooperative">
+                        <option value="">Sélectionner une coopérative</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="journalSuccess">Ce qui a bien fonctionné (facultatif)</label>
+                    <textarea id="journalSuccess" rows="2" placeholder="Les techniques qui ont marché, les bonnes surprises..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="journalChallenge">Défis rencontrés (facultatif)</label>
+                    <textarea id="journalChallenge" rows="2" placeholder="Les difficultés, les échecs, les problèmes..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="journalImprovement">Améliorations prévues (facultatif)</label>
+                    <textarea id="journalImprovement" rows="2" placeholder="Ce que vous ferez différemment la prochaine fois..."></textarea>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" class="btn btn-outline" onclick="closeJournalModal()">Annuler</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-share-alt"></i> Publier sur le journal
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-section">
+                <h4>Bio Aného</h4>
+                <p>Développement durable par l'agriculture biologique à Aného, Togo.</p>
+                <p>Engagés pour une agriculture responsable et respectueuse de l'environnement.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Liens rapides</h4>
+                <ul>
+                    <li><a href="index.html"><i class="fas fa-home"></i> Accueil</a></li>
+                    <li><a href="../private/products.html"><i class="fas fa-seedling"></i> Produits</a></li>
+                    <li><a href="../private/cooperatives.html"><i class="fas fa-tractor"></i> Coopératives</a></li>
+                    <li><a href="../private/sales.html"><i class="fas fa-store"></i> Points de vente</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Contact</h4>
+                <p><i class="fas fa-map-marker-alt"></i> Aného, Région Maritime, Togo</p>
+                <p><i class="fas fa-phone"></i> +228 96 85 70 42</p>
+                <p><i class="fas fa-envelope"></i> joelamzy91@gmail.com</p>
+                <p><i class="fas fa-clock"></i> Lundi - Vendredi: 8h-18h</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Maraîchage Bio à Aného. Développé par HOUNKPATI Yaovi Joël</p>
+            <p style="margin-top: 0.5rem; font-size: 0.85rem;">Tous droits réservés.</p>
+        </div>
+    </footer>
+
+    <script>
+        // ===== SYSTÈME D'AUTHENTIFICATION =====
+        
+        // Stockage des utilisateurs avec vos identifiants spécifiques
+        const users = [
+            { username: 'Eldinio', password: 'Eldinio12', name: 'Administrateur Eldinio', role: 'admin' },
+            { username: 'joel', password: 'bio123', name: 'Joël Hounkpati', role: 'user' },
+            { username: 'cooperative', password: 'coop2024', name: 'Coopérative A', role: 'cooperative' }
+        ];
+        
+        // Vérifier l'état d'authentification
+        function checkAuthStatus() {
+            const authToken = localStorage.getItem('authToken');
+            const userData = localStorage.getItem('userData');
+            
+            return {
+                isLoggedIn: !!authToken,
+                user: userData ? JSON.parse(userData) : null
+            };
+        }
+        
+        // Mettre à jour le bouton de connexion/déconnexion
+        function updateAuthButton() {
+            const authStatus = checkAuthStatus();
+            const authNavItem = document.getElementById('authNavItem');
+            
+            if (!authNavItem) return;
+            
+            if (authStatus.isLoggedIn && authStatus.user) {
+                // Utilisateur connecté - afficher le bouton de déconnexion
+                authNavItem.innerHTML = `
+                    <a href="#" class="btn-auth btn-logout" id="logoutBtn">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Déconnexion (${authStatus.user.name || authStatus.user.username})</span>
+                    </a>
+                `;
+                
+                // Ajouter l'événement de déconnexion
+                document.getElementById('logoutBtn')?.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    logout();
+                });
+            } else {
+                // Utilisateur non connecté - afficher le bouton de connexion
+                authNavItem.innerHTML = `
+                    <a href="#" class="btn-auth" id="loginBtn">
+                        <i class="fas fa-sign-in-alt"></i>
+                        <span>Connexion</span>
+                    </a>
+                `;
+                
+                // Ajouter l'événement d'ouverture du modal
+                document.getElementById('loginBtn')?.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    openLoginModal();
+                });
+            }
+        }
+        
+        // Ouvrir le modal de connexion
+        function openLoginModal() {
+            const modal = document.getElementById('loginModal');
+            if (modal) {
+                modal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            }
+        }
+        
+        // Fermer le modal de connexion
+        function closeLoginModal() {
+            const modal = document.getElementById('loginModal');
+            if (modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+                // Réinitialiser le formulaire
+                document.getElementById('loginForm')?.reset();
+                // Cacher les messages d'erreur/succès
+                const errorMsg = document.getElementById('loginError');
+                const successMsg = document.getElementById('loginSuccess');
+                if (errorMsg) errorMsg.style.display = 'none';
+                if (successMsg) successMsg.style.display = 'none';
+            }
+        }
+        
+        // Fonction de connexion
+        function login(username, password) {
+            // Rechercher l'utilisateur
+            const user = users.find(u => u.username === username && u.password === password);
+            
+            if (user) {
+                // Créer un token d'authentification
+                const authToken = 'bioaneho_' + Date.now() + '_' + Math.random().toString(36).substr(2);
+                
+                // Stocker les données utilisateur (sans le mot de passe)
+                const userData = {
+                    username: user.username,
+                    name: user.name,
+                    role: user.role,
+                    loginTime: new Date().toISOString()
+                };
+                
+                // Sauvegarder dans localStorage
+                localStorage.setItem('authToken', authToken);
+                localStorage.setItem('userData', JSON.stringify(userData));
+                
+                return { success: true, user: userData };
+            }
+            
+            return { success: false, message: 'Identifiants incorrects' };
+        }
+        
+        // Fonction de déconnexion
+        function logout() {
+            if (confirm('Êtes-vous sûr de vouloir vous déconnecter ?')) {
+                // Supprimer les données de session
+                localStorage.removeItem('authToken');
+                localStorage.removeItem('userData');
+                
+                // Mettre à jour l'interface
+                updateAuthButton();
+                
+                // Rediriger vers la page d'accueil si on est sur une page privée
+                const currentPath = window.location.pathname;
+                if (currentPath.includes('private/') && !currentPath.includes('dashboard.html')) {
+                    window.location.href = '../public/index.html';
+                }
+            }
+        }
+        
+        // ===== GESTION DU MENU MOBILE =====
+        function initMenu() {
+            const menuToggle = document.getElementById('menuToggle');
+            const navLinks = document.getElementById('navLinks');
+            
+            if (menuToggle && navLinks) {
+                menuToggle.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    navLinks.classList.toggle('show');
+                    const icon = menuToggle.querySelector('i');
+                    
+                    if (navLinks.classList.contains('show')) {
+                        icon.classList.remove('fa-bars');
+                        icon.classList.add('fa-times');
+                        document.body.style.overflow = 'hidden';
+                    } else {
+                        icon.classList.remove('fa-times');
+                        icon.classList.add('fa-bars');
+                        document.body.style.overflow = 'auto';
+                    }
+                });
+                
+                // Fermer le menu quand on clique sur un lien
+                navLinks.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', function() {
+                        navLinks.classList.remove('show');
+                        menuToggle.querySelector('i').classList.remove('fa-times');
+                        menuToggle.querySelector('i').classList.add('fa-bars');
+                        document.body.style.overflow = 'auto';
+                    });
+                });
+                
+                // Fermer le menu quand on clique en dehors
+                document.addEventListener('click', function(e) {
+                    if (!menuToggle.contains(e.target) && !navLinks.contains(e.target)) {
+                        navLinks.classList.remove('show');
+                        menuToggle.querySelector('i').classList.remove('fa-times');
+                        menuToggle.querySelector('i').classList.add('fa-bars');
+                        document.body.style.overflow = 'auto';
+                    }
+                });
+                
+                // Gestion du redimensionnement
+                window.addEventListener('resize', function() {
+                    if (window.innerWidth > 768) {
+                        navLinks.classList.remove('show');
+                        menuToggle.querySelector('i').classList.remove('fa-times');
+                        menuToggle.querySelector('i').classList.add('fa-bars');
+                        document.body.style.overflow = 'auto';
+                    }
+                });
+            }
+        }
+        
+        // ===== JOURNAL D'APPRENTISSAGE =====
+        // Variables globales
+        let journalEntries = [];
+        
+        // Charger les entrées du journal
+        function loadJournalEntries() {
+            const container = document.getElementById('journalEntries');
+            if (!container) return;
+            
+            // Charger depuis localStorage ou utiliser les données par défaut
+            const savedEntries = localStorage.getItem('journalEntries');
+            
+            if (savedEntries) {
+                journalEntries = JSON.parse(savedEntries);
+            } else {
+                // Données par défaut
+                journalEntries = [
+                    {
+                        id: 1,
+                        title: "Première plantation de carottes",
+                        content: "Test de 3 variétés différentes de carottes sur sol sableux. Les graines ont été plantées le 1er mars avec un espacement de 15cm entre les rangs.",
+                        success: "Germination rapide (5 jours seulement). Les jeunes pousses sont vigoureuses.",
+                        challenge: "Arrosage difficile à gérer avec le sol sableux qui retient mal l'eau.",
+                        improvement: "Installer un paillage pour conserver l'humidité du sol.",
+                        cooperative: "Maraîchers Bio d'Aného",
+                        author: "Kossi AGBOH",
+                        date: "2025-03-12",
+                        likes: 5,
+                        liked: false
+                    },
+                    {
+                        id: 2,
+                        title: "Compost avec algues marines",
+                        content: "Premier compost utilisant des algues marines récoltées sur la plage d'Aného. Mélange: 30% algues, 40% déchets verts, 30% paille.",
+                        success: "Température montée rapidement à 60°C, indiquant une bonne activité microbienne.",
+                        challenge: "Odeur forte les premiers jours due aux algues.",
+                        improvement: "Mélanger avec plus de matière brune (paille, feuilles sèches) pour équilibrer le ratio carbone/azote.",
+                        cooperative: "Coopérative Aklakou",
+                        author: "Ama TETEY",
+                        date: "2025-03-08",
+                        likes: 8,
+                        liked: false
+                    },
+                    {
+                        id: 3,
+                        title: "Expérience avec le purin d'ortie",
+                        content: "Préparation et utilisation de purin d'ortie comme engrais naturel pour les tomates.",
+                        success: "Les plantes traitées montrent une croissance plus rapide et des feuilles plus vertes.",
+                        challenge: "L'odeur est très forte pendant la fermentation.",
+                        improvement: "Essayer avec d'autres plantes (consoude, prêle) pour comparer les effets.",
+                        cooperative: "Coopérative Bio-Glidji",
+                        author: "Komlan DEDJI",
+                        date: "2025-03-05",
+                        likes: 3,
+                        liked: false
+                    }
+                ];
+                
+                // Sauvegarder les données par défaut
+                localStorage.setItem('journalEntries', JSON.stringify(journalEntries));
+            }
+            
+            // Trier par date (les plus récentes en premier)
+            journalEntries.sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            // Afficher les entrées
+            container.innerHTML = journalEntries.map(entry => `
+                <div class="journal-card" data-id="${entry.id}">
+                    <div class="journal-card-header">
+                        <div>
+                            <h3 class="journal-card-title">${entry.title}</h3>
+                            <div class="journal-card-author">
+                                <i class="fas fa-user"></i> ${entry.author} 
+                                ${entry.cooperative ? `<span style="margin-left: 1rem;"><i class="fas fa-users"></i> ${entry.cooperative}</span>` : ''}
+                            </div>
+                        </div>
+                        <div class="journal-card-date">
+                            <i class="fas fa-calendar"></i> ${formatDate(entry.date)}
+                        </div>
+                    </div>
+                    
+                    <div class="journal-card-content">
+                        ${entry.content}
+                    </div>
+                    
+                    ${(entry.success || entry.challenge || entry.improvement) ? `
+                    <div class="journal-card-details">
+                        ${entry.success ? `<p><strong><i class="fas fa-check-circle" style="color: #4caf50;"></i> Ce qui a marché:</strong> ${entry.success}</p>` : ''}
+                        ${entry.challenge ? `<p><strong><i class="fas fa-exclamation-triangle" style="color: #ff9800;"></i> Défi:</strong> ${entry.challenge}</p>` : ''}
+                        ${entry.improvement ? `<p><strong><i class="fas fa-lightbulb" style="color: #2196f3;"></i> Amélioration prévue:</strong> ${entry.improvement}</p>` : ''}
+                    </div>
+                    ` : ''}
+                    
+                    <div class="journal-card-actions">
+                        <button class="like-btn ${entry.liked ? 'liked' : ''}" onclick="toggleLike(${entry.id})">
+                            <i class="fas fa-heart"></i> <span class="like-count">${entry.likes}</span> J'aime
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        // Formater la date
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('fr-FR', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+            });
+        }
+        
+        // Toggle like
+        function toggleLike(entryId) {
+            const entry = journalEntries.find(e => e.id === entryId);
+            if (!entry) return;
+            
+            if (entry.liked) {
+                entry.likes--;
+                entry.liked = false;
+            } else {
+                entry.likes++;
+                entry.liked = true;
+            }
+            
+            // Sauvegarder
+            localStorage.setItem('journalEntries', JSON.stringify(journalEntries));
+            
+            // Mettre à jour l'affichage
+            const likeBtn = document.querySelector(`.journal-card[data-id="${entryId}"] .like-btn`);
+            const likeCount = document.querySelector(`.journal-card[data-id="${entryId}"] .like-count`);
+            
+            if (likeBtn) {
+                likeBtn.classList.toggle('liked');
+                likeBtn.innerHTML = `<i class="fas fa-heart"></i> <span class="like-count">${entry.likes}</span> J'aime`;
+            }
+            
+            // Afficher une notification
+            showNotification(entry.liked ? 'Merci pour votre like!' : 'Like retiré', 'success');
+        }
+        
+        // Ouvrir le modal du journal
+        function openJournalModal() {
+            // Charger les coopératives
+            loadCooperatives();
+            
+            // Réinitialiser le formulaire
+            document.getElementById('journalForm').reset();
+            
+            // Afficher le modal
+            document.getElementById('journalModal').style.display = 'flex';
+        }
+        
+        // Fermer le modal du journal
+        function closeJournalModal() {
+            document.getElementById('journalModal').style.display = 'none';
+        }
+        
+        // Charger les coopératives
+        function loadCooperatives() {
+            const cooperatives = JSON.parse(localStorage.getItem('cooperatives')) || [
+                { id: 1, name: "Maraîchers Bio d'Aného" },
+                { id: 2, name: "Coopérative Aklakou" },
+                { id: 3, name: "Coopérative Bio-Glidji" },
+                { id: 4, name: "Coopérative La Terre Promise" },
+                { id: 5, name: "Coopérative Les Jardins d'Aného" }
+            ];
+            
+            // Sauvegarder si elles n'existent pas
+            if (!localStorage.getItem('cooperatives')) {
+                localStorage.setItem('cooperatives', JSON.stringify(cooperatives));
+            }
+            
+            const select = document.getElementById('journalCooperative');
+            select.innerHTML = '<option value="">Sélectionner une coopérative</option>' +
+                cooperatives.map(coop => `<option value="${coop.name}">${coop.name}</option>`).join('');
+        }
+        
+        // Sauvegarder une nouvelle entrée
+        function saveJournalEntry(event) {
+            event.preventDefault();
+            
+            // Récupérer les données du formulaire
+            const title = document.getElementById('journalTitle').value.trim();
+            const author = document.getElementById('authorName').value.trim();
+            const content = document.getElementById('journalContent').value.trim();
+            
+            // Validation basique
+            if (!title || !author || !content) {
+                showNotification('Veuillez remplir les champs obligatoires (titre, nom et contenu)', 'warning');
+                return;
+            }
+            
+            const newEntry = {
+                id: journalEntries.length > 0 ? Math.max(...journalEntries.map(e => e.id)) + 1 : 1,
+                title: title,
+                author: author,
+                content: content,
+                success: document.getElementById('journalSuccess').value.trim(),
+                challenge: document.getElementById('journalChallenge').value.trim(),
+                improvement: document.getElementById('journalImprovement').value.trim(),
+                cooperative: document.getElementById('journalCooperative').value,
+                date: new Date().toISOString().split('T')[0],
+                likes: 0,
+                liked: false
+            };
+            
+            // Ajouter au début de la liste
+            journalEntries.unshift(newEntry);
+            
+            // Sauvegarder dans localStorage
+            localStorage.setItem('journalEntries', JSON.stringify(journalEntries));
+            
+            // Fermer le modal
+            closeJournalModal();
+            
+            // Recharger les entrées
+            loadJournalEntries();
+            
+            // Afficher une notification de succès
+            showNotification('Merci pour votre contribution! Votre expérience a été partagée avec la communauté.', 'success');
+        }
+        
+        // Afficher une notification
+        function showNotification(message, type = 'success') {
+            // Créer l'élément de notification
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 15px 25px;
+                border-radius: 8px;
+                background: ${type === 'success' ? '#4caf50' : type === 'warning' ? '#ff9800' : '#f44336'};
+                color: white;
+                z-index: 10000;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                animation: slideIn 0.3s ease;
+            `;
+            
+            notification.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'warning' ? 'exclamation-triangle' : 'exclamation-circle'}"></i>
+                <span>${message}</span>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Supprimer après 3 secondes
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+        
+        // ===== INITIALISATION DE LA PAGE =====
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialiser l'authentification
+            updateAuthButton();
+            
+            // Initialiser le menu mobile
+            initMenu();
+            
+            // Charger les entrées du journal
+            loadJournalEntries();
+            
+            // Gestion du modal de connexion
+            const loginModal = document.getElementById('loginModal');
+            const closeModalBtn = document.getElementById('closeModal');
+            const loginForm = document.getElementById('loginForm');
+            
+            // Fermer le modal de connexion quand on clique en dehors
+            if (loginModal) {
+                loginModal.addEventListener('click', function(e) {
+                    if (e.target === loginModal) {
+                        closeLoginModal();
+                    }
+                });
+            }
+            
+            // Fermer avec le bouton X
+            if (closeModalBtn) {
+                closeModalBtn.addEventListener('click', closeLoginModal);
+            }
+            
+            // Fermer avec la touche Échap
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && loginModal && loginModal.style.display === 'flex') {
+                    closeLoginModal();
+                }
+            });
+            
+            // Gestion du formulaire de connexion
+            if (loginForm) {
+                loginForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const username = document.getElementById('username').value;
+                    const password = document.getElementById('password').value;
+                    const errorMsg = document.getElementById('loginError');
+                    const successMsg = document.getElementById('loginSuccess');
+                    
+                    // Cacher les messages précédents
+                    if (errorMsg) errorMsg.style.display = 'none';
+                    if (successMsg) successMsg.style.display = 'none';
+                    
+                    // Tentative de connexion
+                    const result = login(username, password);
+                    
+                    if (result.success) {
+                        // Afficher message de succès
+                        if (successMsg) {
+                            successMsg.style.display = 'block';
+                            successMsg.textContent = `Connexion réussie ! Bienvenue ${result.user.name}`;
+                        }
+                        
+                        // Mettre à jour le bouton
+                        updateAuthButton();
+                        
+                        // Fermer le modal après 1.5 secondes
+                        setTimeout(() => {
+                            closeLoginModal();
+                            
+                            // Si l'utilisateur est admin, rediriger vers le dashboard
+                            if (result.user.role === 'admin') {
+                                window.location.href = '../private/dashboard.html';
+                            }
+                        }, 1500);
+                    } else {
+                        // Afficher message d'erreur
+                        if (errorMsg) {
+                            errorMsg.style.display = 'block';
+                            errorMsg.textContent = result.message;
+                        }
+                        if (document.getElementById('password')) {
+                            document.getElementById('password').value = '';
+                        }
+                    }
+                });
+            }
+            
+            // Gestion du modal du journal
+            const journalModal = document.getElementById('journalModal');
+            if (journalModal) {
+                journalModal.addEventListener('click', function(e) {
+                    if (e.target === journalModal) {
+                        closeJournalModal();
+                    }
+                });
+            }
+            
+            // Écouter les changements de localStorage (pour synchroniser les onglets)
+            window.addEventListener('storage', function(e) {
+                if (e.key === 'authToken' || e.key === 'userData') {
+                    updateAuthButton();
+                }
+            });
+            
+            // Ajouter le CSS pour les animations de notification
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes slideIn {
+                    from {
+                        opacity: 0;
+                        transform: translateX(100px);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: translateX(0);
+                    }
+                }
+                
+                @keyframes slideOut {
+                    from {
+                        opacity: 1;
+                        transform: translateX(0);
+                    }
+                    to {
+                        opacity: 0;
+                        transform: translateX(100px);
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+        });
+    </script>
+</body>
+</html>

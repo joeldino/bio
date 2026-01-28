@@ -1,0 +1,2756 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nos Produits Bio - Bio Aného</title>
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ===== NAVIGATION ===== */
+        .main-navbar {
+            background: linear-gradient(135deg, #2e7d32 0%, #4caf50 100%);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 0.8rem 0;
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 1.5rem;
+        }
+        
+        .main-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: white;
+            text-decoration: none;
+            font-size: 1.5rem;
+            font-weight: 700;
+            transition: transform 0.3s ease;
+        }
+        
+        .main-logo:hover {
+            transform: scale(1.05);
+        }
+        
+        .main-logo i {
+            font-size: 2rem;
+            color: #c8e6c9;
+        }
+        
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        
+        .menu-toggle:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .main-nav-links {
+            display: flex;
+            list-style: none;
+            gap: 1.8rem;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .main-nav-links li {
+            position: relative;
+        }
+        
+        .main-nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border-radius: 6px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .main-nav-links a:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+        
+        .main-nav-links a::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: white;
+            transition: width 0.3s ease;
+            border-radius: 3px 3px 0 0;
+        }
+        
+        .main-nav-links a:hover::before {
+            width: 100%;
+        }
+        
+        .main-nav-links a.active {
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn-logout {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+            color: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(220, 53, 69, 0.2);
+        }
+        
+        .btn-logout:hover {
+            background: linear-gradient(135deg, #c82333 0%, #bd2130 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(220, 53, 69, 0.3);
+        }
+        
+        .btn-login {
+            background: linear-gradient(135deg, #1976d2 0%, #2196f3 100%);
+            color: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(25, 118, 210, 0.2);
+            text-decoration: none;
+        }
+        
+        .btn-login:hover {
+            background: linear-gradient(135deg, #1565c0 0%, #1976d2 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(25, 118, 210, 0.3);
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.15);
+            font-weight: 500;
+        }
+        
+        .user-info i {
+            font-size: 1.2rem;
+        }
+        
+        .auth-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        /* ===== BARRE ADMIN ===== */
+        .admin-bar {
+            background: linear-gradient(45deg, #ff9800, #ffb74d);
+            color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 2rem auto;
+            max-width: 1200px;
+            display: none;
+            box-shadow: 0 4px 15px rgba(255, 152, 0, 0.2);
+        }
+        
+        .admin-bar-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .admin-actions {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .btn-admin {
+            background: white;
+            color: #ff9800;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-admin:hover {
+            background: #f5f5f5;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        /* ===== STYLES PRINCIPAUX ===== */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        /* Header de contenu */
+        .content-header {
+            background: white;
+            border-radius: 16px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            border: 1px solid #e8f5e9;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .content-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, #2e7d32, #4caf50);
+        }
+        
+        .content-header h1 {
+            color: #2e7d32;
+            margin-bottom: 0.8rem;
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+        
+        .content-header p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+        
+        /* Contenu principal */
+        .content {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            border: 1px solid #e8f5e9;
+            margin-bottom: 3rem;
+        }
+        
+        /* ===== BARRE DE RECHERCHE ET FILTRES ===== */
+        .filters-container {
+            background: #f8f9fa;
+            padding: 1.8rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin-bottom: 2.5rem;
+            border: 1px solid #e0f2e9;
+        }
+        
+        .filter-row {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            align-items: flex-end;
+        }
+        
+        .filter-group {
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .filter-group label {
+            display: block;
+            margin-bottom: 0.6rem;
+            font-weight: 600;
+            color: #495057;
+            font-size: 0.95rem;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #2e7d32;
+            box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.1);
+        }
+        
+        /* ===== BOUTONS ===== */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            gap: 8px;
+            font-family: inherit;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #2e7d32 0%, #4caf50 100%);
+            color: white;
+            box-shadow: 0 4px 6px rgba(46, 125, 50, 0.2);
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(46, 125, 50, 0.3);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            color: #2e7d32;
+            border: 2px solid #2e7d32;
+        }
+        
+        .btn-outline:hover {
+            background: #2e7d32;
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .btn-danger {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+            color: white;
+            box-shadow: 0 4px 6px rgba(220, 53, 69, 0.2);
+        }
+        
+        .btn-danger:hover {
+            background: linear-gradient(135deg, #c82333 0%, #bd2130 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(220, 53, 69, 0.3);
+        }
+        
+        /* ===== GRILLE DES PRODUITS ===== */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .product-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+            transition: all 0.4s ease;
+            position: relative;
+            border: 2px solid #e8f5e9;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+            border-color: #4caf50;
+        }
+        
+        .product-image {
+            height: 200px;
+            background: linear-gradient(45deg, #e8f5e9, #c8e6c9);
+            border-radius: 16px 16px 0 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .product-card:hover .product-image img {
+            transform: scale(1.1);
+        }
+        
+        .product-image::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 40%;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.1));
+        }
+        
+        .product-content {
+            padding: 1.8rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .product-content h3 {
+            color: #2e7d32;
+            margin-bottom: 0.8rem;
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+        
+        .product-coop {
+            color: #666;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+        }
+        
+        .product-price {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #2e7d32;
+            margin: 1rem 0;
+        }
+        
+        .product-description {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .product-category {
+            background: #e0f2e9;
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            display: inline-block;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            color: #2e7d32;
+            align-self: flex-start;
+        }
+        
+        .product-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: auto;
+        }
+        
+        .product-actions button {
+            flex: 1;
+            padding: 10px;
+            border-radius: 6px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        /* ===== BOUTONS D'ACTION ADMIN ===== */
+        .product-actions-admin {
+            position: absolute;
+            top: 1.2rem;
+            right: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            opacity: 0;
+            transform: translateX(10px);
+            transition: all 0.3s ease;
+            z-index: 2;
+        }
+        
+        .product-card:hover .product-actions-admin {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        .action-btn {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+            backdrop-filter: blur(5px);
+        }
+        
+        .action-btn:hover {
+            transform: scale(1.15);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        
+        .btn-edit {
+            background: rgba(255, 255, 255, 0.95);
+            color: #1976d2;
+        }
+        
+        .btn-delete {
+            background: rgba(255, 255, 255, 0.95);
+            color: #d32f2f;
+        }
+        
+        /* ===== VUE DÉTAIL PRODUIT ===== */
+        .product-detail-view {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .detail-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .detail-header h2 {
+            color: #2e7d32;
+            font-size: 2.2rem;
+            font-weight: 700;
+        }
+        
+        .back-button {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+        
+        .back-button:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+        }
+        
+        .product-detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 3rem;
+        }
+        
+        .product-image-large {
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(45deg, #e8f5e9, #c8e6c9);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #2e7d32;
+            font-size: 6rem;
+            border: 2px solid #c8e6c9;
+            overflow: hidden;
+        }
+        
+        .product-image-large img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .product-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.2rem;
+            margin: 2rem 0;
+        }
+        
+        .stat-box {
+            text-align: center;
+            padding: 1.5rem;
+            background: #f8f9fa;
+            border-radius: 12px;
+            border: 2px solid #e8f5e9;
+            transition: transform 0.3s ease;
+        }
+        
+        .stat-box:hover {
+            transform: translateY(-5px);
+            border-color: #4caf50;
+        }
+        
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #2e7d32;
+            margin-bottom: 0.5rem;
+        }
+        
+        .product-info-detail {
+            margin: 2rem 0;
+        }
+        
+        .product-info-detail p {
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #555;
+        }
+        
+        .product-info-detail strong {
+            color: #2e7d32;
+            min-width: 120px;
+        }
+        
+        .product-price-large {
+            font-size: 2.5rem;
+            color: #2e7d32;
+            font-weight: 800;
+            margin: 1.5rem 0;
+        }
+        
+        /* ===== FORMULAIRE DE COMMANDE ===== */
+        .order-form {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 12px;
+            border: 2px solid #e8f5e9;
+            margin: 2rem 0;
+        }
+        
+        .order-form h4 {
+            color: #2e7d32;
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+        }
+        
+        .quantity-control {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+            flex-wrap: wrap;
+        }
+        
+        .quantity-btn {
+            width: 50px;
+            height: 50px;
+            border: 2px solid #ddd;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.5rem;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .quantity-btn:hover {
+            background: #f5f5f5;
+            border-color: #2e7d32;
+            color: #2e7d32;
+        }
+        
+        .quantity-input {
+            width: 100px;
+            text-align: center;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+        
+        /* ===== MODALS ===== */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            width: 90%;
+            max-width: 700px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            animation: slideUp 0.4s ease;
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 1.2rem;
+            right: 1.2rem;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: #666;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+        
+        .close-modal:hover {
+            background: #f5f5f5;
+            color: #333;
+        }
+        
+        .modal-content h2 {
+            color: #2e7d32;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.6rem;
+            font-weight: 600;
+            color: #495057;
+            font-size: 0.95rem;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+        
+        textarea.form-input {
+            min-height: 120px;
+            resize: vertical;
+            font-family: inherit;
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2.5rem;
+            padding-top: 1.5rem;
+            border-top: 2px solid #dee2e6;
+        }
+        
+        /* ===== CHAMP UPLOAD D'IMAGE ===== */
+        .file-upload-container {
+            border: 2px dashed #dee2e6;
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            background: #f8f9fa;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .file-upload-container:hover {
+            border-color: #2e7d32;
+            background: #f0f7f0;
+        }
+        
+        .file-upload-container.dragover {
+            border-color: #4caf50;
+            background: #e8f5e9;
+        }
+        
+        .file-upload-icon {
+            font-size: 3rem;
+            color: #2e7d32;
+            margin-bottom: 1rem;
+        }
+        
+        .file-upload-text {
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+        
+        .file-upload-hint {
+            color: #999;
+            font-size: 0.9rem;
+        }
+        
+        #fileInput {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            cursor: pointer;
+        }
+        
+        .image-preview {
+            margin-top: 1rem;
+            display: none;
+        }
+        
+        .image-preview img {
+            max-width: 200px;
+            max-height: 200px;
+            border-radius: 8px;
+            border: 2px solid #dee2e6;
+        }
+        
+        /* ===== FOOTER ===== */
+        .main-footer {
+            background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%);
+            color: white;
+            padding: 3rem 0 1rem;
+            margin-top: 4rem;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+        }
+        
+        .footer-section h4 {
+            color: white;
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+            position: relative;
+            padding-bottom: 12px;
+            font-weight: 700;
+        }
+        
+        .footer-section h4::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 3px;
+        }
+        
+        .footer-section p {
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.7;
+            margin-bottom: 1.2rem;
+        }
+        
+        .footer-section ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .footer-section ul li {
+            margin-bottom: 0.9rem;
+        }
+        
+        .footer-section a {
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 0.3rem 0;
+        }
+        
+        .footer-section a:hover {
+            color: white;
+            transform: translateX(8px);
+        }
+        
+        .footer-section i {
+            width: 24px;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        /* ===== BADGE PANIER ===== */
+        .cart-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+            color: white;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        /* ===== LOADER ===== */
+        .loader {
+            display: none;
+            text-align: center;
+            padding: 4rem;
+            color: #666;
+        }
+        
+        .loader i {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            color: #2e7d32;
+            animation: spin 2s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .nav-container {
+                padding: 0 1rem;
+            }
+            
+            .menu-toggle {
+                display: block;
+            }
+            
+            .main-nav-links {
+                display: none;
+                position: fixed;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background: #2e7d32;
+                flex-direction: column;
+                gap: 0;
+                padding: 1rem 0;
+                box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+                z-index: 1000;
+                border-top: 2px solid rgba(255,255,255,0.1);
+                border-radius: 0 0 16px 16px;
+            }
+            
+            .main-nav-links.show {
+                display: flex;
+            }
+            
+            .main-nav-links li {
+                width: 100%;
+            }
+            
+            .main-nav-links a {
+                padding: 1.2rem;
+                border-bottom: 1px solid rgba(255,255,255,0.1);
+                gap: 12px;
+                justify-content: center;
+            }
+            
+            .main-nav-links a:last-child {
+                border-bottom: none;
+            }
+            
+            .main-nav-links a.active {
+                background: rgba(255,255,255,0.2);
+                margin: 0 1rem;
+                border-radius: 10px;
+            }
+            
+            .btn-logout, .btn-login {
+                justify-content: center;
+                margin: 0.5rem 1rem;
+                width: calc(100% - 2rem);
+            }
+            
+            .user-info {
+                justify-content: center;
+                margin: 0.5rem 1rem;
+                width: calc(100% - 2rem);
+            }
+            
+            .auth-container {
+                flex-direction: column;
+                width: 100%;
+                gap: 10px;
+            }
+            
+            .main-content {
+                padding: 1rem;
+            }
+            
+            .content-header {
+                padding: 1.8rem;
+            }
+            
+            .content-header h1 {
+                font-size: 2rem;
+            }
+            
+            .content {
+                padding: 1.5rem;
+            }
+            
+            .filter-row {
+                flex-direction: column;
+            }
+            
+            .filter-group {
+                min-width: 100%;
+            }
+            
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .product-detail-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .product-image-large {
+                height: 250px;
+            }
+            
+            .product-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .quantity-control {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .quantity-input {
+                width: 100%;
+            }
+            
+            .product-actions {
+                flex-direction: column;
+            }
+            
+            .admin-bar-content {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+            
+            .admin-actions {
+                flex-direction: column;
+                width: 100%;
+            }
+            
+            .btn-admin {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .modal-content {
+                padding: 1.8rem;
+                width: 95%;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 2.5rem;
+                text-align: center;
+            }
+            
+            .footer-section h4::after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+            
+            .footer-section a {
+                justify-content: center;
+            }
+        }
+        
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .products-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .product-detail-grid {
+                grid-template-columns: 1fr 1.5fr;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .content-header h1 {
+                font-size: 1.7rem;
+            }
+            
+            .stat-value {
+                font-size: 1.5rem;
+            }
+            
+            .product-price-large {
+                font-size: 2rem;
+            }
+            
+            .product-actions-admin {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        /* ===== ÉTAT VIDE ===== */
+        .empty-state {
+            text-align: center;
+            padding: 4rem;
+            color: #666;
+        }
+        
+        .empty-state i {
+            font-size: 4rem;
+            color: #ddd;
+            margin-bottom: 1.5rem;
+        }
+        
+        .empty-state h3 {
+            color: #666;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation principale -->
+    <nav class="main-navbar">
+        <div class="nav-container">
+            <a href="../public/index.html" class="main-logo">
+                <i class="fas fa-leaf"></i>
+                <span>Bio Aného</span>
+            </a>
+            
+            <!-- Menu hamburger pour mobile -->
+            <button class="menu-toggle" id="menuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <!-- Navigation -->
+            <ul class="main-nav-links" id="navLinks">
+                <li><a href="../public/index.html">
+                    <i class="fas fa-home"></i>
+                    <span>Accueil</span>
+                </a></li>
+                <li><a href="cooperatives.html">
+                    <i class="fas fa-tractor"></i>
+                    <span>Coopératives</span>
+                </a></li>
+                <li><a href="members.html">
+                    <i class="fas fa-users"></i>
+                    <span>Membres</span>
+                </a></li>
+                <li><a href="products.html" class="active">
+                    <i class="fas fa-seedling"></i>
+                    <span>Produits</span>
+                </a></li>
+                <li><a href="sales.html">
+                    <i class="fas fa-store"></i>
+                    <span>Points de Vente</span>
+                </a></li>
+                <li><a href="../public/news.html">
+                    <i class="fas fa-newspaper"></i>
+                    <span>Actualités</span>
+                </a></li>
+                <li><a href="../public/contact.html">
+                    <i class="fas fa-envelope"></i>
+                    <span>Contact</span>
+                </a></li>
+                <li><a href="dashboard.html">
+                    <i class="fas fa-user-shield"></i>
+                    <span>Admin</span>
+                </a></li>
+                <li id="authContainer">
+                    <!-- Le contenu d'authentification sera généré ici -->
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Barre admin -->
+    <div class="admin-bar" id="adminBar">
+        <div class="admin-bar-content">
+            <div>
+                <i class="fas fa-user-shield"></i>
+                <strong>Mode Administrateur</strong>
+                <span style="margin-left: 1rem; font-size: 0.9rem;">Gestion complète des produits</span>
+            </div>
+            <div class="admin-actions">
+                <button class="btn-admin" onclick="openProductModal()">
+                    <i class="fas fa-plus"></i> Nouveau Produit
+                </button>
+                <button class="btn-admin" onclick="exportProducts()">
+                    <i class="fas fa-download"></i> Exporter
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contenu principal -->
+    <div class="main-content">
+        <header class="content-header">
+            <h1>Nos Produits Bio</h1>
+            <p>Découvrez tous nos légumes et produits agricoles bio cultivés à Aného</p>
+            <div style="position: absolute; top: 2rem; right: 2rem; display: none;" id="cartButtonContainer">
+                <button class="btn btn-primary" onclick="viewCart()" id="cartButton">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span id="cartButtonText">Panier (0)</span>
+                    <span class="cart-badge" id="cartBadgeButton" style="display: none;">0</span>
+                </button>
+            </div>
+        </header>
+
+        <div class="content">
+            <!-- Vue liste -->
+            <div id="productsListView">
+                <!-- Filtres -->
+                <div class="filters-container">
+                    <div class="filter-row">
+                        <div class="filter-group">
+                            <label><i class="fas fa-search"></i> Rechercher</label>
+                            <input type="text" id="searchProduct" placeholder="Nom du produit, description..." class="form-input">
+                        </div>
+                        <div class="filter-group">
+                            <label><i class="fas fa-tractor"></i> Coopérative</label>
+                            <select id="filterCooperative" class="form-input">
+                                <option value="">Toutes les coopératives</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label><i class="fas fa-tags"></i> Catégorie</label>
+                            <select id="filterCategory" class="form-input">
+                                <option value="">Toutes catégories</option>
+                                <option value="légume">Légume</option>
+                                <option value="fruit">Fruit</option>
+                                <option value="tubercule">Tubercule</option>
+                                <option value="aromate">Aromate</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label><i class="fas fa-sun"></i> Saison</label>
+                            <select id="filterSeason" class="form-input">
+                                <option value="">Toutes les saisons</option>
+                                <option value="Toute l'année">Toute l'année</option>
+                                <option value="Saison sèche">Saison sèche</option>
+                                <option value="Saison pluvieuse">Saison pluvieuse</option>
+                                <option value="Hivernage">Hivernage</option>
+                            </select>
+                        </div>
+                        <div class="filter-group" style="min-width: auto;">
+                            <button class="btn btn-primary" onclick="filterProducts()">
+                                <i class="fas fa-filter"></i> Filtrer
+                            </button>
+                            <button class="btn btn-outline" onclick="resetFilters()" style="margin-top: 5px;">
+                                <i class="fas fa-redo"></i> Réinitialiser
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Liste des produits -->
+                <div class="products-grid" id="productsContainer">
+                    <!-- Les produits seront chargés par JS -->
+                </div>
+                
+                <!-- Loader -->
+                <div class="loader" id="productsLoader">
+                    <i class="fas fa-spinner"></i>
+                    <p>Chargement des produits...</p>
+                </div>
+                
+                <!-- État vide -->
+                <div id="emptyState" class="empty-state" style="display: none;">
+                    <i class="fas fa-seedling"></i>
+                    <h3>Aucun produit trouvé</h3>
+                    <p>Essayez de modifier vos filtres ou créez un nouveau produit.</p>
+                </div>
+            </div>
+
+            <!-- Vue détail produit -->
+            <div id="productDetailView" class="product-detail-view">
+                <div class="detail-header">
+                    <button class="back-button" onclick="showProductsList()">
+                        <i class="fas fa-arrow-left"></i> Retour à la liste
+                    </button>
+                    <h2 id="productDetailName">Nom du produit</h2>
+                </div>
+                
+                <div class="product-detail-grid">
+                    <div>
+                        <div class="product-image-large" id="productImageLarge">
+                            <!-- L'image sera chargée ici -->
+                        </div>
+                        <div class="product-stats">
+                            <div class="stat-box">
+                                <div class="stat-value" id="statStock">0</div>
+                                <div>En stock</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-value" id="statSales">0</div>
+                                <div>Ventes</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-value" id="statRating">0.0</div>
+                                <div>★ Évaluation</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div class="product-price-large" id="productDetailPrice">0 FCFA</div>
+                        
+                        <div class="product-info-detail">
+                            <p><strong><i class="fas fa-tractor"></i> Coopérative:</strong> <span id="productDetailCoop"></span></p>
+                            <p><strong><i class="fas fa-calendar-alt"></i> Saison:</strong> <span id="productDetailSeason"></span></p>
+                            <p><strong><i class="fas fa-balance-scale"></i> Unité:</strong> <span id="productDetailUnit"></span></p>
+                            <p><strong><i class="fas fa-tags"></i> Catégorie:</strong> <span id="productDetailCategory"></span></p>
+                        </div>
+                        
+                        <h4>Description</h4>
+                        <p id="productDetailDescription" style="line-height: 1.6; color: #555;"></p>
+                        
+                        <div class="order-form">
+                            <h4><i class="fas fa-shopping-cart"></i> Commande</h4>
+                            <div class="quantity-control">
+                                <button class="quantity-btn" onclick="decreaseQuantity()">-</button>
+                                <input type="number" id="orderQuantity" class="quantity-input" value="1" min="1" max="100">
+                                <button class="quantity-btn" onclick="increaseQuantity()">+</button>
+                                <span style="margin-left: 1rem; font-weight: 600;">Unité: <span id="orderUnit">kg</span></span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+                                <div>
+                                    <strong>Total:</strong> <span id="orderTotal" style="font-size: 1.8rem; color: #2e7d32; font-weight: 800;">0</span> FCFA
+                                </div>
+                                <div style="display: flex; gap: 1rem;">
+                                    <button class="btn btn-outline" onclick="addToCartFromDetail()">
+                                        <i class="fas fa-cart-plus"></i> Ajouter
+                                    </button>
+                                    <button class="btn btn-primary" onclick="buyNow()">
+                                        <i class="fas fa-bolt"></i> Acheter
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="product-actions" id="adminProductActions" style="display: none; margin-top: 2rem;">
+                            <button class="btn btn-outline" onclick="editCurrentProduct()">
+                                <i class="fas fa-edit"></i> Modifier
+                            </button>
+                            <button class="btn btn-danger" onclick="deleteCurrentProduct()">
+                                <i class="fas fa-trash"></i> Supprimer
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal produit -->
+    <div id="productModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeProductModal()">&times;</span>
+            <h2 id="modalTitle">Nouveau Produit</h2>
+            <form id="productForm" onsubmit="saveProduct(event)">
+                <input type="hidden" id="productId">
+                
+                <div class="form-group">
+                    <label for="productName">Nom du produit *</label>
+                    <input type="text" id="productName" required class="form-input" placeholder="Ex: Tomates bio">
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="productPrice">Prix (FCFA) *</label>
+                        <input type="number" id="productPrice" min="0" step="50" required class="form-input" placeholder="Ex: 1500">
+                    </div>
+                    <div class="form-group">
+                        <label for="productUnit">Unité *</label>
+                        <select id="productUnit" required class="form-input">
+                            <option value="kg">kg</option>
+                            <option value="pièce">pièce</option>
+                            <option value="bouquet">bouquet</option>
+                            <option value="sac">sac (5kg)</option>
+                            <option value="caisse">caisse</option>
+                            <option value="litre">litre</option>
+                            <option value="douzaine">douzaine</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="productCooperative">Coopérative *</label>
+                        <select id="productCooperative" required class="form-input">
+                            <option value="">Sélectionner une coopérative</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="productCategory">Catégorie</label>
+                        <select id="productCategory" class="form-input">
+                            <option value="légume">Légume</option>
+                            <option value="fruit">Fruit</option>
+                            <option value="tubercule">Tubercule</option>
+                            <option value="aromate">Aromate</option>
+                            <option value="céréale">Céréale</option>
+                            <option value="légumineuse">Légumineuse</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="productSeason">Saison</label>
+                        <select id="productSeason" class="form-input">
+                            <option value="Toute l'année">Toute l'année</option>
+                            <option value="Saison sèche">Saison sèche</option>
+                            <option value="Saison pluvieuse">Saison pluvieuse</option>
+                            <option value="Hivernage">Hivernage</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="productStock">Stock (quantité)</label>
+                        <input type="number" id="productStock" min="0" value="0" class="form-input">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="productDescription">Description</label>
+                    <textarea id="productDescription" rows="4" class="form-input" placeholder="Description du produit..."></textarea>
+                </div>
+                
+                <!-- UPLOAD D'IMAGE MODIFIÉ -->
+                <div class="form-group">
+                    <label>Image du produit *</label>
+                    <div class="file-upload-container" id="fileUploadContainer">
+                        <div class="file-upload-icon">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                        </div>
+                        <div class="file-upload-text">
+                            Cliquez pour sélectionner une image
+                        </div>
+                        <div class="file-upload-hint">
+                            ou glissez-déposez votre fichier ici
+                        </div>
+                        <input type="file" id="fileInput" accept="image/*" onchange="handleImageSelect(event)">
+                        <div class="image-preview" id="imagePreview">
+                            <img id="previewImage" src="" alt="Aperçu">
+                        </div>
+                    </div>
+                    <input type="hidden" id="productImageData">
+                    <small style="color: #666; display: block; margin-top: 0.5rem;">
+                        Formats acceptés: JPG, PNG, GIF (max 2MB)
+                    </small>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" class="btn btn-outline" onclick="closeProductModal()">Annuler</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Enregistrer
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal de confirmation de suppression -->
+    <div id="deleteModal" class="modal">
+        <div class="modal-content" style="max-width: 450px; text-align: center;">
+            <span class="close-modal" onclick="closeDeleteModal()">&times;</span>
+            <div style="margin: 2rem 0;">
+                <div style="width: 80px; height: 80px; background: #ffebee; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem;">
+                    <i class="fas fa-exclamation-triangle" style="font-size: 2.5rem; color: #dc3545;"></i>
+                </div>
+                <h3 style="margin: 1rem 0; color: #333;">Confirmer la suppression</h3>
+                <p id="deleteMessage" style="color: #666; line-height: 1.6;">Êtes-vous sûr de vouloir supprimer ce produit ?</p>
+                <p style="color: #999; font-size: 0.9rem; margin-top: 0.5rem;">Cette action est irréversible.</p>
+            </div>
+            <div class="form-actions" style="justify-content: center;">
+                <button type="button" class="btn btn-outline" onclick="closeDeleteModal()">Annuler</button>
+                <button type="button" class="btn btn-danger" onclick="confirmDelete()">
+                    <i class="fas fa-trash"></i> Supprimer définitivement
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Bio Aného</h4>
+                <p>Développement durable par l'agriculture biologique à Aného, Togo.</p>
+                <p>Engagés pour une agriculture responsable et respectueuse de l'environnement.</p>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Liens rapides</h4>
+                <ul>
+                    <li><a href="../public/index.html">
+                        <i class="fas fa-home"></i>
+                        Accueil
+                    </a></li>
+                    <li><a href="cooperatives.html">
+                        <i class="fas fa-tractor"></i>
+                        Nos coopératives
+                    </a></li>
+                    <li><a href="products.html">
+                        <i class="fas fa-seedling"></i>
+                        Produits bio
+                    </a></li>
+                    <li><a href="../public/contact.html">
+                        <i class="fas fa-envelope"></i>
+                        Contactez-nous
+                    </a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Coordonnées</h4>
+                <p><i class="fas fa-map-marker-alt"></i> Aného, Région Maritime, Togo</p>
+                <p><i class="fas fa-phone"></i> +228 96 85 70 42</p>
+                <p><i class="fas fa-envelope"></i> joelamzy91@gmail.com</p>
+                <p><i class="fas fa-clock"></i> Lundi - Vendredi: 8h-18h</p>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2026 Maraîchage Bio à Aného. Développé par HOUNKPATI Yaovi Joël</p>
+            <p style="margin-top: 0.5rem; font-size: 0.85rem;">Tous droits réservés.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Variables globales
+        let products = [];
+        let currentProductId = null;
+        let currentUser = null;
+        let cart = [];
+        let selectedImageData = null;
+
+        // Images de secours
+        const fallbackImages = {
+            'default': 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+            'légume': 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+            'fruit': 'https://images.unsplash.com/photo-1568702846914-96b305d2aaeb?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+            'aromate': 'https://images.unsplash.com/photo-1560790671-b76ca4de55ef?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+            'tubercule': 'https://images.unsplash.com/photo-1598170845058-78131a90f4f6?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'
+        };
+
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log("=== DÉMARRAGE DE LA PAGE PRODUITS ===");
+            
+            // Initialiser le menu
+            initMenu();
+            
+            // Initialiser le drag & drop pour les images
+            initImageUpload();
+            
+            // Mettre à jour le bouton d'authentification
+            updateAuthButton();
+            
+            // Vérifier le statut de l'utilisateur
+            checkUserStatus();
+            
+            // Charger les produits
+            loadProducts();
+            
+            // Vérifier les paramètres d'URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const productId = urlParams.get('id');
+            if (productId) {
+                showProductDetail(parseInt(productId));
+            }
+            
+            // Recherche en temps réel
+            const searchInput = document.getElementById('searchProduct');
+            searchInput.addEventListener('input', filterProducts);
+            
+            // Charger le panier
+            loadCart();
+            updateCartDisplay();
+            
+            // Écouter les événements de stockage pour synchroniser l'état de connexion
+            window.addEventListener('storage', function(event) {
+                if (event.key === 'currentUser' || event.key === 'isLoggedIn') {
+                    console.log('Événement de stockage détecté:', event.key);
+                    updateAuthButton();
+                    checkUserStatus();
+                }
+            });
+            
+            // Vérifier périodiquement l'état de connexion
+            setInterval(function() {
+                updateAuthButton();
+                checkUserStatus();
+            }, 1000);
+        });
+
+        // ========== GESTION D'AUTHENTIFICATION GLOBALE ==========
+
+        // Mettre à jour le bouton de connexion/déconnexion
+        function updateAuthButton() {
+            const container = document.getElementById('authContainer');
+            if (!container) {
+                console.log('Conteneur d\'authentification non trouvé');
+                return;
+            }
+            
+            try {
+                // Vérifier d'abord isLoggedIn, puis currentUser
+                const isLoggedIn = localStorage.getItem('isLoggedIn');
+                const userData = localStorage.getItem('currentUser');
+                
+                console.log('isLoggedIn:', isLoggedIn);
+                console.log('userData:', userData);
+                
+                if (isLoggedIn === 'true' && userData) {
+                    const user = JSON.parse(userData);
+                    console.log('Utilisateur trouvé:', user);
+                    
+                    // Utilisateur connecté
+                    container.innerHTML = `
+                        <div class="auth-container">
+                            <div class="user-info">
+                                <i class="fas fa-user-circle"></i>
+                                <span>${user.username || user.email || 'Utilisateur'}</span>
+                            </div>
+                            <button class="btn-logout" onclick="logout()">
+                                <i class="fas fa-sign-out-alt"></i>
+                                <span>Déconnexion</span>
+                            </button>
+                        </div>
+                    `;
+                    
+                    // Ajouter l'événement click pour le bouton de déconnexion
+                    const logoutBtn = container.querySelector('.btn-logout');
+                    if (logoutBtn) {
+                        logoutBtn.onclick = logout;
+                    }
+                    
+                } else {
+                    console.log('Utilisateur non connecté');
+                    // Utilisateur non connecté
+                    container.innerHTML = `
+                        <a href="../public/login.html" class="btn-login">
+                            <i class="fas fa-sign-in-alt"></i>
+                            <span>Connexion</span>
+                        </a>
+                    `;
+                }
+            } catch (error) {
+                console.error('Erreur lors de la mise à jour du bouton d\'authentification:', error);
+                // En cas d'erreur, afficher le bouton de connexion
+                container.innerHTML = `
+                    <a href="../public/login.html" class="btn-login">
+                        <i class="fas fa-sign-in-alt"></i>
+                        <span>Connexion</span>
+                    </a>
+                `;
+            }
+        }
+
+        // Vérifier le statut de l'utilisateur pour admin
+        function checkUserStatus() {
+            try {
+                const isLoggedIn = localStorage.getItem('isLoggedIn');
+                const userData = localStorage.getItem('currentUser');
+                
+                if (isLoggedIn === 'true' && userData) {
+                    const user = JSON.parse(userData);
+                    
+                    if (user && user.role === 'admin') {
+                        console.log('Utilisateur admin détecté');
+                        document.getElementById('adminBar').style.display = 'block';
+                        currentUser = user;
+                    } else {
+                        console.log('Utilisateur non-admin ou pas de rôle admin');
+                        document.getElementById('adminBar').style.display = 'none';
+                        currentUser = null;
+                    }
+                } else {
+                    console.log('Utilisateur non connecté');
+                    document.getElementById('adminBar').style.display = 'none';
+                    currentUser = null;
+                }
+            } catch (e) {
+                console.error('Erreur lors de la vérification du statut utilisateur:', e);
+                document.getElementById('adminBar').style.display = 'none';
+                currentUser = null;
+            }
+        }
+
+        // Fonction de déconnexion globale
+        function logout() {
+            // Demander confirmation
+            if (confirm('Voulez-vous vraiment vous déconnecter ?')) {
+                console.log('Déconnexion en cours...');
+                
+                // Supprimer les données de session
+                localStorage.removeItem('currentUser');
+                localStorage.removeItem('isLoggedIn');
+                
+                // Forcer la mise à jour immédiate
+                setTimeout(function() {
+                    // Mettre à jour l'interface
+                    updateAuthButton();
+                    checkUserStatus();
+                    
+                    // Afficher une notification
+                    showNotification('Déconnexion réussie !');
+                    
+                    // Rediriger vers la page d'accueil après 1 seconde
+                    setTimeout(function() {
+                        window.location.href = '../public/index.html';
+                    }, 1000);
+                }, 100);
+            }
+        }
+
+        // ========== FONCTIONS EXISTANTES ==========
+
+        // Initialiser le drag & drop pour les images
+        function initImageUpload() {
+            const container = document.getElementById('fileUploadContainer');
+            const fileInput = document.getElementById('fileInput');
+            
+            if (!container || !fileInput) return;
+            
+            // Gestion du drag & drop
+            container.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                container.classList.add('dragover');
+            });
+            
+            container.addEventListener('dragleave', () => {
+                container.classList.remove('dragover');
+            });
+            
+            container.addEventListener('drop', (e) => {
+                e.preventDefault();
+                container.classList.remove('dragover');
+                
+                if (e.dataTransfer.files.length) {
+                    fileInput.files = e.dataTransfer.files;
+                    handleImageSelect({ target: fileInput });
+                }
+            });
+            
+            // Gestion du clic
+            container.addEventListener('click', () => {
+                fileInput.click();
+            });
+        }
+
+        // Gestion du menu hamburger
+        function initMenu() {
+            const menuToggle = document.getElementById('menuToggle');
+            const navLinks = document.getElementById('navLinks');
+            
+            if (!menuToggle || !navLinks) return;
+            
+            menuToggle.addEventListener('click', function(e) {
+                e.stopPropagation();
+                navLinks.classList.toggle('show');
+                const icon = menuToggle.querySelector('i');
+                if (navLinks.classList.contains('show')) {
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-times');
+                } else {
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
+            });
+            
+            // Fermer le menu quand on clique sur un lien
+            navLinks.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', function() {
+                    navLinks.classList.remove('show');
+                    menuToggle.querySelector('i').classList.remove('fa-times');
+                    menuToggle.querySelector('i').classList.add('fa-bars');
+                });
+            });
+            
+            // Fermer le menu quand on clique en dehors
+            document.addEventListener('click', function(e) {
+                if (!menuToggle.contains(e.target) && !navLinks.contains(e.target)) {
+                    navLinks.classList.remove('show');
+                    menuToggle.querySelector('i').classList.remove('fa-times');
+                    menuToggle.querySelector('i').classList.add('fa-bars');
+                }
+            });
+            
+            // Gestion du redimensionnement
+            window.addEventListener('resize', function() {
+                if (window.innerWidth > 768) {
+                    navLinks.classList.remove('show');
+                    menuToggle.querySelector('i').classList.remove('fa-times');
+                    menuToggle.querySelector('i').classList.add('fa-bars');
+                }
+            });
+        }
+
+        // Gestion des produits
+        function loadProducts() {
+            // Afficher le loader
+            const loader = document.getElementById('productsLoader');
+            if (loader) loader.style.display = 'block';
+            
+            const container = document.getElementById('productsContainer');
+            if (container) container.innerHTML = '';
+            
+            // Simuler un chargement
+            setTimeout(function() {
+                const saved = localStorage.getItem('products');
+                products = saved ? JSON.parse(saved) : getDefaultProducts();
+                displayProducts(products);
+                populateCooperativeFilter();
+                if (loader) loader.style.display = 'none';
+            }, 500);
+        }
+
+        function getDefaultProducts() {
+            return [
+                {
+                    id: 1,
+                    name: "Tomates bio",
+                    price: 1500,
+                    unit: "kg",
+                    cooperative: "Coopérative La Terre Promise",
+                    cooperativeId: 1,
+                    category: "légume",
+                    season: "Toute l'année",
+                    stock: 50,
+                    sales: 120,
+                    rating: 4.5,
+                    description: "Tomates rouges juteuses cultivées sans pesticides ni engrais chimiques.",
+                    image: "../assets/images/tomatoes.jpg",
+                    createdAt: "2026-01-15"
+                },
+                {
+                    id: 2,
+                    name: "Piments frais",
+                    price: 800,
+                    unit: "kg",
+                    cooperative: "Coopérative Les Jardins d'Aného",
+                    cooperativeId: 2,
+                    category: "aromate",
+                    season: "Saison sèche",
+                    stock: 25,
+                    sales: 85,
+                    rating: 4.2,
+                    description: "Piments forts et aromatiques, parfaits pour relever vos plats.",
+                    image: "../assets/images/peppers.jpg",
+                    createdAt: "2026-02-10"
+                },
+                {
+                    id: 3,
+                    name: "Gombo frais",
+                    price: 1200,
+                    unit: "kg",
+                    cooperative: "Coopérative Bio-Glidji",
+                    cooperativeId: 3,
+                    category: "légume",
+                    season: "Saison pluvieuse",
+                    stock: 30,
+                    sales: 65,
+                    rating: 4.3,
+                    description: "Gombo tendre et savoureux, excellent en sauce ou sauté.",
+                    image: "../assets/images/okra.jpg",
+                    createdAt: "2026-03-05"
+                },
+                {
+                    id: 4,
+                    name: "Aubergines",
+                    price: 1800,
+                    unit: "kg",
+                    cooperative: "Coopérative La Terre Promise",
+                    cooperativeId: 1,
+                    category: "légume",
+                    season: "Toute l'année",
+                    stock: 20,
+                    sales: 45,
+                    rating: 4.4,
+                    description: "Aubergines violettes charnues, idéales pour les ragoûts et grillades.",
+                    image: "../assets/images/aubergine1.jpg",
+                    createdAt: "2026-03-15"
+                },
+                {
+                    id: 5,
+                    name: "Carottes bio",
+                    price: 1200,
+                    unit: "kg",
+                    cooperative: "Coopérative Les Jardins d'Aného",
+                    cooperativeId: 2,
+                    category: "légume",
+                    season: "Toute l'année",
+                    stock: 35,
+                    sales: 75,
+                    rating: 4.6,
+                    description: "Carottes sucrées et croquantes, riches en vitamines.",
+                    image: "../assets/images/carrots.jpg",
+                    createdAt: "2026-03-20"
+                },
+                {
+                    id: 6,
+                    name: "Oignons verts",
+                    price: 600,
+                    unit: "bouquet",
+                    cooperative: "Coopérative Bio-Glidji",
+                    cooperativeId: 3,
+                    category: "aromate",
+                    season: "Saison sèche",
+                    stock: 40,
+                    sales: 95,
+                    rating: 4.3,
+                    description: "Oignons frais récoltés le matin même, parfaits pour les sauces.",
+                    image: "../assets/images/green-onions.jpg",
+                    createdAt: "2026-03-25"
+                },
+                {
+                    id: 7,
+                    name: "Laitue",
+                    price: 700,
+                    unit: "pièce",
+                    cooperative: "Coopérative La Terre Promise",
+                    cooperativeId: 1,
+                    category: "légume",
+                    season: "Toute l'année",
+                    stock: 25,
+                    sales: 60,
+                    rating: 4.4,
+                    description: "Laitue croquante et fraîche, idéale pour les salades.",
+                    image: "../assets/images/lettuce.jpg",
+                    createdAt: "2026-04-01"
+                },
+                {
+                    id: 8,
+                    name: "Poivrons verts",
+                    price: 1000,
+                    unit: "kg",
+                    cooperative: "Coopérative Les Jardins d'Aného",
+                    cooperativeId: 2,
+                    category: "légume",
+                    season: "Saison pluvieuse",
+                    stock: 18,
+                    sales: 45,
+                    rating: 4.2,
+                    description: "Poivrons doux et charnus, parfaits pour les grillades et farcis.",
+                    image: "../assets/images/poivron.jpg",
+                    createdAt: "2026-04-05"
+                }
+            ];
+        }
+
+        function saveProducts() {
+            localStorage.setItem('products', JSON.stringify(products));
+        }
+
+        function displayProducts(productList) {
+            const container = document.getElementById('productsContainer');
+            const emptyState = document.getElementById('emptyState');
+            
+            if (!container || !emptyState) return;
+            
+            const isAdmin = currentUser && currentUser.role === 'admin';
+            
+            if (productList.length === 0) {
+                container.innerHTML = '';
+                emptyState.style.display = 'block';
+                return;
+            }
+            
+            emptyState.style.display = 'none';
+            
+            // Préparer le HTML des produits
+            let productsHTML = '';
+            
+            for (const product of productList) {
+                const imageUrl = product.image;
+                
+                productsHTML += `
+                    <div class="product-card" data-id="${product.id}">
+                        ${isAdmin ? `
+                        <div class="product-actions-admin">
+                            <button class="action-btn btn-edit" onclick="editProduct(${product.id})" title="Modifier">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="action-btn btn-delete" onclick="deleteProductPrompt(${product.id}, '${product.name}')" title="Supprimer">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                        ` : ''}
+                        
+                        <div class="product-image">
+                            <img src="${imageUrl}" 
+                                 alt="${product.name}" 
+                                 loading="lazy"
+                                 onerror="handleImageError(this, '${product.category}')">
+                        </div>
+                        
+                        <div class="product-content">
+                            <span class="product-category">${product.category}</span>
+                            <h3>${product.name}</h3>
+                            <p class="product-coop">
+                                <i class="fas fa-tractor"></i> ${product.cooperative}
+                            </p>
+                            <div class="product-price">${product.price} FCFA/${product.unit}</div>
+                            <p class="product-description">${product.description}</p>
+                            <div class="product-actions">
+                                <button class="btn btn-outline" onclick="showProductDetail(${product.id})">
+                                    <i class="fas fa-eye"></i> Détails
+                                </button>
+                                <button class="btn btn-primary" onclick="addToCart(${product.id})">
+                                    <i class="fas fa-cart-plus"></i> Ajouter
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            container.innerHTML = productsHTML;
+        }
+
+        // Fonction pour gérer les erreurs d'image
+        function handleImageError(imgElement, category) {
+            console.log(`Image non trouvée: ${imgElement.src}, utilisation de l'image de secours`);
+            
+            imgElement.src = fallbackImages[category] || fallbackImages['default'];
+            imgElement.onerror = null; // Empêcher les boucles infinies
+        }
+
+        function populateCooperativeFilter() {
+            const cooperatives = JSON.parse(localStorage.getItem('cooperatives')) || [
+                { id: 1, name: "Coopérative La Terre Promise" },
+                { id: 2, name: "Coopérative Les Jardins d'Aného" },
+                { id: 3, name: "Coopérative Bio-Glidji" },
+                { id: 4, name: "Coopérative Bio Aklakou" },
+                { id: 5, name: "Coopérative Les Producteurs Réunis" }
+            ];
+            
+            // Sauvegarder les coopératives par défaut si elles n'existent pas
+            if (!localStorage.getItem('cooperatives')) {
+                localStorage.setItem('cooperatives', JSON.stringify(cooperatives));
+            }
+            
+            const filterSelect = document.getElementById('filterCooperative');
+            const productSelect = document.getElementById('productCooperative');
+            
+            if (filterSelect) {
+                filterSelect.innerHTML = '<option value="">Toutes les coopératives</option>' +
+                    cooperatives.map(coop => `<option value="${coop.id}">${coop.name}</option>`).join('');
+            }
+            
+            if (productSelect) {
+                productSelect.innerHTML = '<option value="">Sélectionner une coopérative</option>' +
+                    cooperatives.map(coop => `<option value="${coop.id}">${coop.name}</option>`).join('');
+            }
+        }
+
+        function filterProducts() {
+            const searchTerm = document.getElementById('searchProduct').value.toLowerCase();
+            const coopFilter = document.getElementById('filterCooperative').value;
+            const categoryFilter = document.getElementById('filterCategory').value;
+            const seasonFilter = document.getElementById('filterSeason').value;
+            
+            let filtered = products;
+            
+            if (searchTerm) {
+                filtered = filtered.filter(product => 
+                    product.name.toLowerCase().includes(searchTerm) ||
+                    product.description.toLowerCase().includes(searchTerm) ||
+                    product.cooperative.toLowerCase().includes(searchTerm)
+                );
+            }
+            
+            if (coopFilter) {
+                filtered = filtered.filter(product => product.cooperativeId == coopFilter);
+            }
+            
+            if (categoryFilter) {
+                filtered = filtered.filter(product => product.category === categoryFilter);
+            }
+            
+            if (seasonFilter) {
+                filtered = filtered.filter(product => product.season === seasonFilter);
+            }
+            
+            displayProducts(filtered);
+        }
+
+        function resetFilters() {
+            document.getElementById('searchProduct').value = '';
+            document.getElementById('filterCooperative').value = '';
+            document.getElementById('filterCategory').value = '';
+            document.getElementById('filterSeason').value = '';
+            displayProducts(products);
+        }
+
+        // Gestion de la sélection d'image
+        function handleImageSelect(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            // Vérifier la taille du fichier (max 2MB)
+            if (file.size > 2 * 1024 * 1024) {
+                alert('Le fichier est trop volumineux. Taille maximale: 2MB');
+                return;
+            }
+            
+            // Vérifier le type de fichier
+            if (!file.type.match('image.*')) {
+                alert('Veuillez sélectionner une image (JPG, PNG, GIF)');
+                return;
+            }
+            
+            // Lire le fichier et le convertir en Data URL
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                selectedImageData = e.target.result;
+                
+                // Afficher l'aperçu
+                const preview = document.getElementById('previewImage');
+                const previewContainer = document.getElementById('imagePreview');
+                if (preview && previewContainer) {
+                    preview.src = selectedImageData;
+                    previewContainer.style.display = 'block';
+                }
+                
+                // Mettre à jour le texte du conteneur
+                const uploadText = document.querySelector('.file-upload-text');
+                if (uploadText) {
+                    uploadText.textContent = 'Image sélectionnée: ' + file.name;
+                    uploadText.style.color = '#2e7d32';
+                    uploadText.style.fontWeight = '600';
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Vue détail produit
+        function showProductDetail(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+            
+            currentProductId = productId;
+            
+            // Afficher la vue détail
+            document.getElementById('productsListView').style.display = 'none';
+            document.getElementById('productDetailView').style.display = 'block';
+            
+            // Mettre à jour l'URL
+            const url = new URL(window.location);
+            url.searchParams.set('id', productId);
+            window.history.pushState({}, '', url);
+            
+            // Utiliser directement l'URL de l'image
+            const imageUrl = product.image;
+            
+            // Remplir les informations
+            document.getElementById('productDetailName').textContent = product.name;
+            document.getElementById('productDetailPrice').textContent = `${product.price} FCFA/${product.unit}`;
+            document.getElementById('productDetailCoop').textContent = product.cooperative;
+            document.getElementById('productDetailSeason').textContent = product.season;
+            document.getElementById('productDetailUnit').textContent = product.unit;
+            document.getElementById('productDetailCategory').textContent = product.category;
+            document.getElementById('productDetailDescription').textContent = product.description;
+            
+            // Image
+            const imageElement = document.getElementById('productImageLarge');
+            if (imageElement) {
+                imageElement.innerHTML = `<img src="${imageUrl}" 
+                                           alt="${product.name}"
+                                           style="width: 100%; height: 100%; object-fit: cover;"
+                                           onerror="handleImageError(this, '${product.category}')">`;
+            }
+            
+            // Statistiques
+            document.getElementById('statStock').textContent = product.stock || 0;
+            document.getElementById('statSales').textContent = product.sales || 0;
+            document.getElementById('statRating').textContent = product.rating || '0.0';
+            
+            // Formulaire de commande
+            document.getElementById('orderUnit').textContent = product.unit;
+            updateOrderTotal();
+            
+            // Afficher les actions admin si nécessaire
+            const adminActions = document.getElementById('adminProductActions');
+            if (adminActions && currentUser && currentUser.role === 'admin') {
+                adminActions.style.display = 'flex';
+            }
+        }
+
+        function showProductsList() {
+            document.getElementById('productsListView').style.display = 'block';
+            document.getElementById('productDetailView').style.display = 'none';
+            currentProductId = null;
+            
+            // Nettoyer l'URL
+            const url = new URL(window.location);
+            url.searchParams.delete('id');
+            window.history.pushState({}, '', url);
+        }
+
+        // Gestion du formulaire de commande
+        function increaseQuantity() {
+            const input = document.getElementById('orderQuantity');
+            if (input) input.value = parseInt(input.value) + 1;
+            updateOrderTotal();
+        }
+
+        function decreaseQuantity() {
+            const input = document.getElementById('orderQuantity');
+            if (input && input.value > 1) {
+                input.value = parseInt(input.value) - 1;
+                updateOrderTotal();
+            }
+        }
+
+        function updateOrderTotal() {
+            const product = products.find(p => p.id === currentProductId);
+            if (!product) return;
+            
+            const quantityInput = document.getElementById('orderQuantity');
+            const quantity = quantityInput ? parseInt(quantityInput.value) || 1 : 1;
+            const total = product.price * quantity;
+            
+            const orderTotal = document.getElementById('orderTotal');
+            if (orderTotal) orderTotal.textContent = total.toLocaleString();
+        }
+
+        // Gestion du panier
+        function loadCart() {
+            const saved = localStorage.getItem('cart');
+            cart = saved ? JSON.parse(saved) : [];
+        }
+
+        function saveCart() {
+            localStorage.setItem('cart', JSON.stringify(cart));
+        }
+
+        function updateCartDisplay() {
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            
+            // Afficher/masquer le bouton panier
+            const cartButtonContainer = document.getElementById('cartButtonContainer');
+            const cartButton = document.getElementById('cartButton');
+            const cartBadgeButton = document.getElementById('cartBadgeButton');
+            const cartButtonText = document.getElementById('cartButtonText');
+            
+            if (cartButtonContainer && cartButton && cartBadgeButton && cartButtonText) {
+                if (totalItems > 0) {
+                    cartButtonContainer.style.display = 'block';
+                    cartButtonText.textContent = `Panier (${totalItems})`;
+                    cartBadgeButton.textContent = totalItems;
+                    cartBadgeButton.style.display = 'flex';
+                } else {
+                    cartButtonContainer.style.display = 'none';
+                }
+            }
+        }
+
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+            
+            const existingItem = cart.find(item => item.productId === productId);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    productId: productId,
+                    quantity: 1,
+                    addedAt: new Date().toISOString()
+                });
+            }
+            
+            saveCart();
+            updateCartDisplay();
+            
+            showNotification(`${product.name} ajouté au panier !`);
+        }
+
+        function addToCartFromDetail() {
+            const quantityInput = document.getElementById('orderQuantity');
+            const quantity = quantityInput ? parseInt(quantityInput.value) || 1 : 1;
+            const product = products.find(p => p.id === currentProductId);
+            
+            if (!product) return;
+            
+            const existingItem = cart.find(item => item.productId === currentProductId);
+            
+            if (existingItem) {
+                existingItem.quantity += quantity;
+            } else {
+                cart.push({
+                    productId: currentProductId,
+                    quantity: quantity,
+                    addedAt: new Date().toISOString()
+                });
+            }
+            
+            saveCart();
+            updateCartDisplay();
+            
+            showNotification(`${quantity} ${product.unit} de ${product.name} ajouté(s) au panier !`);
+        }
+
+        function showNotification(message) {
+            // Créer une notification temporaire
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: #2e7d32;
+                color: white;
+                padding: 15px 25px;
+                border-radius: 8px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                z-index: 10000;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                animation: slideIn 0.3s ease;
+            `;
+            
+            notification.innerHTML = `
+                <i class="fas fa-check-circle"></i>
+                <span>${message}</span>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Ajouter l'animation slideIn
+            const style = document.createElement('style');
+            style.innerHTML = `
+                @keyframes slideIn {
+                    from { transform: translateX(100%); opacity: 0; }
+                    to { transform: translateX(0); opacity: 1; }
+                }
+                @keyframes slideOut {
+                    from { transform: translateX(0); opacity: 1; }
+                    to { transform: translateX(100%); opacity: 0; }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            // Supprimer après 3 secondes
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => {
+                    notification.remove();
+                    style.remove();
+                }, 300);
+            }, 3000);
+        }
+
+        function viewCart() {
+            if (cart.length === 0) {
+                alert('Votre panier est vide');
+                return;
+            }
+            
+            let cartContent = '<h3>Votre Panier</h3><ul style="text-align: left;">';
+            let total = 0;
+            
+            cart.forEach(item => {
+                const product = products.find(p => p.id === item.productId);
+                if (product) {
+                    const itemTotal = product.price * item.quantity;
+                    total += itemTotal;
+                    cartContent += `
+                        <li style="margin-bottom: 10px;">${item.quantity} ${product.unit} de ${product.name} - ${itemTotal.toLocaleString()} FCFA</li>
+                    `;
+                }
+            });
+            
+            cartContent += `</ul><hr><strong style="font-size: 1.2rem;">Total: ${total.toLocaleString()} FCFA</strong>`;
+            
+            if (confirm(`${cartContent}\n\nVoulez-vous passer commande ?`)) {
+                // Simuler une commande
+                showNotification('Commande passée avec succès !');
+                cart = [];
+                saveCart();
+                updateCartDisplay();
+            }
+        }
+
+        function buyNow() {
+            addToCartFromDetail();
+            viewCart();
+        }
+
+        // Gestion du modal produit (CRUD)
+        function openProductModal(productId = null) {
+            // Réinitialiser la sélection d'image
+            selectedImageData = null;
+            const previewContainer = document.getElementById('imagePreview');
+            const uploadText = document.querySelector('.file-upload-text');
+            
+            if (previewContainer) previewContainer.style.display = 'none';
+            if (uploadText) {
+                uploadText.textContent = 'Cliquez pour sélectionner une image';
+                uploadText.style.color = '#666';
+                uploadText.style.fontWeight = 'normal';
+            }
+            
+            if (productId) {
+                // Mode édition
+                const product = products.find(p => p.id === productId);
+                if (!product) return;
+                
+                document.getElementById('modalTitle').textContent = 'Modifier le Produit';
+                document.getElementById('productId').value = product.id;
+                document.getElementById('productName').value = product.name;
+                document.getElementById('productPrice').value = product.price;
+                document.getElementById('productUnit').value = product.unit;
+                document.getElementById('productCooperative').value = product.cooperativeId || '';
+                document.getElementById('productCategory').value = product.category || 'légume';
+                document.getElementById('productSeason').value = product.season || 'Toute l\'année';
+                document.getElementById('productStock').value = product.stock || 0;
+                document.getElementById('productDescription').value = product.description || '';
+                
+                // Pour l'édition, on préremplit avec l'image existante
+                if (product.image && product.image.startsWith('data:')) {
+                    selectedImageData = product.image;
+                    const preview = document.getElementById('previewImage');
+                    if (preview && previewContainer) {
+                        preview.src = product.image;
+                        previewContainer.style.display = 'block';
+                    }
+                    if (uploadText) {
+                        uploadText.textContent = 'Image existante chargée';
+                        uploadText.style.color = '#2e7d32';
+                        uploadText.style.fontWeight = '600';
+                    }
+                }
+            } else {
+                // Mode création
+                document.getElementById('modalTitle').textContent = 'Nouveau Produit';
+                document.getElementById('productId').value = '';
+                document.getElementById('productName').value = '';
+                document.getElementById('productPrice').value = '';
+                document.getElementById('productUnit').value = 'kg';
+                document.getElementById('productCooperative').value = '';
+                document.getElementById('productCategory').value = 'légume';
+                document.getElementById('productSeason').value = 'Toute l\'année';
+                document.getElementById('productStock').value = 0;
+                document.getElementById('productDescription').value = '';
+            }
+            
+            document.getElementById('productModal').style.display = 'flex';
+        }
+
+        function closeProductModal() {
+            document.getElementById('productModal').style.display = 'none';
+        }
+
+        function saveProduct(event) {
+            event.preventDefault();
+            
+            const id = document.getElementById('productId').value;
+            const productData = {
+                name: document.getElementById('productName').value,
+                price: parseInt(document.getElementById('productPrice').value),
+                unit: document.getElementById('productUnit').value,
+                cooperativeId: parseInt(document.getElementById('productCooperative').value),
+                category: document.getElementById('productCategory').value,
+                season: document.getElementById('productSeason').value,
+                stock: parseInt(document.getElementById('productStock').value) || 0,
+                description: document.getElementById('productDescription').value
+            };
+            
+            // Validation
+            if (!productData.name || !productData.price || !productData.unit || !productData.cooperativeId) {
+                alert('Veuillez remplir tous les champs obligatoires (*)');
+                return;
+            }
+            
+            // Validation de l'image (obligatoire pour la création)
+            if (!id && !selectedImageData) {
+                alert('Veuillez sélectionner une image pour le produit');
+                return;
+            }
+            
+            // Utiliser l'image sélectionnée ou l'image existante
+            if (selectedImageData) {
+                productData.image = selectedImageData;
+            } else if (id) {
+                // En mode édition, garder l'image existante si aucune nouvelle n'est sélectionnée
+                const existingProduct = products.find(p => p.id === parseInt(id));
+                if (existingProduct) {
+                    productData.image = existingProduct.image;
+                } else {
+                    // Fallback si pas d'image
+                    productData.image = fallbackImages[productData.category] || fallbackImages['default'];
+                }
+            }
+            
+            // Trouver le nom de la coopérative
+            const cooperatives = JSON.parse(localStorage.getItem('cooperatives')) || [];
+            const cooperative = cooperatives.find(c => c.id == productData.cooperativeId);
+            productData.cooperative = cooperative ? cooperative.name : 'Non spécifié';
+            
+            if (id) {
+                // Mise à jour
+                updateProduct(parseInt(id), productData);
+                showNotification('Produit modifié avec succès !');
+            } else {
+                // Création
+                createProduct(productData);
+                showNotification('Produit créé avec succès !');
+            }
+            
+            closeProductModal();
+            loadProducts();
+            
+            // Si on est en vue détail, actualiser
+            if (currentProductId) {
+                showProductDetail(currentProductId);
+            }
+        }
+
+        function editProduct(productId) {
+            openProductModal(productId);
+        }
+
+        function editCurrentProduct() {
+            if (currentProductId) {
+                editProduct(currentProductId);
+            }
+        }
+
+        function createProduct(productData) {
+            const newId = products.length > 0 ? Math.max(...products.map(p => p.id)) + 1 : 1;
+            
+            const newProduct = {
+                id: newId,
+                ...productData,
+                sales: 0,
+                rating: 4.0,
+                createdAt: new Date().toISOString().split('T')[0]
+            };
+            
+            products.push(newProduct);
+            saveProducts();
+            
+            return newProduct;
+        }
+
+        function updateProduct(id, productData) {
+            const index = products.findIndex(p => p.id === id);
+            if (index === -1) return null;
+            
+            // Garder les valeurs existantes pour les champs non modifiés
+            const existingProduct = products[index];
+            
+            products[index] = {
+                ...existingProduct,
+                ...productData,
+                id: id,
+                sales: existingProduct.sales,
+                rating: existingProduct.rating,
+                createdAt: existingProduct.createdAt
+            };
+            
+            saveProducts();
+            return products[index];
+        }
+
+        function deleteProductPrompt(productId, productName) {
+            currentProductId = productId;
+            const deleteMessage = document.getElementById('deleteMessage');
+            if (deleteMessage) {
+                deleteMessage.textContent = 
+                    `Êtes-vous sûr de vouloir supprimer le produit "${productName}" ?`;
+            }
+            document.getElementById('deleteModal').style.display = 'flex';
+        }
+
+        function deleteCurrentProduct() {
+            if (currentProductId) {
+                const product = products.find(p => p.id === currentProductId);
+                if (product) {
+                    deleteProductPrompt(currentProductId, product.name);
+                }
+            }
+        }
+
+        function closeDeleteModal() {
+            document.getElementById('deleteModal').style.display = 'none';
+            currentProductId = null;
+        }
+
+        function confirmDelete() {
+            if (!currentProductId) return;
+            
+            const index = products.findIndex(p => p.id === currentProductId);
+            if (index === -1) return;
+            
+            products.splice(index, 1);
+            saveProducts();
+            
+            closeDeleteModal();
+            loadProducts();
+            
+            // Si on est en vue détail, revenir à la liste
+            const detailView = document.getElementById('productDetailView');
+            if (detailView && detailView.style.display === 'block') {
+                showProductsList();
+            }
+            
+            showNotification('Produit supprimé avec succès !');
+        }
+
+        // Fonctions d'export
+        function exportProducts() {
+            const dataStr = JSON.stringify(products, null, 2);
+            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+            
+            const exportFileDefaultName = `produits-bio-aneho-${new Date().toISOString().split('T')[0]}.json`;
+            
+            const linkElement = document.createElement('a');
+            linkElement.setAttribute('href', dataUri);
+            linkElement.setAttribute('download', exportFileDefaultName);
+            linkElement.click();
+        }
+
+        // Gestion des événements
+        const orderQuantity = document.getElementById('orderQuantity');
+        if (orderQuantity) {
+            orderQuantity.addEventListener('input', updateOrderTotal);
+            orderQuantity.addEventListener('change', updateOrderTotal);
+        }
+
+        // Gestion de l'historique du navigateur
+        window.addEventListener('popstate', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const productId = urlParams.get('id');
+            if (productId) {
+                showProductDetail(parseInt(productId));
+            } else {
+                showProductsList();
+            }
+        });
+    </script>
+</body>
+</html>

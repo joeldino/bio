@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion - Bio Aného</title>
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/auth.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .login-container {
+            max-width: 400px;
+            margin: 5rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+        }
+        
+        .login-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .login-header i {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        
+        .login-actions {
+            margin-top: 2rem;
+        }
+        
+        .role-selector {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .role-option {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .role-option.selected {
+            border-color: var(--primary-color);
+            background-color: rgba(46, 125, 50, 0.1);
+        }
+        
+        .role-option i {
+            display: block;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+        
+        .error-message {
+            color: #dc3545;
+            background-color: #f8d7da;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+            display: none;
+        }
+        
+        .login-footer {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid #eee;
+            color: #666;
+        }
+        
+        .debug-info {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 1rem;
+            font-size: 0.8rem;
+            color: #666;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-leaf"></i>
+                <span>Bio Aného</span>
+            </a>
+            <button class="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            <ul class="nav-links">
+                <li><a href="index.html">Accueil</a></li>
+                <li><a href="../private/cooperatives.html">Coopératives</a></li>
+                <li><a href="../private/products.html">Produits</a></li>
+                <li><a href="../private/sales.html">Points de Vente</a></li>
+                <li><a href="news.html">Actualités</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="login.html" class="btn-login active">Connexion</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <div class="login-container">
+            <div class="login-header">
+                <i class="fas fa-leaf"></i>
+                <h1>Connexion</h1>
+                <p>Accédez à votre espace personnel</p>
+            </div>
+            
+            <div class="error-message" id="errorMessage"></div>
+            
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label for="username">Nom d'utilisateur</label>
+                    <input type="text" id="username" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Mot de passe</label>
+                    <input type="password" id="password" required>
+                </div>
+                
+                <div class="role-selector">
+                    <div class="role-option selected" data-role="admin" onclick="selectRole('admin')">
+                        <i class="fas fa-cogs"></i>
+                        <span>Administrateur</span>
+                    </div>
+                    <div class="role-option" data-role="coop_admin" onclick="selectRole('coop_admin')">
+                        <i class="fas fa-users"></i>
+                        <span>Coopérative</span>
+                    </div>
+                    <div class="role-option" data-role="member" onclick="selectRole('member')">
+                        <i class="fas fa-user"></i>
+                        <span>Membre</span>
+                    </div>
+                </div>
+                
+                <input type="hidden" id="role" value="admin">
+                
+                <div class="login-actions">
+                    <button type="submit" class="btn btn-primary" style="width:100%;">
+                        <i class="fas fa-sign-in-alt"></i> Se connecter
+                    </button>
+                </div>
+            </form>
+            
+            <div class="login-footer">
+                <p>Compte administrateur :</p>
+                <p><strong>Nom d'utilisateur:</strong> <code>Eldinio</code></p>
+                <p><strong>Mot de passe:</strong> <code>dino12</code></p>
+                <p><small>Comptes de test disponibles pour les autres rôles</small></p>
+            </div>
+            
+            <div class="debug-info" id="debugInfo"></div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-section">
+                <h4>Bio Aného</h4>
+                <p>Développement durable par l'agriculture biologique à Aného, Togo.</p>
+              
+            </div>
+            <div class="footer-section">
+                <h4>Liens rapides</h4>
+                <ul>
+                    <li><a href="index.html">Accueil</a></li>
+                    <li><a href="../private/products.html">Produits</a></li>
+                    <li><a href="../private/cooperatives.html">Coopératives</a></li>
+                    <li><a href="../private/sales.html">Points de vente</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Contact</h4>
+                <p><i class="fas fa-map-marker-alt"></i> Aného, Région Maritime, Togo</p>
+                <p><i class="fas fa-phone"></i> +228 96 85 70 42</p>
+                <p><i class="fas fa-envelope"></i>joelamzy91@gmail.com</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Maraîchage Bio à Aného. Développé par HOUNKPATI Yaovi Joël</p>
+        </div>
+    </footer>
+
+    <script>
+        // ============================================
+        // FONCTIONS D'AUTHENTIFICATION SIMPLIFIÉES
+        // ============================================
+        
+        // Comptes par défaut - GARANTIS
+        const DEFAULT_USERS = [
+            {
+                id: 1,
+                username: 'Eldinio',
+                password: 'dino12',
+                role: 'admin',
+                fullName: 'Eldinio Admin',
+                email: 'admin@bioaneho.tg',
+                phone: '+228 96 85 70 42',
+                cooperativeId: null,
+                createdAt: new Date().toISOString()
+            },
+            {
+                id: 2,
+                username: 'coop1',
+                password: 'coop123',
+                role: 'coop_admin',
+                fullName: 'Jean Koffi',
+                email: 'coop1@bioaneho.tg',
+                phone: '+228 90 12 34 56',
+                cooperativeId: 1,
+                createdAt: new Date().toISOString()
+            },
+            {
+                id: 3,
+                username: 'agriculteur1',
+                password: 'agri123',
+                role: 'member',
+                fullName: 'Ama Doe',
+                email: 'ama@bioaneho.tg',
+                phone: '+228 91 23 45 67',
+                cooperativeId: 1,
+                plotArea: '0.5 hectare',
+                specialty: 'Tomates',
+                createdAt: new Date().toISOString()
+            }
+        ];
+        
+        // Fonction pour initialiser GARANTI les utilisateurs
+        function initializeUsers() {
+            console.log('🔧 Initialisation des utilisateurs...');
+            
+            // FORCER la création des utilisateurs
+            localStorage.setItem('users', JSON.stringify(DEFAULT_USERS));
+            
+            // Vérifier
+            const storedUsers = JSON.parse(localStorage.getItem('users'));
+            console.log('✅ Utilisateurs stockés:', storedUsers);
+            
+            // Afficher dans la page pour debug
+            document.getElementById('debugInfo').innerHTML = `
+                <strong>Utilisateurs disponibles:</strong><br>
+                ${storedUsers.map(u => `${u.username} (${u.role})`).join('<br>')}
+            `;
+            document.getElementById('debugInfo').style.display = 'block';
+            
+            return storedUsers;
+        }
+        
+        // Variables globales
+        let selectedRole = 'admin';
+        
+        // Sélectionner un rôle
+        function selectRole(role) {
+            selectedRole = role;
+            document.getElementById('role').value = role;
+            
+            // Mettre à jour l'interface
+            document.querySelectorAll('.role-option').forEach(option => {
+                if (option.dataset.role === role) {
+                    option.classList.add('selected');
+                } else {
+                    option.classList.remove('selected');
+                }
+            });
+        }
+        
+        // Gérer la connexion
+        function handleLogin(event) {
+            event.preventDefault();
+            
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value;
+            
+            console.log('🔐 Tentative de connexion:', { username, password });
+            
+            // Récupérer les utilisateurs
+            let users = JSON.parse(localStorage.getItem('users'));
+            
+            // Si pas d'utilisateurs, les initialiser
+            if (!users || users.length === 0) {
+                console.log('⚠️ Aucun utilisateur trouvé, initialisation...');
+                users = initializeUsers();
+            }
+            
+            console.log('📋 Utilisateurs disponibles:', users);
+            
+            // Rechercher l'utilisateur (comparaison exacte)
+            const user = users.find(u => 
+                u.username === username && 
+                u.password === password
+            );
+            
+            if (user) {
+                console.log('✅ Connexion réussie pour:', user.username);
+                
+                // Connexion réussie - Ne pas stocker le mot de passe
+                const { password: userPassword, ...userWithoutPassword } = user;
+                localStorage.setItem('currentUser', JSON.stringify(userWithoutPassword));
+                
+                // Afficher message de succès
+                document.getElementById('errorMessage').style.display = 'none';
+                document.getElementById('errorMessage').textContent = '';
+                
+                // Petit délai pour voir le message
+                setTimeout(() => {
+                    // Redirection selon le rôle
+                    switch(user.role) {
+                        case 'admin':
+                            window.location.href = '../private/dashboard.html';
+                            break;
+                        case 'coop_admin':
+                            window.location.href = '../private/dashboard.html';
+                            break;
+                        case 'member':
+                            window.location.href = '../private/dashboard.html';
+                            break;
+                        default:
+                            window.location.href = 'index.html';
+                    }
+                }, 500);
+                
+            } else {
+                console.log('❌ Échec de connexion');
+                
+                // Erreur de connexion
+                document.getElementById('errorMessage').style.display = 'block';
+                document.getElementById('errorMessage').innerHTML = `
+                    <strong>Identifiants incorrects.</strong><br>
+                    <small>Utilisateurs disponibles: ${users.map(u => u.username).join(', ')}</small>
+                `;
+                
+                // Focus sur le champ username
+                document.getElementById('username').focus();
+            }
+        }
+        
+        // Vérifier si déjà connecté au chargement
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 Page login chargée');
+            
+            // Initialiser les utilisateurs GARANTI
+            initializeUsers();
+            
+            // Vérifier si déjà connecté
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (currentUser) {
+                console.log('🔄 Déjà connecté:', currentUser.username);
+                
+                // Redirection selon le rôle
+                switch(currentUser.role) {
+                    case 'admin':
+                        window.location.href = '../private/dashboard.html';
+                        break;
+                    default:
+                        window.location.href = '../private/dashboard.html';
+                }
+            }
+            
+            // Pré-remplir pour test (à enlever en production)
+            document.getElementById('username').value = 'Eldinio';
+            document.getElementById('password').value = 'dino12';
+        });
+        
+        // ============================================
+        // FONCTIONS EXPORTÉES POUR LES AUTRES PAGES
+        // ============================================
+        
+        // Obtenir l'utilisateur courant
+        function getCurrentUser() {
+            const user = localStorage.getItem('currentUser');
+            return user ? JSON.parse(user) : null;
+        }
+        
+        // Vérifier l'authentification
+        function isAuthenticated() {
+            return localStorage.getItem('currentUser') !== null;
+        }
+        
+        // Déconnexion
+        function logout() {
+            localStorage.removeItem('currentUser');
+            window.location.href = '../../index.html';
+        }
+        
+        // Vérifier les permissions
+        function hasPermission(requiredRole) {
+            const user = getCurrentUser();
+            if (!user) return false;
+            
+            if (requiredRole === 'admin' && user.role !== 'admin') return false;
+            if (requiredRole === 'coop_admin' && !['admin', 'coop_admin'].includes(user.role)) return false;
+            
+            return true;
+        }
+        
+        // Rediriger si non authentifié
+        function requireAuth(redirectTo = '../../pages/public/login.html') {
+            if (!isAuthenticated()) {
+                window.location.href = redirectTo;
+                return false;
+            }
+            return true;
+        }
+        
+        // Rediriger si non autorisé
+        function requireRole(requiredRole, redirectTo = '../../index.html') {
+            if (!hasPermission(requiredRole)) {
+                alert('Accès non autorisé');
+                window.location.href = redirectTo;
+                return false;
+            }
+            return true;
+        }
+        
+        // Vérifier l'accès admin
+        function checkAdminAccess() {
+            const user = getCurrentUser();
+            if (user && user.role === 'admin') {
+                const adminBars = document.querySelectorAll('.admin-bar');
+                adminBars.forEach(bar => {
+                    bar.style.display = 'block';
+                });
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,1488 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion des Membres - Bio Aného</title>
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Styles spécifiques pour la page de gestion des membres */
+        .dashboard-header {
+            background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+        }
+        
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        
+        .header-content h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .header-content p {
+            opacity: 0.9;
+        }
+        
+        .header-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .user-info-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+        }
+        
+        .user-avatar-header {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .user-details-header h4 {
+            margin: 0;
+            font-size: 0.9rem;
+        }
+        
+        .user-role-header {
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+        
+        .main-content-container {
+            max-width: 1200px;
+            margin: 0 auto 2rem;
+            padding: 0 1rem;
+        }
+        
+        .members-filters {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .filters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            align-items: end;
+        }
+        
+        .form-group {
+            margin-bottom: 0;
+        }
+        
+        .members-table-container {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .members-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .members-table th {
+            background: #f8f9fa;
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: #495057;
+            border-bottom: 2px solid #dee2e6;
+        }
+        
+        .members-table td {
+            padding: 1rem;
+            border-bottom: 1px solid #dee2e6;
+            vertical-align: middle;
+        }
+        
+        .members-table tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .member-avatar-table {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e0f2e9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #2e7d32;
+            font-weight: bold;
+        }
+        
+        .role-badge {
+            padding: 4px 8px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .role-president {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .role-secretary {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+        
+        .role-treasurer {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .role-committee {
+            background: #e2e3e5;
+            color: #383d41;
+        }
+        
+        .role-member {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 5px;
+        }
+        
+        .btn-icon {
+            width: 35px;
+            height: 35px;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        
+        .btn-edit {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+        
+        .btn-delete {
+            background: #ffebee;
+            color: #d32f2f;
+        }
+        
+        .btn-view {
+            background: #f3e5f5;
+            color: #7b1fa2;
+        }
+        
+        .btn-icon:hover {
+            transform: translateY(-2px);
+            opacity: 0.9;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: #6c757d;
+        }
+        
+        .empty-state i {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            color: #dee2e6;
+        }
+        
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 8px;
+            padding: 2rem;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #6c757d;
+        }
+        
+        .close-modal:hover {
+            color: #495057;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #2e7d32;
+            box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.1);
+        }
+        
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #495057;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid #dee2e6;
+        }
+        
+        @media (max-width: 768px) {
+            .members-table {
+                display: block;
+                overflow-x: auto;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .filters-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header-actions {
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+        
+        /* ===== NAVIGATION COMME L'INDEX ===== */
+        .main-navbar {
+            background: linear-gradient(135deg, #2e7d32 0%, #4caf50 100%);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 0.8rem 0;
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 1.5rem;
+        }
+        
+        .main-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: white;
+            text-decoration: none;
+            font-size: 1.5rem;
+            font-weight: 700;
+            transition: transform 0.3s ease;
+        }
+        
+        .main-logo:hover {
+            transform: scale(1.05);
+        }
+        
+        .main-logo i {
+            font-size: 2rem;
+            color: #c8e6c9;
+        }
+        
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        
+        .menu-toggle:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .main-nav-links {
+            display: flex;
+            list-style: none;
+            gap: 1.8rem;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .main-nav-links li {
+            position: relative;
+        }
+        
+        .main-nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border-radius: 6px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .main-nav-links a:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+        
+        .main-nav-links a::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: white;
+            transition: width 0.3s ease;
+            border-radius: 3px 3px 0 0;
+        }
+        
+        .main-nav-links a:hover::before {
+            width: 100%;
+        }
+        
+        .main-nav-links a.active {
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn-logout {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+            color: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(220, 53, 69, 0.2);
+        }
+        
+        .btn-logout:hover {
+            background: linear-gradient(135deg, #c82333 0%, #bd2130 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(220, 53, 69, 0.3);
+        }
+        
+        /* Boutons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            gap: 8px;
+            font-family: inherit;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #2e7d32 0%, #4caf50 100%);
+            color: white;
+            box-shadow: 0 4px 6px rgba(46, 125, 50, 0.2);
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(46, 125, 50, 0.3);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            color: #2e7d32;
+            border: 2px solid #2e7d32;
+        }
+        
+        .btn-outline:hover {
+            background: #2e7d32;
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .btn-danger {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+            color: white;
+            box-shadow: 0 4px 6px rgba(220, 53, 69, 0.2);
+        }
+        
+        .btn-danger:hover {
+            background: linear-gradient(135deg, #c82333 0%, #bd2130 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(220, 53, 69, 0.3);
+        }
+        
+        /* Footer */
+        .main-footer {
+            background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%);
+            color: white;
+            padding: 3rem 0 1rem;
+            margin-top: 4rem;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+        }
+        
+        .footer-section h4 {
+            color: white;
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+            position: relative;
+            padding-bottom: 12px;
+            font-weight: 700;
+        }
+        
+        .footer-section h4::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 3px;
+        }
+        
+        .footer-section p {
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.7;
+            margin-bottom: 1.2rem;
+        }
+        
+        .footer-section ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .footer-section ul li {
+            margin-bottom: 0.9rem;
+        }
+        
+        .footer-section a {
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 0.3rem 0;
+        }
+        
+        .footer-section a:hover {
+            color: white;
+            transform: translateX(8px);
+        }
+        
+        .footer-section i {
+            width: 24px;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        /* Responsive pour le menu */
+        @media (max-width: 768px) {
+            .nav-container {
+                padding: 0 1rem;
+            }
+            
+            .menu-toggle {
+                display: block;
+            }
+            
+            .main-nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: #2e7d32;
+                flex-direction: column;
+                gap: 0;
+                padding: 1rem 0;
+                box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+                z-index: 1000;
+                max-height: 80vh;
+                overflow-y: auto;
+                border-radius: 0 0 16px 16px;
+                margin-top: 10px;
+            }
+            
+            .main-nav-links.show {
+                display: flex;
+            }
+            
+            .main-nav-links li {
+                width: 100%;
+            }
+            
+            .main-nav-links a {
+                padding: 1.2rem;
+                border-bottom: 1px solid rgba(255,255,255,0.1);
+                gap: 12px;
+                justify-content: center;
+            }
+            
+            .main-nav-links a:last-child {
+                border-bottom: none;
+            }
+            
+            .main-nav-links a.active {
+                background: rgba(255,255,255,0.2);
+                margin: 0 1rem;
+                border-radius: 10px;
+            }
+            
+            .btn-logout {
+                justify-content: center;
+                margin: 0.5rem 1rem;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 2.5rem;
+                text-align: center;
+            }
+            
+            .footer-section h4::after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+            
+            .footer-section a {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation comme l'index -->
+    <nav class="main-navbar">
+        <div class="nav-container">
+            <a href="../../index.html" class="main-logo">
+                <i class="fas fa-leaf"></i>
+                <span>Bio Aného</span>
+            </a>
+            
+            <!-- Menu hamburger pour mobile -->
+            <button class="menu-toggle" id="menuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <!-- Navigation -->
+              <ul class="main-nav-links" id="navLinks">
+                <li><a href="../public/index.html" class="active">
+                    <i class="fas fa-home"></i>
+                    <span>Accueil</span>
+                </a></li>
+                <li><a href="../private/cooperatives.html">
+                    <i class="fas fa-tractor"></i>
+                    <span>Coopératives</span>
+                </a></li>
+  <li><a href="../private/members.html">
+                    <i class="fas fa-tractor"></i>
+                    <span>Gestion des Membres</span>
+                </a></li>
+                <li><a href="../private/products.html">
+                    <i class="fas fa-seedling"></i>
+                    <span>Produits</span>
+                </a></li>
+              <a href="orders.html">Commandes</a>
+                <li><a href="../private/sales.html">
+                    <i class="fas fa-store"></i>
+                    <span>Points de Vente</span>
+                </a></li>
+                <li><a href="../public/news.html">
+                    <i class="fas fa-newspaper"></i>
+                    <span>Actualités</span>
+                </a></li>
+                <li><a href="../public/contact.html">
+                    <i class="fas fa-envelope"></i>
+                    <span>Contact</span>
+                </a></li>
+<li>
+                  <a href="../private/dashboard.html">Admin</a>
+                </li>
+                <li><a href="login.html" class="btn-login">
+                    <i class="fas fa-sign-in-alt"></i>
+                    <span>Connexion</span>
+                </a></li>
+            
+            </ul>
+                <li>
+                    <button class="btn-logout" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Déconnexion</span>
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Header Dashboard -->
+    <header class="dashboard-header">
+        <div class="header-content">
+            <h1>Gestion des Membres</h1>
+            <p>Gérez les membres des coopératives agricoles</p>
+            
+            <div class="header-actions">
+                <button class="btn btn-primary" onclick="openMemberModal()">
+                    <i class="fas fa-user-plus"></i> Ajouter un membre
+                </button>
+                
+                <div class="user-info-header">
+                    <div class="user-avatar-header">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="user-details-header">
+                        <h4 id="userName">Administrateur</h4>
+                        <span class="user-role-header" id="userRole">Admin</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Contenu principal -->
+    <main class="main-content-container">
+        <!-- Filtres -->
+        <div class="members-filters">
+            <div class="filters-grid">
+                <div class="form-group">
+                    <label>Rechercher un membre</label>
+                    <input type="text" id="searchMember" class="form-input" placeholder="Nom, téléphone, email...">
+                </div>
+                <div class="form-group">
+                    <label>Coopérative</label>
+                    <select id="filterCooperative" class="form-input">
+                        <option value="">Toutes les coopératives</option>
+                        <!-- Options chargées par JS -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Rôle</label>
+                    <select id="filterRole" class="form-input">
+                        <option value="">Tous les rôles</option>
+                        <option value="Président">Président</option>
+                        <option value="Secrétaire">Secrétaire</option>
+                        <option value="Trésorier">Trésorier</option>
+                        <option value="Président du comité de suivi">Président du comité de suivi</option>
+                        <option value="Président du comité de gestion">Président du comité de gestion</option>
+                        <option value="Membre">Membre</option>
+                    </select>
+                </div>
+                <div>
+                    <button class="btn btn-primary" onclick="filterMembers()">
+                        <i class="fas fa-filter"></i> Filtrer
+                    </button>
+                    <button class="btn btn-outline" onclick="resetMemberFilters()">
+                        <i class="fas fa-redo"></i> Réinitialiser
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Liste des membres -->
+        <div class="members-table-container">
+            <table class="members-table">
+                <thead>
+                    <tr>
+                        <th>Membre</th>
+                        <th>Coopérative</th>
+                        <th>Rôle</th>
+                        <th>Contact</th>
+                        <th>Date d'adhésion</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="membersList">
+                    <!-- Chargé par JS -->
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- État vide -->
+        <div id="emptyState" class="empty-state" style="display: none;">
+            <i class="fas fa-users"></i>
+            <h3>Aucun membre trouvé</h3>
+            <p>Ajoutez votre premier membre pour commencer</p>
+            <button class="btn btn-primary" onclick="openMemberModal()" style="margin-top: 1rem;">
+                <i class="fas fa-user-plus"></i> Ajouter un membre
+            </button>
+        </div>
+    </main>
+
+    <!-- Modal d'ajout/modification de membre -->
+    <div id="memberModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeMemberModal()">&times;</span>
+            <h2 id="memberModalTitle">Ajouter un Membre</h2>
+            <form id="memberForm" onsubmit="saveMember(event)">
+                <input type="hidden" id="memberId">
+                <input type="hidden" id="memberCoopId">
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="memberFirstName">Prénom *</label>
+                        <input type="text" id="memberFirstName" required class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label for="memberLastName">Nom *</label>
+                        <input type="text" id="memberLastName" required class="form-input">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="memberCooperative">Coopérative *</label>
+                    <select id="memberCooperative" required class="form-input">
+                        <option value="">Sélectionnez une coopérative</option>
+                        <!-- Options chargées par JS -->
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="memberRole">Rôle dans la coopérative *</label>
+                    <select id="memberRole" required class="form-input">
+                        <option value="">Sélectionnez un rôle</option>
+                        <option value="Président">Président</option>
+                        <option value="Secrétaire">Secrétaire</option>
+                        <option value="Trésorier">Trésorier</option>
+                        <option value="Président du comité de suivi">Président du comité de suivi</option>
+                        <option value="Président du comité de gestion">Président du comité de gestion</option>
+                        <option value="Membre">Membre</option>
+                    </select>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="memberPhone">Téléphone *</label>
+                        <input type="tel" id="memberPhone" required class="form-input" placeholder="+228 XX XX XX XX">
+                    </div>
+                    <div class="form-group">
+                        <label for="memberEmail">Email</label>
+                        <input type="email" id="memberEmail" class="form-input" placeholder="membre@example.tg">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="memberAddress">Adresse</label>
+                    <input type="text" id="memberAddress" class="form-input" placeholder="Quartier, Ville">
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="memberJoinDate">Date d'adhésion *</label>
+                        <input type="date" id="memberJoinDate" required class="form-input" value="<?php echo date('Y-m-d'); ?>">
+                    </div>
+                    <div class="form-group">
+                        <label for="memberStatus">Statut</label>
+                        <select id="memberStatus" class="form-input">
+                            <option value="active">Actif</option>
+                            <option value="inactive">Inactif</option>
+                            <option value="suspended">Suspendu</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="memberNotes">Notes ou observations</label>
+                    <textarea id="memberNotes" rows="3" class="form-input" placeholder="Informations complémentaires..."></textarea>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" class="btn btn-outline" onclick="closeMemberModal()">Annuler</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Enregistrer
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal de confirmation de suppression -->
+    <div id="deleteModal" class="modal">
+        <div class="modal-content" style="max-width: 400px; text-align: center;">
+            <span class="close-modal" onclick="closeDeleteModal()">&times;</span>
+            <div style="margin: 2rem 0;">
+                <i class="fas fa-exclamation-triangle" style="font-size: 3rem; color: #dc3545;"></i>
+                <h3 style="margin: 1rem 0;">Confirmer la suppression</h3>
+                <p id="deleteMessage">Êtes-vous sûr de vouloir supprimer ce membre ? Cette action est irréversible.</p>
+            </div>
+            <div class="form-actions">
+                <button type="button" class="btn btn-outline" onclick="closeDeleteModal()">Annuler</button>
+                <button type="button" class="btn btn-danger" onclick="confirmDelete()">
+                    <i class="fas fa-trash"></i> Supprimer
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Bio Aného</h4>
+                <p>Développement durable par l'agriculture biologique à Aného, Togo.</p>
+                <p>Engagés pour une agriculture responsable et respectueuse de l'environnement.</p>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Liens rapides</h4>
+                <ul>
+                    <li><a href="../public/index.html">
+                        <i class="fas fa-home"></i>
+                        Accueil
+                    </a></li>
+                    <li><a href="cooperatives.html">
+                        <i class="fas fa-tractor"></i>
+                        Nos coopératives
+                    </a></li>
+                    <li><a href="products.html">
+                        <i class="fas fa-seedling"></i>
+                        Produits bio
+                    </a></li>
+                    <li><a href="sales.html">
+                        <i class="fas fa-store"></i>
+                        Points de vente
+                    </a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Coordonnées</h4>
+                <p><i class="fas fa-map-marker-alt"></i> Aného, Région Maritime, Togo</p>
+                <p><i class="fas fa-phone"></i> +228 96 85 70 42</p>
+                <p><i class="fas fa-envelope"></i> joelamzy91@gmail.com</p>
+                <p><i class="fas fa-clock"></i> Lundi - Vendredi: 8h-18h</p>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2026 Maraîchage Bio à Aného. Développé par HOUNKPATI Yaovi Joël</p>
+            <p style="margin-top: 0.5rem; font-size: 0.85rem;">Tous droits réservés.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Gestion du menu hamburger
+        function initMenu() {
+            const menuToggle = document.getElementById('menuToggle');
+            const navLinks = document.getElementById('navLinks');
+            
+            if (!menuToggle || !navLinks) return;
+            
+            menuToggle.addEventListener('click', function(e) {
+                e.stopPropagation();
+                navLinks.classList.toggle('show');
+                const icon = menuToggle.querySelector('i');
+                if (navLinks.classList.contains('show')) {
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-times');
+                } else {
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
+            });
+            
+            // Fermer le menu quand on clique sur un lien
+            navLinks.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', function() {
+                    navLinks.classList.remove('show');
+                    menuToggle.querySelector('i').classList.remove('fa-times');
+                    menuToggle.querySelector('i').classList.add('fa-bars');
+                });
+            });
+            
+            // Fermer le menu quand on clique en dehors
+            document.addEventListener('click', function(e) {
+                if (!menuToggle.contains(e.target) && !navLinks.contains(e.target)) {
+                    navLinks.classList.remove('show');
+                    menuToggle.querySelector('i').classList.remove('fa-times');
+                    menuToggle.querySelector('i').classList.add('fa-bars');
+                }
+            });
+            
+            // Gestion du redimensionnement
+            window.addEventListener('resize', function() {
+                if (window.innerWidth > 768) {
+                    navLinks.classList.remove('show');
+                    menuToggle.querySelector('i').classList.remove('fa-times');
+                    menuToggle.querySelector('i').classList.add('fa-bars');
+                }
+            });
+        }
+
+        // Variables globales
+        let members = [];
+        let currentMemberId = null;
+        
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialiser le menu
+            initMenu();
+            
+            // Vérifier l'authentification
+            checkAuth();
+            
+            // Charger les données
+            loadAllMembers();
+            loadCooperativesForFilter();
+            updateUserInfo();
+            
+            // Événements de recherche
+            document.getElementById('searchMember').addEventListener('input', filterMembers);
+        });
+        
+        function checkAuth() {
+            try {
+                const user = JSON.parse(localStorage.getItem('currentUser'));
+                if (!user || user.role !== 'admin') {
+                    window.location.href = '../../public/login.html';
+                    return false;
+                }
+                return true;
+            } catch (e) {
+                window.location.href = '../../public/login.html';
+                return false;
+            }
+        }
+        
+        function updateUserInfo() {
+            try {
+                const user = JSON.parse(localStorage.getItem('currentUser'));
+                if (user) {
+                    document.getElementById('userName').textContent = user.fullName || user.username || 'Administrateur';
+                    document.getElementById('userRole').textContent = user.role === 'admin' ? 'Administrateur' : 'Gestionnaire';
+                }
+            } catch (e) {
+                console.log('Erreur lors de la récupération des infos utilisateur');
+            }
+        }
+        
+        function logout() {
+            if (confirm('Êtes-vous sûr de vouloir vous déconnecter ?')) {
+                localStorage.removeItem('currentUser');
+                window.location.href = '../../public/login.html';
+            }
+        }
+        
+        // Gestion des membres
+        function getAllMembers() {
+            const saved = localStorage.getItem('members');
+            return saved ? JSON.parse(saved) : [];
+        }
+        
+        function getMemberById(memberId) {
+            const members = getAllMembers();
+            return members.find(m => m.id == memberId);
+        }
+        
+        function saveMembers(membersList) {
+            localStorage.setItem('members', JSON.stringify(membersList));
+        }
+        
+        function loadAllMembers() {
+            members = getAllMembers();
+            if (members.length === 0) {
+                // Données par défaut
+                members = [
+                    {
+                        id: 1,
+                        firstName: "Kossi",
+                        lastName: "AGBOH",
+                        fullName: "Kossi AGBOH",
+                        cooperativeId: 1,
+                        cooperative: "Maraîchers Bio d'Aného",
+                        role: "Président",
+                        phone: "+228 90 12 34 56",
+                        email: "kossi.agboh@example.tg",
+                        address: "Quartier Agbodrafo, Aného",
+                        joinDate: "2024-01-15",
+                        status: "active",
+                        notes: "Membre fondateur"
+                    },
+                    {
+                        id: 2,
+                        firstName: "Ama",
+                        lastName: "TETEY",
+                        fullName: "Ama TETEY",
+                        cooperativeId: 2,
+                        cooperative: "Coopérative Aklakou",
+                        role: "Secrétaire",
+                        phone: "+228 91 23 45 67",
+                        email: "ama.tetey@example.tg",
+                        address: "Quartier Aklakou, Aného",
+                        joinDate: "2024-02-20",
+                        status: "active",
+                        notes: "Très impliquée dans la gestion"
+                    },
+                    {
+                        id: 3,
+                        firstName: "Komlan",
+                        lastName: "DEDJI",
+                        fullName: "Komlan DEDJI",
+                        cooperativeId: 1,
+                        cooperative: "Maraîchers Bio d'Aného",
+                        role: "Trésorier",
+                        phone: "+228 92 34 56 78",
+                        email: "komlan.dedji@example.tg",
+                        address: "Quartier Glidji, Aného",
+                        joinDate: "2024-03-10",
+                        status: "active",
+                        notes: ""
+                    },
+                    {
+                        id: 4,
+                        firstName: "Yaovi",
+                        lastName: "HOUNKPATI",
+                        fullName: "Yaovi HOUNKPATI",
+                        cooperativeId: 3,
+                        cooperative: "Coopérative Bio-Glidji",
+                        role: "Président du comité de suivi",
+                        phone: "+228 96 85 70 42",
+                        email: "joelamzy91@gmail.com",
+                        address: "Aného, Région Maritime",
+                        joinDate: "2024-01-01",
+                        status: "active",
+                        notes: "Coordinateur du projet"
+                    }
+                ];
+                saveMembers(members);
+            }
+            displayMembers(members);
+        }
+        
+        function displayMembers(membersList) {
+            const container = document.getElementById('membersList');
+            const emptyState = document.getElementById('emptyState');
+            
+            if (membersList.length === 0) {
+                container.innerHTML = '';
+                emptyState.style.display = 'block';
+                return;
+            }
+            
+            emptyState.style.display = 'none';
+            
+            // Obtenir la liste des coopératives
+            const cooperatives = JSON.parse(localStorage.getItem('cooperatives')) || [
+                { id: 1, name: "Maraîchers Bio d'Aného" },
+                { id: 2, name: "Coopérative Aklakou" },
+                { id: 3, name: "Coopérative Bio-Glidji" },
+                { id: 4, name: "Coopérative La Terre Promise" },
+                { id: 5, name: "Coopérative Les Jardins d'Aného" }
+            ];
+            
+            container.innerHTML = membersList.map(member => {
+                // Trouver le nom de la coopérative si non présent
+                let coopName = member.cooperative;
+                if (!coopName && member.cooperativeId) {
+                    const coop = cooperatives.find(c => c.id == member.cooperativeId);
+                    coopName = coop ? coop.name : 'Coopérative inconnue';
+                }
+                
+                // Initiales pour l'avatar
+                const initials = (member.firstName?.[0] || '') + (member.lastName?.[0] || '') || '??';
+                
+                // Classe CSS pour le rôle
+                const roleClass = getRoleClass(member.role);
+                
+                // Formater la date
+                const joinDate = member.joinDate ? new Date(member.joinDate).toLocaleDateString('fr-FR') : 'Non spécifiée';
+                
+                return `
+                    <tr>
+                        <td>
+                            <div style="display: flex; align-items: center; gap: 1rem;">
+                                <div class="member-avatar-table">${initials}</div>
+                                <div>
+                                    <strong>${member.fullName || member.firstName + ' ' + member.lastName}</strong><br>
+                                    <small style="color: #666;">${member.status === 'active' ? 'Actif' : member.status === 'inactive' ? 'Inactif' : 'Suspendu'}</small>
+                                </div>
+                            </div>
+                        </td>
+                        <td>${coopName}</td>
+                        <td><span class="role-badge ${roleClass}">${member.role}</span></td>
+                        <td>
+                            <div>${member.phone || 'Non renseigné'}</div>
+                            ${member.email ? `<small>${member.email}</small>` : ''}
+                        </td>
+                        <td>${joinDate}</td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="btn-icon btn-edit" onclick="editMember(${member.id})" title="Modifier">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn-icon btn-delete" onclick="openDeleteModal(${member.id}, '${member.fullName || member.firstName + ' ' + member.lastName}')" title="Supprimer">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+        
+        function getRoleClass(role) {
+            switch(role) {
+                case 'Président': return 'role-president';
+                case 'Secrétaire': return 'role-secretary';
+                case 'Trésorier': return 'role-treasurer';
+                case 'Président du comité de suivi': 
+                case 'Président du comité de gestion': return 'role-committee';
+                case 'Membre': return 'role-member';
+                default: return '';
+            }
+        }
+        
+        // Fonctions pour la modal
+        function openMemberModal(coopId = null) {
+            document.getElementById('memberModalTitle').textContent = 'Ajouter un Membre';
+            document.getElementById('memberId').value = '';
+            document.getElementById('memberCoopId').value = coopId || '';
+            
+            // Réinitialiser le formulaire
+            document.getElementById('memberForm').reset();
+            document.getElementById('memberJoinDate').value = new Date().toISOString().split('T')[0];
+            document.getElementById('memberStatus').value = 'active';
+            
+            // Charger les coopératives dans le select
+            loadCooperativesForSelect(coopId);
+            
+            document.getElementById('memberModal').style.display = 'flex';
+        }
+        
+        function editMember(memberId) {
+            const member = getMemberById(memberId);
+            if (!member) return;
+            
+            document.getElementById('memberModalTitle').textContent = 'Modifier le Membre';
+            document.getElementById('memberId').value = member.id;
+            document.getElementById('memberCoopId').value = member.cooperativeId || '';
+            document.getElementById('memberFirstName').value = member.firstName || '';
+            document.getElementById('memberLastName').value = member.lastName || '';
+            document.getElementById('memberPhone').value = member.phone || '';
+            document.getElementById('memberEmail').value = member.email || '';
+            document.getElementById('memberAddress').value = member.address || '';
+            document.getElementById('memberJoinDate').value = member.joinDate || '';
+            document.getElementById('memberStatus').value = member.status || 'active';
+            document.getElementById('memberNotes').value = member.notes || '';
+            document.getElementById('memberRole').value = member.role || '';
+            
+            // Charger les coopératives dans le select
+            loadCooperativesForSelect(member.cooperativeId);
+            
+            document.getElementById('memberModal').style.display = 'flex';
+        }
+        
+        function closeMemberModal() {
+            document.getElementById('memberModal').style.display = 'none';
+        }
+        
+        function openDeleteModal(memberId, memberName) {
+            const member = getMemberById(memberId);
+            if (!member) return;
+            
+            document.getElementById('deleteMessage').textContent = 
+                `Êtes-vous sûr de vouloir supprimer le membre "${member.fullName || member.firstName + ' ' + member.lastName}" ? Cette action est irréversible.`;
+            currentMemberId = memberId;
+            document.getElementById('deleteModal').style.display = 'flex';
+        }
+        
+        function closeDeleteModal() {
+            document.getElementById('deleteModal').style.display = 'none';
+            currentMemberId = null;
+        }
+        
+        function confirmDelete() {
+            if (!currentMemberId) return;
+            
+            if (deleteMember(currentMemberId)) {
+                closeDeleteModal();
+                loadAllMembers();
+                showNotification('Membre supprimé avec succès !', 'success');
+            }
+        }
+        
+        function deleteMember(memberId) {
+            const members = getAllMembers();
+            const index = members.findIndex(m => m.id == memberId);
+            if (index === -1) return false;
+            
+            members.splice(index, 1);
+            saveMembers(members);
+            return true;
+        }
+        
+        function loadCooperativesForSelect(selectedCoopId = null) {
+            const select = document.getElementById('memberCooperative');
+            if (!select) return;
+            
+            const cooperatives = JSON.parse(localStorage.getItem('cooperatives')) || [
+                { id: 1, name: "Maraîchers Bio d'Aného" },
+                { id: 2, name: "Coopérative Aklakou" },
+                { id: 3, name: "Coopérative Bio-Glidji" },
+                { id: 4, name: "Coopérative La Terre Promise" },
+                { id: 5, name: "Coopérative Les Jardins d'Aného" }
+            ];
+            
+            select.innerHTML = '<option value="">Sélectionnez une coopérative</option>' +
+                cooperatives.map(coop => 
+                    `<option value="${coop.id}" ${coop.id == selectedCoopId ? 'selected' : ''}>${coop.name}</option>`
+                ).join('');
+        }
+        
+        function loadCooperativesForFilter() {
+            const select = document.getElementById('filterCooperative');
+            if (!select) return;
+            
+            const cooperatives = JSON.parse(localStorage.getItem('cooperatives')) || [
+                { id: 1, name: "Maraîchers Bio d'Aného" },
+                { id: 2, name: "Coopérative Aklakou" },
+                { id: 3, name: "Coopérative Bio-Glidji" },
+                { id: 4, name: "Coopérative La Terre Promise" },
+                { id: 5, name: "Coopérative Les Jardins d'Aného" }
+            ];
+            
+            select.innerHTML = '<option value="">Toutes les coopératives</option>' +
+                cooperatives.map(coop => 
+                    `<option value="${coop.id}">${coop.name}</option>`
+                ).join('');
+        }
+        
+        function saveMember(event) {
+            event.preventDefault();
+            
+            const memberId = document.getElementById('memberId').value;
+            const cooperativeId = document.getElementById('memberCooperative').value;
+            const cooperatives = JSON.parse(localStorage.getItem('cooperatives')) || [];
+            const cooperative = cooperatives.find(c => c.id == cooperativeId);
+            
+            const memberData = {
+                firstName: document.getElementById('memberFirstName').value,
+                lastName: document.getElementById('memberLastName').value,
+                fullName: document.getElementById('memberFirstName').value + ' ' + document.getElementById('memberLastName').value,
+                cooperativeId: cooperativeId,
+                cooperative: cooperative ? cooperative.name : 'Coopérative inconnue',
+                role: document.getElementById('memberRole').value,
+                phone: document.getElementById('memberPhone').value,
+                email: document.getElementById('memberEmail').value,
+                address: document.getElementById('memberAddress').value,
+                joinDate: document.getElementById('memberJoinDate').value,
+                status: document.getElementById('memberStatus').value,
+                notes: document.getElementById('memberNotes').value
+            };
+            
+            let members = getAllMembers();
+            
+            if (memberId) {
+                // Mise à jour
+                const index = members.findIndex(m => m.id == memberId);
+                if (index !== -1) {
+                    members[index] = { ...members[index], ...memberData, id: parseInt(memberId) };
+                    showNotification('Membre modifié avec succès !', 'success');
+                }
+            } else {
+                // Création
+                const newId = members.length > 0 ? Math.max(...members.map(m => m.id)) + 1 : 1;
+                memberData.id = newId;
+                members.push(memberData);
+                showNotification('Membre ajouté avec succès !', 'success');
+            }
+            
+            saveMembers(members);
+            closeMemberModal();
+            loadAllMembers();
+        }
+        
+        function filterMembers() {
+            const searchTerm = document.getElementById('searchMember').value.toLowerCase();
+            const coopFilter = document.getElementById('filterCooperative').value;
+            const roleFilter = document.getElementById('filterRole').value;
+            
+            const members = getAllMembers();
+            let filtered = members;
+            
+            if (searchTerm) {
+                filtered = filtered.filter(member => 
+                    member.fullName?.toLowerCase().includes(searchTerm) ||
+                    member.firstName?.toLowerCase().includes(searchTerm) ||
+                    member.lastName?.toLowerCase().includes(searchTerm) ||
+                    member.phone?.includes(searchTerm) ||
+                    member.email?.toLowerCase().includes(searchTerm)
+                );
+            }
+            
+            if (coopFilter) {
+                filtered = filtered.filter(member => member.cooperativeId == coopFilter);
+            }
+            
+            if (roleFilter) {
+                filtered = filtered.filter(member => member.role === roleFilter);
+            }
+            
+            displayMembers(filtered);
+        }
+        
+        function resetMemberFilters() {
+            document.getElementById('searchMember').value = '';
+            document.getElementById('filterCooperative').value = '';
+            document.getElementById('filterRole').value = '';
+            loadAllMembers();
+        }
+        
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: ${type === 'success' ? '#4caf50' : type === 'error' ? '#f44336' : '#ff9800'};
+                color: white;
+                padding: 15px 25px;
+                border-radius: 8px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                z-index: 10000;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                animation: slideIn 0.3s ease;
+            `;
+            
+            notification.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
+                <span>${message}</span>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+            
+            // Ajouter l'animation CSS
+            if (!document.getElementById('notification-style')) {
+                const style = document.createElement('style');
+                style.id = 'notification-style';
+                style.textContent = `
+                    @keyframes slideIn {
+                        from { opacity: 0; transform: translateX(100px); }
+                        to { opacity: 1; transform: translateX(0); }
+                    }
+                    @keyframes slideOut {
+                        from { opacity: 1; transform: translateX(0); }
+                        to { opacity: 0; transform: translateX(100px); }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+        }
+    </script>
+</body>
+</html>

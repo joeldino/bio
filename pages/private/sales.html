@@ -1,0 +1,1271 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Points de Vente - Bio Aného</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ===== NAVIGATION AVEC SYSTÈME D'AUTHENTIFICATION ===== */
+        .main-navbar {
+            background: linear-gradient(135deg, #2e7d32 0%, #4caf50 100%);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 0.8rem 0;
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 1.5rem;
+        }
+        
+        .main-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: white;
+            text-decoration: none;
+            font-size: 1.5rem;
+            font-weight: 700;
+            transition: transform 0.3s ease;
+        }
+        
+        .main-logo:hover {
+            transform: scale(1.05);
+        }
+        
+        .main-logo i {
+            font-size: 2rem;
+            color: #c8e6c9;
+        }
+        
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        
+        .menu-toggle:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .main-nav-links {
+            display: flex;
+            list-style: none;
+            gap: 1.8rem;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .main-nav-links li {
+            position: relative;
+        }
+        
+        .main-nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border-radius: 6px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .main-nav-links a:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+        
+        .main-nav-links a::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: white;
+            transition: width 0.3s ease;
+            border-radius: 3px 3px 0 0;
+        }
+        
+        .main-nav-links a:hover::before {
+            width: 100%;
+        }
+        
+        .main-nav-links a.active {
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* Bouton Connexion/Déconnexion */
+        .btn-auth {
+            background: white;
+            color: #2e7d32 !important;
+            padding: 0.6rem 1.2rem !important;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .btn-auth:hover {
+            background: #f8f9fa !important;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Style spécifique pour Déconnexion */
+        .btn-logout {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%) !important;
+            color: white !important;
+        }
+        
+        .btn-logout:hover {
+            background: linear-gradient(135deg, #c82333 0%, #bd2130 100%) !important;
+            box-shadow: 0 4px 8px rgba(220, 53, 69, 0.2);
+        }
+        
+        /* ===== MODAL DE CONNEXION ===== */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            width: 90%;
+            max-width: 450px;
+            position: relative;
+            animation: modalFadeIn 0.3s ease-out;
+        }
+        
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #666;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        
+        .close-modal:hover {
+            color: #2e7d32;
+        }
+        
+        .modal-title {
+            text-align: center;
+            color: #2e7d32;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #2e7d32;
+            font-weight: 600;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e0f2e9;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #2e7d32;
+            box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.1);
+        }
+        
+        .error-message {
+            background: #ffebee;
+            color: #c62828;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            display: none;
+        }
+        
+        .success-message {
+            background: #e8f5e9;
+            color: #2e7d32;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            display: none;
+        }
+        
+        /* ===== STYLES PRINCIPAUX ===== */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        /* Header de contenu */
+        .content-header {
+            background: white;
+            border-radius: 16px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            border: 1px solid #e8f5e9;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+        
+        .content-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, #2e7d32, #4caf50);
+        }
+        
+        .content-header h1 {
+            color: #2e7d32;
+            margin-bottom: 0.8rem;
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+        
+        .content-header p {
+            color: #666;
+            font-size: 1.1rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        /* Contenu principal */
+        .content {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            border: 1px solid #e8f5e9;
+            margin-bottom: 3rem;
+        }
+        
+        /* ===== GRILLE DES POINTS DE VENTE ===== */
+        .sales-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .sales-point {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+            border: 2px solid #e8f5e9;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .sales-point:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+            border-color: #4caf50;
+        }
+        
+        .sales-point h3 {
+            color: #2e7d32;
+            margin-bottom: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+        
+        .sales-point h3 i {
+            color: #4caf50;
+            font-size: 1.5rem;
+        }
+        
+        .sales-details {
+            margin: 1.5rem 0;
+            flex-grow: 1;
+        }
+        
+        .sales-details p {
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #555;
+        }
+        
+        .sales-details strong {
+            color: #2e7d32;
+            min-width: 100px;
+            display: inline-block;
+        }
+        
+        .sales-details i {
+            color: #4caf50;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .sales-hours {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin: 1.5rem 0;
+            border: 1px solid #e0f2e9;
+        }
+        
+        .sales-hours h4 {
+            margin-bottom: 0.8rem;
+            color: #1b5e20;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .sales-hours p {
+            margin-bottom: 0.5rem;
+            color: #666;
+            padding-left: 1.5rem;
+        }
+        
+        .map-placeholder {
+            width: 100%;
+            height: 180px;
+            background: linear-gradient(45deg, #e8f5e9, #c8e6c9);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #2e7d32;
+            font-size: 4rem;
+            margin: 1rem 0;
+            border: 2px solid #c8e6c9;
+        }
+        
+        /* ===== SECTION COMMANDE ===== */
+        .order-section {
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            padding: 3rem;
+            border-radius: 16px;
+            margin: 3rem 0;
+            text-align: center;
+            border: 2px solid #a5d6a7;
+        }
+        
+        .order-section h2 {
+            color: #2e7d32;
+            margin-bottom: 1rem;
+            font-size: 2rem;
+        }
+        
+        .order-section p {
+            color: #555;
+            font-size: 1.1rem;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+        }
+        
+        /* ===== BOUTONS ===== */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            gap: 8px;
+            font-family: inherit;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #2e7d32 0%, #4caf50 100%);
+            color: white;
+            box-shadow: 0 4px 6px rgba(46, 125, 50, 0.2);
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(46, 125, 50, 0.3);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            color: #2e7d32;
+            border: 2px solid #2e7d32;
+        }
+        
+        .btn-outline:hover {
+            background: #2e7d32;
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .btn-large {
+            padding: 15px 30px;
+            font-size: 1.1rem;
+        }
+        
+        /* ===== PARTENAIRES ===== */
+        .partners-section {
+            margin-top: 3rem;
+            padding: 2rem;
+            background: #f8f9fa;
+            border-radius: 16px;
+            border: 1px solid #e8f5e9;
+        }
+        
+        .section-title {
+            color: #2e7d32;
+            margin-bottom: 2rem;
+            font-size: 1.8rem;
+            text-align: center;
+            font-weight: 700;
+        }
+        
+        .partners-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        .partner-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+            text-align: center;
+            border: 2px solid #e8f5e9;
+            transition: all 0.3s ease;
+        }
+        
+        .partner-card:hover {
+            transform: translateY(-5px);
+            border-color: #4caf50;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+        }
+        
+        .partner-card i {
+            font-size: 2.5rem;
+            color: #2e7d32;
+            margin-bottom: 1rem;
+        }
+        
+        .partner-card p {
+            color: #555;
+            font-weight: 600;
+            margin: 0;
+        }
+        
+        /* ===== FOOTER ===== */
+        .main-footer {
+            background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%);
+            color: white;
+            padding: 3rem 0 1rem;
+            margin-top: 4rem;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+        }
+        
+        .footer-section h4 {
+            color: white;
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+            position: relative;
+            padding-bottom: 12px;
+            font-weight: 700;
+        }
+        
+        .footer-section h4::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 3px;
+        }
+        
+        .footer-section p {
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.7;
+            margin-bottom: 1.2rem;
+        }
+        
+        .footer-section ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .footer-section ul li {
+            margin-bottom: 0.9rem;
+        }
+        
+        .footer-section a {
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 0.3rem 0;
+        }
+        
+        .footer-section a:hover {
+            color: white;
+            transform: translateX(8px);
+        }
+        
+        .footer-section i {
+            width: 24px;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .nav-container {
+                padding: 0 1rem;
+            }
+            
+            .menu-toggle {
+                display: block;
+            }
+            
+            .main-nav-links {
+                display: none;
+                position: fixed;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background: #2e7d32;
+                flex-direction: column;
+                gap: 0;
+                padding: 1rem 0;
+                box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+                z-index: 1000;
+                border-top: 2px solid rgba(255,255,255,0.1);
+                border-radius: 0 0 16px 16px;
+            }
+            
+            .main-nav-links.show {
+                display: flex;
+            }
+            
+            .main-nav-links li {
+                width: 100%;
+            }
+            
+            .main-nav-links a {
+                padding: 1.2rem;
+                border-bottom: 1px solid rgba(255,255,255,0.1);
+                gap: 12px;
+                justify-content: center;
+            }
+            
+            .main-nav-links a:last-child {
+                border-bottom: none;
+            }
+            
+            .main-nav-links a.active {
+                background: rgba(255,255,255,0.2);
+                margin: 0 1rem;
+                border-radius: 10px;
+            }
+            
+            .btn-auth {
+                justify-content: center;
+                margin: 0.5rem 1rem;
+            }
+            
+            .main-content {
+                padding: 1rem;
+            }
+            
+            .content-header {
+                padding: 1.8rem;
+            }
+            
+            .content-header h1 {
+                font-size: 2rem;
+            }
+            
+            .content {
+                padding: 1.5rem;
+            }
+            
+            .sales-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .order-section {
+                padding: 2rem 1.5rem;
+            }
+            
+            .order-section h2 {
+                font-size: 1.7rem;
+            }
+            
+            .partners-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 2.5rem;
+                text-align: center;
+            }
+            
+            .footer-section h4::after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+            
+            .footer-section a {
+                justify-content: center;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .content-header h1 {
+                font-size: 1.7rem;
+            }
+            
+            .sales-details p {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 5px;
+            }
+            
+            .sales-details strong {
+                min-width: auto;
+            }
+            
+            .partners-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .order-section .btn {
+                width: 100%;
+                margin-bottom: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation principale -->
+    <nav class="main-navbar">
+        <div class="nav-container">
+            <a href="../public/index.html" class="main-logo">
+                <i class="fas fa-leaf"></i>
+                <span>Bio Aného</span>
+            </a>
+            
+            <!-- Menu hamburger pour mobile -->
+            <button class="menu-toggle" id="menuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <!-- Navigation -->
+            <ul class="main-nav-links" id="navLinks">
+                <li><a href="../public/index.html">
+                    <i class="fas fa-home"></i>
+                    <span>Accueil</span>
+                </a></li>
+                <li><a href="cooperatives.html">
+                    <i class="fas fa-tractor"></i>
+                    <span>Coopératives</span>
+                </a></li>
+                <li><a href="members.html">
+                    <i class="fas fa-users"></i>
+                    <span>Membres</span>
+                </a></li>
+                <li><a href="products.html">
+                    <i class="fas fa-seedling"></i>
+                    <span>Produits</span>
+                </a></li>
+                <li><a href="sales.html" class="active">
+                    <i class="fas fa-store"></i>
+                    <span>Points de Vente</span>
+                </a></li>
+                <li><a href="../public/news.html">
+                    <i class="fas fa-newspaper"></i>
+                    <span>Actualités</span>
+                </a></li>
+                <li><a href="../public/contact.html">
+                    <i class="fas fa-envelope"></i>
+                    <span>Contact</span>
+                </a></li>
+                <li id="authNavItem">
+                    <!-- Le bouton connexion/déconnexion sera injecté ici par JavaScript -->
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Modal de connexion -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <button class="close-modal" id="closeModal">&times;</button>
+            <h2 class="modal-title">
+                <i class="fas fa-sign-in-alt"></i> Connexion
+            </h2>
+            
+            <div id="loginError" class="error-message">
+                Identifiants incorrects. Veuillez réessayer.
+            </div>
+            
+            <div id="loginSuccess" class="success-message">
+                Connexion réussie !
+            </div>
+            
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username">Nom d'utilisateur</label>
+                    <input type="text" id="username" name="username" placeholder="Entrez votre nom d'utilisateur" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Mot de passe</label>
+                    <input type="password" id="password" name="password" placeholder="Entrez votre mot de passe" required>
+                </div>
+                
+                <button type="submit" class="btn btn-primary" style="width: 100%;">
+                    <i class="fas fa-sign-in-alt"></i> Se connecter
+                </button>
+            </form>
+            
+            <p style="text-align: center; margin-top: 1.5rem; color: #666;">
+                <small>Compte admin : utilisez <strong>Eldinio</strong> / <strong>Eldinio12</strong></small>
+            </p>
+        </div>
+    </div>
+
+    <!-- Contenu principal -->
+    <div class="main-content">
+        <header class="content-header">
+            <h1>Nos Points de Vente</h1>
+            <p>Retrouvez nos produits bio frais directement aux points de vente suivants à Aného et ses environs</p>
+        </header>
+
+        <div class="content">
+            <!-- Grille des points de vente -->
+            <div class="sales-container">
+                <!-- Point de vente 1 : Marché Elavagnon -->
+                <div class="sales-point">
+                    <h3><i class="fas fa-store"></i> Marché Elavagnon</h3>
+                    <div class="sales-details">
+                        <p><i class="fas fa-map-marker-alt"></i> <strong>Localisation:</strong> Aného</p>
+                        <p><i class="fas fa-map-pin"></i> <strong>Stand:</strong> Section Fruits & Légumes, Stand "Bio Aného"</p>
+                        <p><i class="fas fa-user"></i> <strong>Responsable:</strong> SENAYA Ami</p>
+                        <p><i class="fas fa-phone"></i> <strong>Contact:</strong> +228 98 22 67 37</p>
+                    </div>
+                    <div class="sales-hours">
+                        <h4><i class="fas fa-clock"></i> Horaires d'ouverture:</h4>
+                        <p><strong>Mardi </strong> 7h00 - 14h00</p>
+                    </div>
+                    <div class="map-placeholder">
+                        <i class="fas fa-map-marked-alt"></i>
+                    </div>
+                </div>
+
+                <!-- Point de vente 2 : Scoops NONVISSI -->
+                <div class="sales-point">
+                    <h3><i class="fas fa-tractor"></i> Scoops NONVISSI</h3>
+                    <div class="sales-details">
+                        <p><i class="fas fa-map-marker-alt"></i> <strong>Localisation:</strong> Scoops NONVISSI</p>
+                        <p><i class="fas fa-road"></i> <strong>Adresse:</strong> Route péage, Aného</p>
+                        <p><i class="fas fa-user"></i> <strong>Responsable:</strong> HOUNKPATI Kouassi</p>
+                        <p><i class="fas fa-phone"></i> <strong>Contact:</strong> +228 91 13 14 12</p>
+                    </div>
+                    <div class="sales-hours">
+                        <h4><i class="fas fa-clock"></i> Horaires d'ouverture:</h4>
+                        <p><strong>Tous les jours:</strong> 7h00 - 17h00</p>
+                        <p><strong>Visite ferme:</strong> Sur rendez-vous uniquement</p>
+                    </div>
+                    <div class="map-placeholder">
+                        <i class="fas fa-map-marked-alt"></i>
+                    </div>
+                </div>
+
+                <!-- Point de vente 3 : Paniers Hebdomadaires -->
+                <div class="sales-point">
+                    <h3><i class="fas fa-shopping-basket"></i> Paniers Hebdomadaires</h3>
+                    <div class="sales-details">
+                        <p><i class="fas fa-truck"></i> <strong>Système:</strong> Livraison à domicile</p>
+                        <p><i class="fas fa-calendar"></i> <strong>Jour de livraison:</strong> indéterminé</p>
+                        <p><i class="fas fa-user"></i> <strong>Responsable:</strong> Service Client Bio Aného</p>
+                        <p><i class="fas fa-phone"></i> <strong>Contact:</strong> +228 96 85 70 42</p>
+                    </div>
+                    <div class="sales-hours">
+                        <h4><i class="fas fa-info-circle"></i> Commandes:</h4>
+                        <p><strong>Commande en ligne:</strong> Jusqu'à 24h avant livraison</p>
+                        <p><strong>Paiement:</strong> Espèces ou Mobile Money à la livraison</p>
+                    </div>
+                    <div class="map-placeholder">
+                        <i class="fas fa-truck"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section commande -->
+            <div class="order-section">
+                <h2>Commandez vos paniers bio hebdomadaires</h2>
+                <p>Abonnez-vous à nos paniers de saison et recevez des produits frais cueillis du jour directement chez vous. Livraison gratuite pour les commandes supérieures à 10.000 FCFA.</p>
+                <div style="margin-top: 2rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                    <a href="products.html" class="btn btn-primary btn-large">
+                        <i class="fas fa-shopping-cart"></i> Commander maintenant
+                    </a>
+                    <a href="../public/contact.html" class="btn btn-outline btn-large">
+                        <i class="fas fa-info-circle"></i> Plus d'informations
+                    </a>
+                </div>
+            </div>
+
+            <!-- Partenaires de vente -->
+            <div class="partners-section">
+                <h2 class="section-title">Nos Partenaires de Vente</h2>
+                <div class="partners-grid">
+                    <div class="partner-card">
+                        <i class="fas fa-hotel"></i>
+                        <p>Hôtels & Restaurants</p>
+                        <small style="color: #666; margin-top: 0.5rem;">Fournisseur officiel</small>
+                    </div>
+                    <div class="partner-card">
+                        <i class="fas fa-school"></i>
+                        <p>Cantines Scolaires</p>
+                        <small style="color: #666; margin-top: 0.5rem;">Approvisionnement régulier</small>
+                    </div>
+                    <div class="partner-card">
+                        <i class="fas fa-store-alt"></i>
+                        <p>Épiceries Locales</p>
+                        <small style="color: #666; margin-top: 0.5rem;">Distribution partenaires</small>
+                    </div>
+                    <div class="partner-card">
+                        <i class="fas fa-utensils"></i>
+                        <p>Catering Événements</p>
+                        <small style="color: #666; margin-top: 0.5rem;">Traiteurs professionnels</small>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Footer -->
+            <footer class="main-footer">
+                <div class="footer-content">
+                    <div class="footer-section">
+                        <h4>Bio Aného</h4>
+                        <p>Développement durable par l'agriculture biologique à Aného, Togo.</p>
+                        <p>Engagés pour une agriculture responsable et respectueuse de l'environnement.</p>
+                    </div>
+                    
+                    <div class="footer-section">
+                        <h4>Liens rapides</h4>
+                        <ul>
+                            <li><a href="../public/index.html">
+                                <i class="fas fa-home"></i>
+                                Accueil
+                            </a></li>
+                            <li><a href="cooperatives.html">
+                                <i class="fas fa-tractor"></i>
+                                Nos coopératives
+                            </a></li>
+                            <li><a href="products.html">
+                                <i class="fas fa-seedling"></i>
+                                Produits bio
+                            </a></li>
+                            <li><a href="../public/contact.html">
+                                <i class="fas fa-envelope"></i>
+                                Contactez-nous
+                            </a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-section">
+                        <h4>Coordonnées</h4>
+                        <p><i class="fas fa-map-marker-alt"></i> Aného, Région Maritime, Togo</p>
+                        <p><i class="fas fa-phone"></i> +228 96 85 70 42</p>
+                        <p><i class="fas fa-envelope"></i> joelamzy91@gmail.com</p>
+                        <p><i class="fas fa-clock"></i> Lundi - Vendredi: 8h-18h</p>
+                    </div>
+                </div>
+                
+                <div class="footer-bottom">
+                    <p>&copy; 2026 Maraîchage Bio à Aného. Développé par HOUNKPATI Yaovi Joël</p>
+                    <p style="margin-top: 0.5rem; font-size: 0.85rem;">Tous droits réservés.</p>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <script>
+        // ===== SYSTÈME D'AUTHENTIFICATION =====
+        
+        // Stockage des utilisateurs avec vos identifiants spécifiques
+        const users = [
+            { username: 'Eldinio', password: 'Eldinio12', name: 'Administrateur Eldinio', role: 'admin' },
+            { username: 'joel', password: 'bio123', name: 'Joël Hounkpati', role: 'user' },
+            { username: 'cooperative', password: 'coop2024', name: 'Coopérative A', role: 'cooperative' }
+        ];
+        
+        // Vérifier l'état d'authentification
+        function checkAuthStatus() {
+            const authToken = localStorage.getItem('authToken');
+            const userData = localStorage.getItem('userData');
+            
+            return {
+                isLoggedIn: !!authToken,
+                user: userData ? JSON.parse(userData) : null
+            };
+        }
+        
+        // Mettre à jour le bouton de connexion/déconnexion
+        function updateAuthButton() {
+            const authStatus = checkAuthStatus();
+            const authNavItem = document.getElementById('authNavItem');
+            
+            if (!authNavItem) return;
+            
+            if (authStatus.isLoggedIn && authStatus.user) {
+                // Utilisateur connecté - afficher le bouton de déconnexion
+                authNavItem.innerHTML = `
+                    <a href="#" class="btn-auth btn-logout" id="logoutBtn">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Déconnexion (${authStatus.user.name || authStatus.user.username})</span>
+                    </a>
+                `;
+                
+                // Ajouter l'événement de déconnexion
+                document.getElementById('logoutBtn')?.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    logout();
+                });
+            } else {
+                // Utilisateur non connecté - afficher le bouton de connexion
+                authNavItem.innerHTML = `
+                    <a href="#" class="btn-auth" id="loginBtn">
+                        <i class="fas fa-sign-in-alt"></i>
+                        <span>Connexion</span>
+                    </a>
+                `;
+                
+                // Ajouter l'événement d'ouverture du modal
+                document.getElementById('loginBtn')?.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    openLoginModal();
+                });
+            }
+        }
+        
+        // Ouvrir le modal de connexion
+        function openLoginModal() {
+            const modal = document.getElementById('loginModal');
+            if (modal) {
+                modal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            }
+        }
+        
+        // Fermer le modal de connexion
+        function closeLoginModal() {
+            const modal = document.getElementById('loginModal');
+            if (modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+                // Réinitialiser le formulaire
+                document.getElementById('loginForm')?.reset();
+                // Cacher les messages d'erreur/succès
+                const errorMsg = document.getElementById('loginError');
+                const successMsg = document.getElementById('loginSuccess');
+                if (errorMsg) errorMsg.style.display = 'none';
+                if (successMsg) successMsg.style.display = 'none';
+            }
+        }
+        
+        // Fonction de connexion
+        function login(username, password) {
+            // Rechercher l'utilisateur
+            const user = users.find(u => u.username === username && u.password === password);
+            
+            if (user) {
+                // Créer un token d'authentification
+                const authToken = 'bioaneho_' + Date.now() + '_' + Math.random().toString(36).substr(2);
+                
+                // Stocker les données utilisateur (sans le mot de passe)
+                const userData = {
+                    username: user.username,
+                    name: user.name,
+                    role: user.role,
+                    loginTime: new Date().toISOString()
+                };
+                
+                // Sauvegarder dans localStorage
+                localStorage.setItem('authToken', authToken);
+                localStorage.setItem('userData', JSON.stringify(userData));
+                
+                return { success: true, user: userData };
+            }
+            
+            return { success: false, message: 'Identifiants incorrects' };
+        }
+        
+        // Fonction de déconnexion
+        function logout() {
+            if (confirm('Êtes-vous sûr de vouloir vous déconnecter ?')) {
+                // Supprimer les données de session
+                localStorage.removeItem('authToken');
+                localStorage.removeItem('userData');
+                
+                // Mettre à jour l'interface
+                updateAuthButton();
+                
+                // Rediriger vers la page d'accueil si on est sur une page privée
+                const currentPath = window.location.pathname;
+                if (currentPath.includes('private/') && !currentPath.includes('dashboard.html')) {
+                    window.location.href = '../public/index.html';
+                }
+            }
+        }
+        
+        // ===== GESTION DU MENU MOBILE =====
+        function initMenu() {
+            const menuToggle = document.getElementById('menuToggle');
+            const navLinks = document.getElementById('navLinks');
+            
+            if (menuToggle && navLinks) {
+                menuToggle.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    navLinks.classList.toggle('show');
+                    const icon = menuToggle.querySelector('i');
+                    
+                    if (navLinks.classList.contains('show')) {
+                        icon.classList.remove('fa-bars');
+                        icon.classList.add('fa-times');
+                        document.body.style.overflow = 'hidden';
+                    } else {
+                        icon.classList.remove('fa-times');
+                        icon.classList.add('fa-bars');
+                        document.body.style.overflow = 'auto';
+                    }
+                });
+                
+                // Fermer le menu quand on clique sur un lien
+                navLinks.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', function() {
+                        navLinks.classList.remove('show');
+                        menuToggle.querySelector('i').classList.remove('fa-times');
+                        menuToggle.querySelector('i').classList.add('fa-bars');
+                        document.body.style.overflow = 'auto';
+                    });
+                });
+                
+                // Fermer le menu quand on clique en dehors
+                document.addEventListener('click', function(e) {
+                    if (!menuToggle.contains(e.target) && !navLinks.contains(e.target)) {
+                        navLinks.classList.remove('show');
+                        menuToggle.querySelector('i').classList.remove('fa-times');
+                        menuToggle.querySelector('i').classList.add('fa-bars');
+                        document.body.style.overflow = 'auto';
+                    }
+                });
+                
+                // Gestion du redimensionnement
+                window.addEventListener('resize', function() {
+                    if (window.innerWidth > 768) {
+                        navLinks.classList.remove('show');
+                        menuToggle.querySelector('i').classList.remove('fa-times');
+                        menuToggle.querySelector('i').classList.add('fa-bars');
+                        document.body.style.overflow = 'auto';
+                    }
+                });
+            }
+        }
+        
+        // ===== INITIALISATION DE LA PAGE =====
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialiser l'authentification
+            updateAuthButton();
+            
+            // Initialiser le menu mobile
+            initMenu();
+            
+            // Gestion du modal de connexion
+            const loginModal = document.getElementById('loginModal');
+            const closeModalBtn = document.getElementById('closeModal');
+            const loginForm = document.getElementById('loginForm');
+            
+            // Fermer le modal de connexion quand on clique en dehors
+            if (loginModal) {
+                loginModal.addEventListener('click', function(e) {
+                    if (e.target === loginModal) {
+                        closeLoginModal();
+                    }
+                });
+            }
+            
+            // Fermer avec le bouton X
+            if (closeModalBtn) {
+                closeModalBtn.addEventListener('click', closeLoginModal);
+            }
+            
+            // Fermer avec la touche Échap
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && loginModal && loginModal.style.display === 'flex') {
+                    closeLoginModal();
+                }
+            });
+            
+            // Gestion du formulaire de connexion
+            if (loginForm) {
+                loginForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const username = document.getElementById('username').value;
+                    const password = document.getElementById('password').value;
+                    const errorMsg = document.getElementById('loginError');
+                    const successMsg = document.getElementById('loginSuccess');
+                    
+                    // Cacher les messages précédents
+                    if (errorMsg) errorMsg.style.display = 'none';
+                    if (successMsg) successMsg.style.display = 'none';
+                    
+                    // Tentative de connexion
+                    const result = login(username, password);
+                    
+                    if (result.success) {
+                        // Afficher message de succès
+                        if (successMsg) {
+                            successMsg.style.display = 'block';
+                            successMsg.textContent = `Connexion réussie ! Bienvenue ${result.user.name}`;
+                        }
+                        
+                        // Mettre à jour le bouton
+                        updateAuthButton();
+                        
+                        // Fermer le modal après 1.5 secondes
+                        setTimeout(() => {
+                            closeLoginModal();
+                            
+                            // Si l'utilisateur est admin, rediriger vers le dashboard
+                            if (result.user.role === 'admin') {
+                                window.location.href = 'dashboard.html';
+                            }
+                        }, 1500);
+                    } else {
+                        // Afficher message d'erreur
+                        if (errorMsg) {
+                            errorMsg.style.display = 'block';
+                            errorMsg.textContent = result.message;
+                        }
+                        if (document.getElementById('password')) {
+                            document.getElementById('password').value = '';
+                        }
+                    }
+                });
+            }
+            
+            // Écouter les changements de localStorage (pour synchroniser les onglets)
+            window.addEventListener('storage', function(e) {
+                if (e.key === 'authToken' || e.key === 'userData') {
+                    updateAuthButton();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
